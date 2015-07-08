@@ -1,0 +1,1383 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Dashboard</title>
+        <!-- homer-1.5 Vendor css -->
+        <link rel="stylesheet" href="../../homer-1.5/vendor/fontawesome/css/font-awesome.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/metisMenu/dist/metisMenu.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/animate.css/animate.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/bootstrap/dist/css/bootstrap.css"/>
+        <!-- homer-1.5 App css -->
+        <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/helper.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/styles/style.css"/>
+    </head>
+    <body>
+        <!-- Simple splash screen-->
+        <div class="splash">
+            <div class="color-line"></div>
+            <div class="splash-title">
+                <h1>Resource Request Dashboard</h1>
+                <img src="../homer-1.5/images/loading-bars.svg" width="64" height="64" /> 
+            </div> 
+        </div>
+        
+        <!-- Header -->
+        <div id="header">
+            <div class="color-line"></div>
+            <div id="logo" class="light-version">
+                <span>Dashboard Menu</span>
+            </div>
+            <nav role="navigation">
+                <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+            </nav>
+        </div>
+        
+        <!-- Navigation -->
+        <aside id="menu">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="rptDashboard.html"><span class="nav-label">Dashboard</span></a>
+                </li>
+                <li class="active">
+                    <a href="rptFundingSrc.html"><span class="nav-label">Funding Src</span></a>
+                </li>
+                <li>
+                    <a href="rptCommitteeStatistics.html"><span class="nav-label">Committee</span></a>
+                </li>
+                <li>
+                    <a href=# id="nav_home"><span class="nav-label">Home</span><span class="pull-right"><i class="fa fa-home"></i></span></a>
+                </li>
+                <li>
+                    <a href=# id="nav_logout"><span class="nav-label">Logout</span><span class="pull-right"><i class="fa fa-sign-out"></i></span></a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Wrapper -->
+        <div id="wrapper">
+            <div class="content animate-panel">
+                <div class="row">
+                    <div class="col-lg-12 text-center m-t-md">
+                        <h2>Resource Request Funding Sources Statistics</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>General</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_1_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_1_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_1_count"></h4>
+                                        <div class="font-bold" id="fs_1_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_1_amount"></h4>
+                                        <div class="font-bold" id="fs_1_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_1_count"></h4>
+                                        <div class="font-bold" id="fa_1_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_1_amount"></h4>
+                                        <div class="font-bold" id="fa_1_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>ASIVC</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_2_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_2_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_2_count"></h4>
+                                        <div class="font-bold" id="fs_2_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_2_amount"></h4>
+                                        <div class="font-bold" id="fs_2_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_2_count"></h4>
+                                        <div class="font-bold" id="fa_2_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_2_amount"></h4>
+                                        <div class="font-bold" id="fa_2_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Basic Aid</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_3_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_3_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_3_count"></h4>
+                                        <div class="font-bold" id="fs_3_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_3_amount"></h4>
+                                        <div class="font-bold" id="fs_3_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_3_count"></h4>
+                                        <div class="font-bold" id="fa_3_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_3_amount"></h4>
+                                        <div class="font-bold" id="fa_3_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Basic Skills Initiative</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_4_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_4_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_4_count"></h4>
+                                        <div class="font-bold" id="fs_4_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_4_amount"></h4>
+                                        <div class="font-bold" id="fs_4_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_4_count"></h4>
+                                        <div class="font-bold" id="fa_4_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_4_amount"></h4>
+                                        <div class="font-bold" id="fa_4_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>BFAP</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_5_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_5_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_5_count"></h4>
+                                        <div class="font-bold" id="fs_5_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_5_amount"></h4>
+                                        <div class="font-bold" id="fs_5_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_5_count"></h4>
+                                        <div class="font-bold" id="fa_5_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_5_amount"></h4>
+                                        <div class="font-bold" id="fa_5_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>CalWORKs/TANF</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_6_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_6_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_6_count"></h4>
+                                        <div class="font-bold" id="fs_6_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_6_amount"></h4>
+                                        <div class="font-bold" id="fs_6_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_6_count"></h4>
+                                        <div class="font-bold" id="fa_6_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_6_amount"></h4>
+                                        <div class="font-bold" id="fa_6_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Capital Outlay</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_7_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_7_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_7_count"></h4>
+                                        <div class="font-bold" id="fs_7_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_7_amount"></h4>
+                                        <div class="font-bold" id="fs_7_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_7_count"></h4>
+                                        <div class="font-bold" id="fa_7_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_7_amount"></h4>
+                                        <div class="font-bold" id="fa_7_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>CDC</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_8_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_8_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_8_count"></h4>
+                                        <div class="font-bold" id="fs_8_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_8_amount"></h4>
+                                        <div class="font-bold" id="fs_8_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_8_count"></h4>
+                                        <div class="font-bold" id="fa_8_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_8_amount"></h4>
+                                        <div class="font-bold" id="fa_8_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>College Work Study</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_9_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_9_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_9_count"></h4>
+                                        <div class="font-bold" id="fs_9_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_9_amount"></h4>
+                                        <div class="font-bold" id="fs_9_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_9_count"></h4>
+                                        <div class="font-bold" id="fa_9_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_9_amount"></h4>
+                                        <div class="font-bold" id="fa_9_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_9">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Community Education</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_10_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_10_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_10_count"></h4>
+                                        <div class="font-bold" id="fs_10_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_10_amount"></h4>
+                                        <div class="font-bold" id="fs_10_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_10_count"></h4>
+                                        <div class="font-bold" id="fa_10_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_10_amount"></h4>
+                                        <div class="font-bold" id="fa_10_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>DSPS</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_11_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_11_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_11_count"></h4>
+                                        <div class="font-bold" id="fs_11_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_11_amount"></h4>
+                                        <div class="font-bold" id="fs_11_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_11_count"></h4>
+                                        <div class="font-bold" id="fa_11_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_11_amount"></h4>
+                                        <div class="font-bold" id="fa_11_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_11">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>EOPS/CARE</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_12_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_12_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_12_count"></h4>
+                                        <div class="font-bold" id="fs_12_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_12_amount"></h4>
+                                        <div class="font-bold" id="fs_12_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_12_count"></h4>
+                                        <div class="font-bold" id="fa_12_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_12_amount"></h4>
+                                        <div class="font-bold" id="fa_12_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>EWD</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_13_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_13_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_13_count"></h4>
+                                        <div class="font-bold" id="fs_13_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_13_amount"></h4>
+                                        <div class="font-bold" id="fs_13_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_13_count"></h4>
+                                        <div class="font-bold" id="fa_13_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_13_amount"></h4>
+                                        <div class="font-bold" id="fa_13_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_13">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Foundation</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_14_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_14_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_14_count"></h4>
+                                        <div class="font-bold" id="fs_14_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_14_amount"></h4>
+                                        <div class="font-bold" id="fs_14_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_14_count"></h4>
+                                        <div class="font-bold" id="fa_14_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_14_amount"></h4>
+                                        <div class="font-bold" id="fa_14_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_14">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Grants</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_15_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_15_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_15_count"></h4>
+                                        <div class="font-bold" id="fs_15_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_15_amount"></h4>
+                                        <div class="font-bold" id="fs_15_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_15_count"></h4>
+                                        <div class="font-bold" id="fa_15_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_15_amount"></h4>
+                                        <div class="font-bold" id="fa_15_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_15">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Health</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_16_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_16_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_16_count"></h4>
+                                        <div class="font-bold" id="fs_16_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_16_amount"></h4>
+                                        <div class="font-bold" id="fs_16_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_16_count"></h4>
+                                        <div class="font-bold" id="fa_16_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_16_amount"></h4>
+                                        <div class="font-bold" id="fa_16_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_16">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Lottery</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_17_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_17_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_17_count"></h4>
+                                        <div class="font-bold" id="fs_17_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_17_amount"></h4>
+                                        <div class="font-bold" id="fs_17_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_17_count"></h4>
+                                        <div class="font-bold" id="fa_17_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_17_amount"></h4>
+                                        <div class="font-bold" id="fa_17_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_17">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Parking</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_18_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_18_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_18_count"></h4>
+                                        <div class="font-bold" id="fs_18_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_18_amount"></h4>
+                                        <div class="font-bold" id="fs_18_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_18_count"></h4>
+                                        <div class="font-bold" id="fa_18_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_18_amount"></h4>
+                                        <div class="font-bold" id="fa_18_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_18">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Perkins</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_19_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_19_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_19_count"></h4>
+                                        <div class="font-bold" id="fs_19_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_19_amount"></h4>
+                                        <div class="font-bold" id="fs_19_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_19_count"></h4>
+                                        <div class="font-bold" id="fa_19_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_19_amount"></h4>
+                                        <div class="font-bold" id="fa_19_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_19">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>PPIS</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_20_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_20_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_20_count"></h4>
+                                        <div class="font-bold" id="fs_20_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_20_amount"></h4>
+                                        <div class="font-bold" id="fs_20_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_20_count"></h4>
+                                        <div class="font-bold" id="fa_20_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_20_amount"></h4>
+                                        <div class="font-bold" id="fa_20_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_20">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>SSSP</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_21_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_21_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_21_count"></h4>
+                                        <div class="font-bold" id="fs_21_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_21_amount"></h4>
+                                        <div class="font-bold" id="fs_21_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_21_count"></h4>
+                                        <div class="font-bold" id="fa_21_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_21_amount"></h4>
+                                        <div class="font-bold" id="fa_21_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_21">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Student Equity</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_22_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_22_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_22_count"></h4>
+                                        <div class="font-bold" id="fs_22_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_22_amount"></h4>
+                                        <div class="font-bold" id="fs_22_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_22_count"></h4>
+                                        <div class="font-bold" id="fa_22_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_22_amount"></h4>
+                                        <div class="font-bold" id="fa_22_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_22">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Student Material Fees</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-share fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Amount</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_23_budget_amt"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <h4 class="no-margins">Budget Balance</h4>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <h4 class="no-margins" id="fs_23_balance"></h4>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Request Count</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_23_count"></h4>
+                                        <div class="font-bold" id="fs_23_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Request Amount</small>
+                                        <h4 class="no-margins font-bold text-success" id="fs_23_amount"></h4>
+                                        <div class="font-bold" id="fs_23_pct_amount"></div>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-4">
+                                        <small class="stat-label">Funded Count</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_23_count"></h4>
+                                        <div class="font-bold" id="fa_23_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <small class="stat-label">Funded Amount</small>
+                                        <h4 class="no-margins font-bold text-info" id="fa_23_amount"></h4>
+                                        <div class="font-bold" id="fa_23_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fs_23">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- homer-1.5 Vendor javascript -->
+        <script src="../../homer-1.5/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../../homer-1.5/vendor/jquery-ui/jquery-ui.min.js"></script>
+        <script src="../../homer-1.5/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+        <script src="../../homer-1.5/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../homer-1.5/vendor/metisMenu/dist/metisMenu.min.js"></script>
+        <script src="../../homer-1.5/vendor/iCheck/icheck.min.js"></script>
+        <script src="../../homer-1.5/vendor/sparkline/index.js"></script>
+        <!-- javascript -->
+        <script src="js/rptFundingSrc.js"></script>
+        <script src="js/db_rpt_access.js"></script>
+    </body>
+</html>

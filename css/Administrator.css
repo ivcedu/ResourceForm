@@ -1,0 +1,47 @@
+.container {
+    width: 1200px;
+}
+
+.row_tr {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.col_250 {
+    width: 250px;
+    padding-right: 10px;
+}
+
+.col_100 {
+    width: 100px;
+    padding-right: 20px;
+}
+
+.col_50 {
+    width: 50px;
+    padding-right: 10px;
+}
+
+.col_30 {
+    width: 30px;
+    padding-right: 10px;
+}
+
+.modal, .modal.fade.in {
+    top: 200px;
+}
+
+.modal-backdrop, .modal-backdrop.fade.in { 
+    background-color: rgba(0,0,0,0); 
+}
+
+.modal.fade.ui-draggable-dragging {
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
+    transition: none;
+}
+
+.popover{
+    max-width: 800px;
+}

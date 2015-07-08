@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Committee Report</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <link rel="stylesheet" href="../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
+        <!-- application css -->
+        <link rel="stylesheet" href="css/committeeRating.css">
+    </head>
+    <body>
+        <div class="well container" id="admin_main_body">
+            <!-- navigation bar -->
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="nav_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="nav_logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="fixed_col_150 text-center" style="padding-top: 5px;">Committee</div>
+                <div class="fixed_col_150 text-center" style="padding-top: 5px;">Rated By</div>
+                <div class="fixed_col_250 text-center" style="padding-top: 5px;">Resource Type</div>
+                <div class="fixed_col_150 text-center" style="padding-top: 5px;">Program Type</div>
+                <div class="fixed_col_200 text-center" style="padding-top: 5px;">Funding Src</div>
+                <div class="fixed_col_100 text-center" style="padding-top: 5px;">OneTime</div>
+            </div>
+            <div class="row-fluid">
+                <div class="fixed_col_150 form-horizontal">
+                    <select class="selectpicker span12" id="adm_committee">
+                        <option value="All">All</option>
+                        <option value="CHPLDTF">CHPLDTF</option>
+                        <option value="SSAMMO">SSAMMO</option>
+                        <option value="APTC">APTC</option>
+                        <option value="BDRPC">BDRPC</option>
+                        <option value="IEC">IEC</option>
+                        <option value="SPAC">SPAC</option>
+                    </select>
+                </div>
+                <div class="fixed_col_150 form-horizontal">
+                    <select class="selectpicker span12" id="adm_rated_by">
+                        <option value="0">All</option>
+                        <option value="6">VPA</option>
+                        <option value="3">VPI</option>
+                        <option value="4">VPS</option>
+                        <option value="5">President</option>
+                    </select>
+                </div>
+                <div class="fixed_col_250 form-horizontal">
+                    <select class="selectpicker span12" id="adm_resource_type">
+                        <option value="All Resource">All Resource</option>
+                        <option value="Classified Bargaining">Classified Bargaining</option>
+                        <option value="Classified Management">Classified Management</option>
+                        <option value="Short-Term Hourly">Short-Term Hourly</option>
+                        <option value="Facilities">Facilities</option>
+                        <option value="Instructional">Instructional</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="fixed_col_150 form-horizontal">
+                    <select class="selectpicker span12" id="adm_program">
+                        <option value="All Program">All Program</option>
+                        <option value="New Program">New</option>
+                        <option value="Baseline">Existing</option>
+                    </select>
+                </div>
+                <div class="fixed_col_200 form-horizontal">
+                    <select class="selectpicker span12" id="adm_fund_src">
+                    </select>
+                </div>
+                <div class="fixed_col_100 form-horizontal">
+                    <select class="selectpicker span12" id="adm_one_time">
+                        <option value="All Request">All</option>
+                        <option value="One Time">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="fixed_col_150">
+                    <button class="btn btn-primary span12" id="adm_refresh"><i class="icon-refresh icon-white"></i> Refresh</button>
+                </div>
+            </div>            
+            <div class="row-fluid">
+                <div class="fixed_col_50">
+                    <div class="span12 text-left" style="padding-top: 5px; font-weight: bold;">Count:</div>
+                </div>
+                <div class="fixed_col_100">
+                    <div class="span12 text-left" style="padding-top: 5px; font-weight: bold; color: blue;" id="list_count"></div>
+                </div>
+                <div class="fixed_col_50">
+                    <div class="span12 text-left" style="padding-top: 5px; font-weight: bold;">Total:</div>
+                </div>
+                <div class="fixed_col_150">
+                    <div class="span12 text-left" style="padding-top: 5px; font-weight: bold; color: blue;" id="list_total_amount"></div>
+                </div>
+            </div>
+            
+            <!-- RF List section  -->
+            <table class="table table-condensed table-bordered" id="user_rf_list">
+                <thead style="font-size: 90%; background-color: grey;" id="head_tr">
+                </thead>
+                <tbody style="font-size: 90%;" id="body_tr">
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-ui/js/jquery-ui-1.10.4.min.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.min.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.widgets.min.js"></script>
+        <script src="../include/jquery-tablesorter/js/parsers/parser-input-select.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>
+        <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
+        
+        <!-- application javascript -->
+        <script src="js/rptCommitteeReport.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+    </body>
+</html>
+            

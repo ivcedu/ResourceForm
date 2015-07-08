@@ -1,0 +1,14 @@
+h2 { font-size: 130%; }
+h2, p { text-align: center; }
+
+table.tablesorter tbody tr.odd.checked td {
+    background: #8080c0;
+    color: #fff;
+}
+table.tablesorter tbody tr.even.checked td {
+    background: #a0a0e0;
+    color: #fff;
+}
+
+h2 { font-size: 130%; }
+h2, p { text-align: center; }

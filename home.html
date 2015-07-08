@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Resource Form</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <!-- application css -->
+        <link rel="stylesheet" href="css/home.css">
+    </head>
+    <body id="body">
+        <div class="well container">
+            <!-- navigation bar -->
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="new_request"><i class="icon-pencil icon-white"></i> New Request</a></li>
+                    </ul>
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href=# id="admin_committee_rating">Reports <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href=# id="rpt_dashboard">Dashboard</a></li>
+                                <li class="divider"></li>
+                                <li><a href=# id="rpt_committee_report">Committee Report</a></li>
+                                <li><a href=# id="rpt_asivc_report">ASIVC Report</a></li>
+                                <li class="divider"></li>
+                                <li><a href=# id="rpt_all_rf_list">All Submitted RF List</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li id="show_admin"><a href=# id="nav_mgr_worksheet"><i class="icon-th icon-white"></i> Mgr Worksheet</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="nav_committee_rating"><i class="icon-th icon-white"></i> Committee Worksheet</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li id="show_master"><a href=# id="nav_master"><i class="icon-briefcase icon-white"></i> Master Page</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2"></div>
+                <div class="span8"><h4 class="span12" style="text-align: center" id="logn_name"></h4></div>
+            </div>
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray; color: white">Resource Request List</div>
+            </div>
+            
+            <!-- resource request list  -->
+            <div class='row'>
+                <div class="span4" style="padding-top: 5px; font-weight: bold">Proposal Title</div>
+                <div class="span1" style="padding-top: 5px; font-weight: bold">Link</div>
+                <div class="span2" style="padding-top: 5px; font-weight: bold">Resource Type</div>
+                <div class="span2" style="padding-top: 5px; font-weight: bold">Status</div>
+                <div class="span2 text-right" style="padding-top: 5px; font-weight: bold">Total Amount</div>
+            </div>
+            <div class="row" style="padding-bottom: 5px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div id="h_RFList">
+            </div>
+            <div>&nbsp;</div>
+            
+            <!--  resource cc list -->
+            <div id="h_cc_block">
+                <div class="row" style="padding-bottom: 10px">
+                    <div class="span12 text-center" style="background-color: gray; color: white">CC Resource List</div>
+                </div>
+                <div class='row'>
+                    <div class="span4" style="padding-top: 5px; font-weight: bold">Proposal Title</div>
+                    <div class="span2" style="padding-top: 5px; font-weight: bold">Resource Type</div>
+                    <div class="span2" style="padding-top: 5px; font-weight: bold">Status</div>
+                    <div class="span2 text-right" style="padding-top: 5px; font-weight: bold">Total Amount</div>
+                    <div class="span2" style="padding-top: 5px; font-weight: bold">Creator</div>
+                </div>
+                <div class="row" style="padding-bottom: 5px">
+                    <div class="span12 text-center" style="background-color: gray"></div>
+                </div>
+                <div id="h_cc_list">
+                </div>
+            </div>
+            <div>&nbsp;</div>
+            
+            <!-- Modal Cancel -->
+            <div class="modal hide fade" id="mod_popup_cancel">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h4 class="text-center" id="mod_header">Warning !!!</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align:center; color:blue; font-weight:bold;" id="mod_cancel_body">It will delete Resource Form. Are you sure you want to delete?</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal" id="mod_cancel_yes">Yes</button>
+                    <button class="btn btn-inverse" data-dismiss="modal" id="mod_cancel_no">No</button>
+                </div>
+            </div>
+            <!-- end of Modal Cancel -->
+        </div>
+
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/home.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+        <script src="js/sendEmail.js"></script>
+    </body>
+</html>

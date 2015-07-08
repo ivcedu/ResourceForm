@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Dashboard</title>
+        <!-- homer-1.5 Vendor css -->
+        <link rel="stylesheet" href="../../homer-1.5/vendor/fontawesome/css/font-awesome.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/metisMenu/dist/metisMenu.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/animate.css/animate.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/vendor/bootstrap/dist/css/bootstrap.css"/>
+        <!-- homer-1.5 App css -->
+        <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/helper.css"/>
+        <link rel="stylesheet" href="../../homer-1.5/styles/style.css"/>
+    </head>
+    <body>
+        <!-- Simple splash screen-->
+        <div class="splash">
+            <div class="color-line"></div>
+            <div class="splash-title">
+                <h1>Resource Request Dashboard</h1>
+                <img src="../homer-1.5/images/loading-bars.svg" width="64" height="64" /> 
+            </div> 
+        </div>
+        
+        <!-- Header -->
+        <div id="header">
+            <div class="color-line"></div>
+            <div id="logo" class="light-version">
+                <span>Dashboard Menu</span>
+            </div>
+            <nav role="navigation">
+                <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+            </nav>
+        </div>
+        
+        <!-- Navigation -->
+        <aside id="menu">
+            <ul class="nav" id="side-menu">
+                <li class="active">
+                    <a href="rptDashboard.html"><span class="nav-label">Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="rptFundingSrc.html"><span class="nav-label">Funding Src</span></a>
+                </li>
+                <li>
+                    <a href="rptCommitteeStatistics.html"><span class="nav-label">Committee</span></a>
+                </li>
+                <li>
+                    <a href=# id="nav_home"><span class="nav-label">Home</span><span class="pull-right"><i class="fa fa-home"></i></span></a>
+                </li>
+                <li>
+                    <a href=# id="nav_logout"><span class="nav-label">Logout</span><span class="pull-right"><i class="fa fa-sign-out"></i></span></a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Wrapper -->
+        <div id="wrapper">
+            <div class="content animate-panel">
+                <div class="row">
+                    <div class="col-lg-12 text-center m-t-md">
+                        <h2>Resource Request Dashboard</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="hpanel">
+                            <div class="panel-heading">
+                                <div class="panel-tools">
+                                    <a class="showhide"><i class="fa fa-chevron-up"></i></a>
+                                </div>
+                                Dashboard information and statistics
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3 text-center">
+                                        <div class="small">
+                                            <i class="fa fa-bolt"></i> Active count
+                                        </div>
+                                        <div>
+                                            <h1 class="font-extra-bold m-t-xl m-b-xs" id="rf_total_count"></h1>
+                                            <h4>Total Number of Resource Request</h4>
+                                        </div>
+                                        <div class="small m-t-xl">
+                                            <i class="fa fa-clock-o"></i> Fiscal Year: 2015-2016
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <div class="small">
+                                            <i class="fa fa-bolt"></i> Active amount
+                                        </div>
+                                        <div>
+                                            <h1 class="font-extra-bold m-t-xl m-b-xs" id="rf_total_amount"></h1>
+                                            <h4>Total Amount of Resource Request</h4>
+                                        </div>
+                                        <div class="small m-t-xl">
+                                            <i class="fa fa-clock-o"></i> Fiscal Year: 2015-2016
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Facilities</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-paint fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="fc_count"></h3>
+                                        <div class="font-bold" id="fc_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="fc_amount"></h3>
+                                        <div class="font-bold" id="fc_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_fc">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Instructional</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-culture fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="in_count"></h3>
+                                        <div class="font-bold" id="in_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="in_amount"></h3>
+                                        <div class="font-bold" id="in_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_in">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Technology</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-science fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="te_count"></h3>
+                                        <div class="font-bold" id="te_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="te_amount"></h3>
+                                        <div class="font-bold" id="te_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_te">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Other</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-coffee fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="ot_count"></h3>
+                                        <div class="font-bold" id="ot_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="ot_amount"></h3>
+                                        <div class="font-bold" id="ot_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_ot">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Classified Bargaining</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-users fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="cb_count"></h3>
+                                        <div class="font-bold" id="cb_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="cb_amount"></h3>
+                                        <div class="font-bold" id="cb_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_cb">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Classified Management</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-users fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="cm_count"></h3>
+                                        <div class="font-bold" id="cm_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="cm_amount"></h3>
+                                        <div class="font-bold" id="cm_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_cm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hpanel stats">
+                            <div class="panel-body list">
+                                <div class="stats-title pull-left">
+                                    <h3>Short-Term Hourly</h3>
+                                </div>
+                                <div class="stats-icon pull-right">
+                                    <i class="pe-7s-users fa-4x"></i>
+                                </div>       
+                                <div class="row m-t-md">
+                                </div>
+                                <div class="row m-t-md">
+                                    <div class="col-lg-3">
+                                        <h3 class="no-margins font-bold text-success" id="st_count"></h3>
+                                        <div class="font-bold" id="st_pct_count"></div>
+                                    </div>
+                                    <div class="col-lg-9 text-right">
+                                        <h3 class="no-margins font-bold text-success" id="st_amount"></h3>
+                                        <div class="font-bold" id="st_pct_amount"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer" id="cur_date_st">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- homer-1.5 Vendor javascript -->
+        <script src="../../homer-1.5/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../../homer-1.5/vendor/jquery-ui/jquery-ui.min.js"></script>
+        <script src="../../homer-1.5/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+        <script src="../../homer-1.5/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../homer-1.5/vendor/metisMenu/dist/metisMenu.min.js"></script>
+        <script src="../../homer-1.5/vendor/iCheck/icheck.min.js"></script>
+        <script src="../../homer-1.5/vendor/sparkline/index.js"></script>
+        <!-- javascript -->
+        <script src="js/rptDashboard.js"></script>
+        <script src="js/db_rpt_access.js"></script>
+    </body>
+</html>

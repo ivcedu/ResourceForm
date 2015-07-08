@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Resource Form</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <link rel="stylesheet" href="../include/jquery-ui/css/jquery.ui.all.css"/> 
+    </head>
+    <body id="body">
+        <div class="well container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="m1_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- status bar -->
+            <div class="row">
+                <div class="progress span12">
+                    <div class="bar bar-success" style="width: 16.6%"><a href=# style="color: white;" id="pbar_general_info">General Info</a></div>
+                    <div class="bar bar-success" style="width: 16.6%"><a href=# style="color: white;" id="pbar_resource_type">Resource Type</a></div>
+                    <div class="bar bar-success" style="width: 16.6%">Worksheet</div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_funding_src">Funding Src</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_planning">Planning</a></div>
+                    <div class="bar bar-warning" style="width: 17%"><a href=# style="color: white;" id="pbar_review">Review</a></div>
+                </div>
+            </div>
+            <div class="row text-center" style="color: blue;">
+                All blue fields are required to process next step
+            </div>
+            <!-- end of status bar -->
+            
+            <h5 style="text-align: center">Other Worksheet</h5>
+            <!-- Worksheet block -->
+            <div class="row">
+                <div class="span2" style="padding-top: 5px; color: blue;">Description:</div>
+                <div class="span10"><textarea class="span10" style="resize: vertical;" placeholder="required field" id="m4_ot2_descrip"></textarea></div>
+            </div>
+            
+            <div id="m4_ot2_items">
+                <div class="row">
+                    <div class="span7" style="padding-top: 5px">Item</div>
+                    <div class="span1 text-center" style="padding-top: 5px">Qty</div>
+                    <div class="span2 text-center" style="padding-top: 5px">Cost</div>
+                    <div class="span2 text-center" style="padding-top: 5px">Total</div>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                    <div class="span12 text-center" style="background-color: gray"></div>
+                </div>
+                <div id="m4_ot2_section_1">
+                    <div class="row">
+                        <div class="span7">
+                            <input type="text" class="span7" style="font-style: italic" placeholder="item description" id="m4_ot2_item_1">
+                        </div>
+                        <div class="span1">
+                            <input type="text" class="span1 text-center" style="font-style: italic" readonly placeholder="qty" id="m4_ot2_qty_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span2 text-right" style="font-style: italic" readonly placeholder="cost" id="m4_ot2_cost_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span2 text-right" style="font-style: italic" readonly id="m4_ot2_total_1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div class="row">
+                <button class="btn btn-info span2" id="btn_add_ot2_item">Add more</button>
+                <button class="btn btn-danger span2" id="btn_remove_ot2_item">Remove</button>
+                <div class="span2 offset4" style="padding-top: 5px">Total Amount:</div>
+                <div class="span2">
+                    <input type="text" class="span2 text-right" style="font-weight: bold; color: blue" readonly id="m4_ot2_total_amount">
+                </div>
+            </div>
+            <!-- end of Worksheet block -->
+            
+            <!-- bootstrap file input -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <h6 style="text-align: center;"><i>Only pdf form can be attached and uploaded</i></h6>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px">Attach a file:</div>
+                <div class="span5 form-horizontal">
+                    <input type="file" class="filestyle" accept="application/pdf" data-classButton="btn btn-primary" id="m4_file">
+                </div>
+                <button class="btn btn-info span2" id="m4_add_file">Add File</button>
+            </div>
+            <div id="m4_file_list">
+            </div>
+            <div class="row">&nbsp;</div>
+            <!-- end of bootstrap file input -->
+            
+            <!-- navigation -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div class="row">
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-inverse span2" id="m4_back"><i class="icon-chevron-left icon-white"></i> Back</button>
+                        <!--<button class="btn btn-inverse span2" id="m1_home"><i class="icon-home icon-white"></i> Home</button>-->
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="row">
+                        <!--<button class="btn btn-danger span2 offset2" id="m4_cancel"><i class="icon-trash icon-white"></i> Cancel</button>-->
+                        <button class="btn btn-success span2 offset4" id="m4_next"><i class="icon-hdd icon-white"></i> Save / Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of navigation block -->
+            
+            <!-- Modal dialog box -->
+            <div class="modal hide fade hidden-print" id="mod_dialog_box">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h5 id="mod_dialog_box_header"></h5>
+                </div>
+                <div class="modal-body">
+                    <div id="mod_dialog_box_body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-inverse" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+            <!-- end of Modal dialog box -->
+        </div>   
+
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/RFMain4Other2.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+    </body>
+</html>

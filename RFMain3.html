@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Resource Form</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+    </head>
+    <body id="body">
+        <div class="well container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="m1_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- status bar -->
+            <div class="row">
+                <div class="progress span12">                    
+                    <div class="bar bar-success" style="width: 16.6%"><a href=# style="color: white;" id="pbar_general_info">General Info</a></div>
+                    <div class="bar bar-success" style="width: 16.6%">Resource Type</div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_worksheet">Worksheet</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_funding_src">Funding Src</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_planning">Planning</a></div>
+                    <div class="bar bar-warning" style="width: 17%"><a href=# style="color: white;" id="pbar_review">Review</a></div>
+                </div>
+            </div>
+            <!-- end of status bar -->
+            
+            <!-- Resource Type block -->     
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span2" style="padding-top: 5px"><label class="radio" id="m3_rtype_personnel"><input type="radio" name="radioRType" value="Personnel">Personnel</label></div>
+                <div class="span2" style="padding-top: 5px"><label class="radio" id="m3_rtype_facilities"><input type="radio" name="radioRType" value="Facilities">Facilities</label></div>
+                <div class="span3" style="padding-top: 5px"><label class="radio" id="m3_rtype_instructioinal"><input type="radio" name="radioRType" value="Instructional">Instructional Equipment</label></div>
+                <div class="span2" style="padding-top: 5px"><label class="radio" id="m3_rtype_technology"><input type="radio" name="radioRType" value="Technology">Technology</label></div>
+                <div class="span2" style="padding-top: 5px"><label class="radio" id="m3_rtype_other"><input type="radio" name="radioRType" value="Other">Other</label></div>
+            </div>
+            <!-- end of Resource Type block --> 
+            
+            <!-- navigation -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div class="row">
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-inverse span2" id="m3_back"><i class="icon-chevron-left icon-white"></i> Back</button>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-success span2 offset4" id="m3_next"><i class="icon-hdd icon-white"></i> Save / Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of navigation block -->
+            
+            <!-- Modal dialog box -->
+            <div class="modal hide fade hidden-print" id="mod_dialog_box">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h5 id="mod_dialog_box_header"></h5>
+                </div>
+                <div class="modal-body">
+                    <div id="mod_dialog_box_body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-inverse" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+            <!-- end of Modal dialog box -->
+        </div>
+        
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/RFMain3.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+    </body>
+</html>

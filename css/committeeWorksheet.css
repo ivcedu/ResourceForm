@@ -1,0 +1,43 @@
+.container {
+    width: 1200px;
+}
+
+.col_550 {
+    width: 550px;
+    padding-right: 10px;
+}
+
+.col_500 {
+    width: 500px;
+    padding-right: 10px;
+}
+
+.col_250 {
+    width: 250px;
+    padding-right: 10px;
+}
+
+.col_200 {
+    width: 200px;
+    padding-right: 20px;
+}
+
+.col_150 {
+    width: 150px;
+    padding-right: 20px;
+}
+
+.col_100 {
+    width: 100px;
+    padding-right: 20px;
+}
+
+.col_50 {
+    width: 50px;
+    padding-right: 10px;
+}
+
+.col_30 {
+    width: 30px;
+    padding-right: 10px;
+}

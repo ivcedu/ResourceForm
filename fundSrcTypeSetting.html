@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Funding Source Type Setting</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <link rel="stylesheet" href="../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
+        <link rel="stylesheet" href="../include/jquery-ui/css/jquery.ui.all.css"/>
+    </head>
+    <body>
+        <div class="well container" id="admin_main_body">
+            <!-- navigation bar -->
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="nav_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav">
+                        <li><a href=# id="nav_committee_admin"><i class="icon-cog icon-white"></i> Committee Admin</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="nav_logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="row-fluid">
+                <div class="span12 text-center" style="font-weight: bold;">Funding Source Type Setting</div>
+            </div>
+            
+            <div class="row-fluid" style="background-color: grey; color: white; display: inline-block; line-height: 30px; vertical-align: middle; font-weight: bold;">
+                <div class="span1">ID</div>
+                <div class="span1">Active</div>
+                <div class="span3">Funding Source</div>
+                <div class="span3">Admin Name</div>
+                <div class="span3">Admin Email</div>
+            </div>
+            <div class="row-fluid" style="background-color: grey; color: white; display: inline-block; line-height: 30px; vertical-align: middle; font-weight: bold;">
+                <div class="span2">Fiscal Year</div>
+                <div class="span3">Budget Amount</div>
+                <div class="span3">Balance Amount</div>
+            </div>
+            <div id="fund_src_list" style="padding-top: 10px;">
+            </div>
+        </div>
+        
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-ui/js/jquery-ui-1.10.4.min.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/jquery-ui/js/jquery.ui.datepicker.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>
+        <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.2.18.4.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.widgets.2.18.4.js"></script>
+        <script src="../include/bowser/bowser.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/fundSrcTypeSetting.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+        <script src="js/sendEmail.js"></script>
+    </body>
+</html>

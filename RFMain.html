@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Resource Form</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <link rel="stylesheet" href="../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
+        <link rel="stylesheet" href="../include/jquery-ui/css/jquery.ui.all.css"/>
+        <!-- application css -->
+        <link rel="stylesheet" href="css/home.css"/>
+    </head>
+    <body id="body">
+        <div class="well container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="m1_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- status bar -->
+            <div class="row">
+                <div class="progress span12">                    
+                    <div class="bar bar-success" style="width: 16.6%">General Info</div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_resource_type">Resource Type</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_worksheet">Worksheet</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_funding_src">Funding Src</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_planning">Planning</a></div>
+                    <div class="bar bar-warning" style="width: 17%"><a href=# style="color: white;" id="pbar_review">Review</a></div>
+                </div>
+            </div>
+            <div class="row text-center" style="color: blue;">
+                All blue fields are required to process next step
+            </div>
+            <!-- end of status bar -->
+            
+            <div class="row">
+                <div class="span6" style="padding-top: 5px"><label class="checkbox"><input type="checkbox" id="m1_other_user">Requesting for someone else</label></div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2" style="padding-top: 5px; color: blue;">Creator Name:</div>
+                <div class="span4"><input type="text" class="span12" readonly id="creatorName"></div>
+                <div class="span1"><button class="btn btn-info span12" id="searchBtn"><i class="icon-user icon-white"></i></button></div>
+                <div class="span1 offset2" style="padding-top: 5px;">Need By:</div>
+                <div class="span2"><input type="text" class="span12" id="resource_needed_by"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2" style="padding-top: 5px; color: blue;">Creator Title:</div>
+                <div class="span4"><input type="text" class="span12 input-large" readonly id="creatorTitle"></div>
+                <div class="span1" style="padding-top: 5px">Date:</div>
+                <div class="span2"><input type="text" class="span12 input-small" readonly id="currentDate"></div>
+                <div class="span1" style="padding-top: 5px">Fiscal:</div>
+                <div class="span2">
+                    <select class="selectpicker span12" id="fiscal">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px; color: blue;">School/Division:</div>
+                <div class="span4"><input type="text" class="span4 input-large" readonly id="creatorDiv"></div>
+                <div class="span1" style="padding-top: 5px">CC:</div>
+                <div class="span4"><input type="text" class="span4 input-large" style="font-style: italic" readonly id="cc"></div>
+                <button class="btn btn-info span1" id="cc_search_user"><i class="icon-user icon-white"></i></button>
+            </div>
+            <div class="row" id="link_text">
+                <div class="span12" style="font-style: italic;">Please select from a Resource Request below if you would like link to another.  NOTE, only submitted requests will appear.</div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6" id="link_drop_down">
+                    <select class="selectpicker span12" id="previous_resource_request">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px; color: blue;">Proposal Title:</div>
+                <div class="span10"><input type="text" class="span10 input-large" placeholder="required field" id="propTitle"></div>
+            </div>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px; color: blue;">Description:</div>
+                <div class="span10"><textarea class="span10" style="resize: vertical;" placeholder="required field: Include explanation on how this request would improve student learning." id="needFor"></textarea></div>
+            </div>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px; color: blue;">Program Information:</div>
+                <div class="span4" style="padding-top: 5px;" id="m1_position"><label class="radio" id="m1_new_program"><input type="radio" name="programType" value="New Program/Strategic Initiative">New Program/Strategic Initiative</label></div>
+                <div class="span3" style="padding-top: 5px;"><label class="radio" id="m1_recur_program"><input type="radio" name="programType" value="Baseline Budget Adjustment">Existing Program</label></div>
+                <div class="span3" style="padding-top: 5px;"><label class="checkbox pull-right" id="m1_one_time_tool_tips"><input type="checkbox" id="m1_one_time">One Time Funding Request</label></div>
+            </div>
+            <!-- end of General Information block --> 
+            
+            <!-- navigation -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div class="row" style="height: 30px;">
+                <div class="span6">
+                    <div class="row">
+                        <!--<button class="btn btn-inverse span2" id="m1_home"><i class="icon-home icon-white"></i> Home</button>-->
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-success span2 offset4" id="m1_next"><i class="icon-hdd icon-white"></i> Save / Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of navigation block -->
+
+            <!-- modal search creator -->
+            <div class="modal hide fade" id="mod_popup_search_creator">
+                <div class="modal-header">
+                    <div class="row-fluid">
+                        <div class="span10"><h4 class="span12" id="mod_header">IVC Internal Users Only</h4></div>
+                        <div class="span2" style="padding-top: 7px"><button class="span12 btn" data-dismiss="modal">Cancel</button></div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+                        <div class="span8"><input type="text" class=" span12 input-large" id="mod_creator_name"></div>
+                        <div class="span4"><button class="btn btn-success span12" id="mod_search_creator"><i class="icon-search icon-white"></i> Search</button></div>
+                    </div>
+                    <div><hr></div>
+                    <div id="mod_creator_list"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row-fluid">
+                        <div class="span8"><input type="text" class="span12" style="color: blue" readonly id="mod_creator_selected_name"></div>
+                        <div id="mod_creator_selected_email" style="display: none"></div>
+                        <div id="mod_creator_selected_title" style="display: none"></div>
+                        <div id="mod_creator_selected_division" style="display: none"></div>
+                        <div id="mod_creator_mgr_selected_name" style="display: none"></div>
+                        <div id="mod_creator_mgr_selected_email" style="display: none"></div>
+                        <div id="mod_creator_mgr_selected_title" style="display: none"></div>
+                        <div id="mod_creator_mgr_selected_division" style="display: none"></div>
+                        <div class="span4"><button class="btn btn-primary span12" data-dismiss="modal" id="mod_popup_search_creator_add"><i class="icon-user icon-white"></i> Add to Creator</button></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of modal search creator -->
+            
+            <!-- modal cc search user -->
+            <div class="modal hide fade" id="mod_popup_search_user">
+                <div class="modal-header">
+                    <div class="row-fluid">
+                        <div class="span8"><h4 class="span12" id="mod_header">IVC Internal Users Only</h4></div>
+                        <div class="span2" style="padding-top: 7px"><button class="span12 btn btn-primary" id="mod_popup_search_save" data-dismiss="modal">Save</button></div>
+                        <div class="span2" style="padding-top: 7px"><button class="span12 btn" data-dismiss="modal">Cancel</button></div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+                        <div class="span8"><input type="text" class=" span12 input-large" id="mod_user_name"></div>
+                        <div class="span4"><button class="btn btn-success span12" id="mod_search_user"><i class="icon-search icon-white"></i> Search</button></div>
+                    </div>
+                    <div><hr></div>
+                    <div id="mod_users_list"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row-fluid">
+                        <div class="span8"><input type="text" class="span12" style="color: blue" readonly id="mod_user_selected_name"></div>
+                        <div id="mod_user_selected_email" style="display: none"></div>
+                        <div id="mod_user_selected_title" style="display: none"></div>
+                        <div id="mod_user_selected_division" style="display: none"></div>
+                        <div class="span4"><button class="btn btn-primary span12" id="mod_popup_search_add"><i class="icon-arrow-down icon-white"></i> Add to CC List</button></div>
+                        <!--<div class="span2"><button class="btn btn-inverse span12" data-dismiss="modal" id="mod_popup_search_save">Update</button></div>-->
+                    </div>
+                    <div class="row-fluid">
+                        <h5 class="text-center">Current Selected User List</h5>
+                        <div><hr></div>
+                        <div id="mod_current_users_list"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of modal cc search user -->
+            
+            <!-- Modal dialog box -->
+            <div class="modal hide fade hidden-print" id="mod_dialog_box">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h5 id="mod_dialog_box_header"></h5>
+                </div>
+                <div class="modal-body">
+                    <div id="mod_dialog_box_body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-inverse" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+            <!-- end of Modal dialog box -->
+        </div>
+        
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-ui/js/jquery.ui.core.js"></script>
+        <script src="../include/jquery-ui/js/jquery.ui.widget.js"></script>
+        <script src="../include/jquery-ui/js/jquery.ui.datepicker.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/RFMain.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+    </body>
+</html>

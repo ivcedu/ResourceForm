@@ -1,0 +1,386 @@
+////////////////////////////////////////////////////////////////////////////////
+var index_obj = 1;
+
+////////////////////////////////////////////////////////////////////////////////
+window.onload = function() {   
+    $('#mod_dialog_box').modal('hide');
+    $('#m5_goal_1').selectpicker('hide');
+    
+    if (sessionStorage.key(0) !== null) {
+        var curPgs = sessionStorage.getItem('m5_pgNum');
+        if (curPgs === "Page5") { 
+            var m5_index = sessionStorage.getItem('m5_index');
+            if (m5_index === null || m5_index === "") {
+                alert("System error, please call x5596 for help");
+                return false;
+            }
+
+            index_obj = Number(m5_index);
+            
+            for (var i = 1; i <= index_obj; i++) {
+                var objID = "m5_objective_" + i;
+                var goalID = "m5_goal_" + i;
+                var impactID = "m5_impact_" + i;
+
+                setLocalData(i, objID, goalID, impactID);
+            }
+        }
+    }
+    else {
+        window.open('Login.html', '_self');
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+$(document).ready(function() {
+    $('#m5_home').click(function() {
+        window.open('home.html', '_self');
+    });
+    
+    $('#logout').click(function() {
+        sessionStorage.clear();
+        window.open('Login.html', '_self');
+    });
+    
+    // progress bar click event ////////////////////////////////////////////////
+    $('#pbar_general_info').click(function() {
+        $("#pbar_general_info").prop("disabled", true);
+        saveLocalData();
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        moveSelectedStepPage("General Info");
+    });
+    
+    $('#pbar_resource_type').click(function() {
+        $("#pbar_resource_type").prop("disabled", true);
+        saveLocalData();
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        moveSelectedStepPage("Resource Type");
+    });
+    
+    $('#pbar_worksheet').click(function() {
+        $("#pbar_worksheet").prop("disabled", true);
+        saveLocalData();
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        moveSelectedStepPage("Worksheet");
+    });
+    
+    $('#pbar_funding_src').click(function() {
+        $("#pbar_funding_src").prop("disabled", true);
+        saveLocalData();
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        moveSelectedStepPage("Funding Src");
+    });
+    
+    $('#pbar_review').click(function() {
+        $("#pbar_review").prop("disabled", true);
+        saveLocalData();
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        moveSelectedStepPage("Review");
+    });
+    
+    ////////////////////////////////////////////////////////////////////////////
+    $(document).on('change', 'select[id^="m5_objective_"]', function() {
+        var currentId = $(this).attr('id');
+        var value = $(this).val();
+        selObjective(currentId, value);
+    });
+    
+    $('#m5_add_objective').click(function() {
+        btnAddObjective();
+    });
+    
+    $('#m5_remove_objective').click(function() {
+        btnRemoveObjective();
+    });
+    
+    ////////////////////////////////////////////////////////////////////////////
+    $('#m5_back').click(function() {
+        $("#m5_back").prop("disabled", true);
+        saveLocalData();
+        
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        window.open('fundingSrc.html', '_self');
+    });
+    
+    $('#m5_next').click(function() {
+        $("#m5_next").prop("disabled", true);
+        saveLocalData();
+        
+        var step5_save = btnSaveDraft();
+        if (!step5_save) {
+            alert("System error, please call x5596 for help\n" + err_msg);
+            return false;
+        }
+        
+        window.open('RFMain6.html', '_self');
+    });
+    
+    //auto size
+    $('.normal').autosize();
+    
+    // selectpicker
+    $('.selectpicker').selectpicker();
+});
+
+////////////////////////////////////////////////////////////////////////////////
+function btnSaveDraft() {
+    var step1_result = updateStep1();
+    if (!step1_result) {
+        return false;
+    }
+     
+    var step2_result = updateStep2(); 
+    if (!step2_result) {
+        return false;
+    }
+    
+    var rdRType = sessionStorage.getItem('m3_radioRType');   
+    switch (rdRType) {
+        case "Personnel": 
+            var step3_pe_result = updateStep3_Personnel();
+            if (!step3_pe_result) {
+                return false;
+            }
+            break;
+        case "Facilities":
+            var step3_fa_result = updateStep3_Facilities();
+            if (!step3_fa_result) {
+                return false;
+            }
+            break;
+        case "Instructional":
+            var step3_in_result = updateStep3_Instructional();
+            if (!step3_in_result) {
+                return false;
+            }
+            break;
+        case "Technology":
+            var step3_te_result = updateStep3_Technology();
+            if (!step3_te_result) {
+                return false;
+            }
+            break;
+        case "Other":
+            var step3_ot_result = updateStep3_Other2();
+            if (!step3_ot_result) {
+                return false;
+            }
+            break;
+        default:
+    }
+    
+    var step_fs_result = updateStepFundSrc();
+    if (!step_fs_result) {
+        return false;
+    }
+    
+    var step4_result = updateStep4();
+    if (!step4_result) {
+        return false;
+    }
+    
+    return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function btnAddObjective() {   
+    var new_index_obj = index_obj + 1;
+    var main_old = "m5_main_" + index_obj;
+    var main_new = "m5_main_" + new_index_obj;
+    
+    var objID = "m5_objective_" + new_index_obj;
+    var goalID = "m5_goal_" + new_index_obj;
+    var impactID = "m5_impact_" + new_index_obj;
+    
+    var tbody = "<div class='row-fluid' id='" + main_new + "'>";
+    tbody += "<div class='span4'>";
+    tbody += "<div class='row-fluid'>";
+    tbody += "<select class='selectpicker span12' id='" + objID + "'>";
+    tbody += "<option value='AUR-Strategy'>AUR-Strategy</option>";
+    tbody += "<option value='Program Review-Strategy'>Program Review-Strategy</option>";
+    tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
+    tbody += "</select>";
+    tbody += "</div>";
+    tbody += "<div class='row-fluid'>";
+    tbody += "<select class='selectpicker span12' id='" + goalID + "'>";
+    tbody += "</select>";
+    tbody += "</div>";
+    tbody += "</div>";
+    tbody += "<div class='span8'>";
+    tbody += "<textarea class='field span12 normal' style='resize: vertical;' rows='3' id='" + impactID + "'></textarea>";
+    tbody += "</div>"; 
+    tbody += "</div>"; 
+
+    $("#m5_planning").append(tbody);
+    $('#' + objID).selectpicker('refresh');
+    $('#' + goalID).selectpicker('refresh');
+    $('#' + goalID).selectpicker('hide');
+    $('#' + impactID).autosize();
+    
+    index_obj = new_index_obj;
+}
+
+function btnRemoveObjective() {
+    if(index_obj > 1) {
+        var main_last = "#m5_main_" + index_obj;
+        $(main_last).remove();
+        index_obj = index_obj - 1;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function selObjective(Id, value) {
+    var objIDIndex = Id.replace("m5_objective_", "");
+    var goalID = "m5_goal_" + objIDIndex;
+
+    if (value === "District-wide Objective") {
+        $("#" + goalID).children().remove();
+        $("#" + goalID).append(setDistrictObjective());
+        $("#" + goalID).selectpicker('refresh');
+        $("#" + goalID).selectpicker('show');
+        
+        $('#m5_impact_1').attr('placeholder', '');
+    }
+    else if (value === "Program Review-Strategy") {
+        $('#m5_impact_' + objIDIndex).attr('placeholder', 'Please copy and paste the narrative into this box');
+        $("#" + goalID).selectpicker('hide');
+    }
+    else {
+        $('#m5_impact_' + objIDIndex).attr('placeholder', '');
+        $("#" + goalID).selectpicker('hide');
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function setDistrictObjective() {
+    var result = "";
+    
+    result += "<option value='Objective 1.1 (Support innovative ...)'>Objective 1.1 (Support innovative ...)</option>";
+    result += "<option value='Objective 1.2 (Improve climate ...)'>Objective 1.2 (Improve climate ...)</option>";
+    result += "<option value='Objective 1.3 (Improve processes ...)'>Objective 1.3 (Improve processes ...)</option>";
+    result += "<option value='Objective 1.4 (Professional development ...)'>Objective 1.4 (Professional development ...)</option>";
+    result += "<option value='Objective 1.5 (Improve training ...)'>Objective 1.5 (Improve training ...)</option>";
+    result += "<option value='Objective 2.1 (Increase completion ...)'>Objective 2.1 (Increase completion ...)</option>";
+    result += "<option value='Objective 2.2 (Increase opportunities ...)'>Objective 2.2 (Increase opportunities ...)</option>";
+    result += "<option value='Objective 2.3 (Student engagement ...)'>Objective 2.3 (Student engagement ...)</option>";
+    result += "<option value='Objective 3.1 (Formalize partnerships ...)'>Objective 3.1 (Formalize partnerships ...)</option>";
+    result += "<option value='Objective 3.2 (Alignment workforce ...)'>Objective 3.2 (Alignment workforce ...)</option>";
+    result += "<option value='Objective 3.3 (Provide relevant ...)'>Objective 3.3 (Provide relevant ...)</option>";
+    result += "<option value='Objective 3.4 (Improve student career ...)'>Objective 3.4 (Improve student career ...)</option>";
+    result += "<option value='Objective 4.1 (Effective planning ...)'>Objective 4.1 (Effective planning ...)</option>";
+    result += "<option value='Objective 4.2 (Improve efficiences ...)'>Objective 4.2 (Improve efficiences ...)</option>";
+    result += "<option value='Objective 4.3 (Financial planning ...)'>Objective 4.3 (Financial planning ...)</option>";
+    
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function saveLocalData() {
+    localData_setPg5(index_obj);
+    
+    for (var i = 1; i <= index_obj; i++) {
+        var objID = "m5_objective_" + i;
+        var goalID = "m5_goal_" + i;
+        var impactID = "m5_impact_" + i;
+
+        var obj = $('#' + objID).val();
+        var goal = $('#' + goalID).val();
+        var impact = $('#' + impactID).val();    
+        
+        if (goal === null) {
+            goal = "";
+        }
+        
+        localData_setPg5_obj(objID, obj, goalID, goal, impactID, impact);
+    }
+}
+
+function setLocalData(index, objID, goalID, impactID) {
+    if (index === 1) {
+        $('#' + objID).val(sessionStorage.getItem(objID));
+        $('#' + objID).selectpicker('refresh');
+        $('#' + impactID).val(sessionStorage.getItem(impactID)).trigger('autosize.resize');
+    }
+    else {
+        var main_new = "m5_main_" + index;
+        var tbody = "<div class='row-fluid' id='" + main_new + "'>";
+        tbody += "<div class='span4'>";
+        tbody += "<div class='row-fluid'>";
+        tbody += "<select class='selectpicker span12' id='" + objID + "' onchange='selObjective(this);'>";
+        tbody += "<option value='AUR-Strategy'>AUR-Strategy</option>";
+        tbody += "<option value='Program Review-Strategy'>Program Review-Strategy</option>";
+        tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
+        tbody += "</select>";
+        tbody += "</div>";
+        tbody += "<div class='row-fluid'>";
+        tbody += "<select class='selectpicker span12' id='" + goalID + "'>";
+        tbody += "</select>";
+        tbody += "</div>";
+        tbody += "</div>";
+        tbody += "<div class='span8'>";
+        tbody += "<textarea class='field span12 normal' style='resize: vertical;' id='" + impactID + "'></textarea>";
+        tbody += "</div>"; 
+        tbody += "</div>"; 
+
+        $("#m5_planning").append(tbody);
+        
+        $('#' + objID).val(sessionStorage.getItem(objID));
+        $('#' + objID).selectpicker('refresh');
+        $('#' + goalID).selectpicker('hide');
+        
+        $('#' + impactID).val(sessionStorage.getItem(impactID));
+        $('#' + impactID).autosize();
+    }
+    
+    var objective = sessionStorage.getItem(objID);
+    if (objective === "District-wide Objective") {
+        $("#" + goalID).append(setDistrictObjective());
+        $('#' + goalID).val(sessionStorage.getItem(goalID));
+        $('#' + goalID).selectpicker('refresh');
+        $('#' + goalID).selectpicker('show');
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function moveSelectedStepPage(step) {
+    var dialog_msg = stepPageDialogMsg(step);
+
+    if (dialog_msg !== "") {
+        $('#mod_dialog_box_header').html("Error Message");
+        $('#mod_dialog_box_body').html(dialog_msg);
+        $('#mod_dialog_box').modal('show');
+    }
+    else {
+        navigateStepPage(step);
+    }
+}

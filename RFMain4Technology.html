@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <title>Resource Form</title>
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
+        <link rel="stylesheet" href="../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
+        <link rel="stylesheet" href="../include/jquery-ui/css/jquery.ui.all.css"/>
+    </head>
+    <body id="body">
+        <div class="well container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner" id="navigation">
+                    <ul class="nav">
+                        <li><a href=# id="m1_home"><i class="icon-home icon-white"></i> Home</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href=# id="logout"><i class="icon-hand-right icon-white"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- status bar -->
+            <div class="row">
+                <div class="progress span12">
+                    <div class="bar bar-success" style="width: 16.6%"><a href=# style="color: white;" id="pbar_general_info">General Info</a></div>
+                    <div class="bar bar-success" style="width: 16.6%"><a href=# style="color: white;" id="pbar_resource_type">Resource Type</a></div>
+                    <div class="bar bar-success" style="width: 16.6%">Worksheet</div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_funding_src">Funding Src</a></div>
+                    <div class="bar bar-warning" style="width: 16.6%"><a href=# style="color: white;" id="pbar_planning">Planning</a></div>
+                    <div class="bar bar-warning" style="width: 17%"><a href=# style="color: white;" id="pbar_review">Review</a></div>
+                </div>
+            </div>
+            <div class="row text-center" style="color: blue;">
+                All blue fields are required to process next step
+            </div>
+            <!-- end of status bar -->
+            
+            <h5 style="text-align: center">Technology Worksheet</h5>
+            <!-- Technology Worksheet block -->
+            <div id="m4_technology">
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px; color: blue;">Item Requested:</div>
+                    <div class="span6"><input type="text" class="span6 input-large" placeholder="required field" id="m4_te_Item_Req"></div>
+                    <div class="span1" style="padding-top: 5px; color: blue;">Location:</div>
+                    <div class="span2"><input type="text" class="span3 input-large" placeholder="required field" id="m4_te_Location"></div>
+                </div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Additional Supporting Information:</div>
+                    <div class="span6"><textarea class="field span6" style="resize: vertical;" id="m4_te_Additional"></textarea></div>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                    <div class="span12 text-center" style="background-color: gray"></div>
+                </div>
+                <!-- tech item section -->
+                <div id="m4_te_section_1">
+                    <div class="row">
+                        <div class="span3">
+                            <select class="selectpicker span3" style="font-style: italic; border-color: blue;" id="m4_te_Item_Type_1">
+                                <option value="Hardware">Hardware</option>
+                                <option value="Software">Software</option>
+                                <option value="Installation">Installation</option>
+                                <option value="Shipping">Shipping</option>
+                                <option value="Additional">Additional</option>
+                            </select>
+                        </div>
+                        <div class="span9">
+                            <input type="text" class="span9" style="font-style: italic; border-color: blue;" placeholder="resource description" id="m4_te_Item_Descrip_1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span1" style="padding-top: 5px; text-align: center; color: blue;">Qty</div>
+                        <div class="span2" style="padding-top: 5px; text-align: center; color: blue;">Item Cost</div>
+                        <div class="span2" style="padding-top: 5px; text-align: center;">Item Total</div>
+                        <div class="span2" style="padding-top: 5px; text-align: center;">Maintenance</div>
+                        <div class="span1" style="padding-top: 5px; text-align: center;">Yrs</div>
+                        <div class="span2" style="padding-top: 5px; text-align: center;">Annual Cost</div>
+                        <div class="span2" style="padding-top: 5px; text-align: center;">Maint. Total</div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span1">
+                            <input type="text" class="span12 text-center" style="font-style: italic;"  placeholder="qty" id="m4_te_Item_Qty_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span12 text-right" style="font-style: italic;"  placeholder="item cost" id="m4_te_Item_Cost_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span12 text-right" style="font-style: italic" readonly id="m4_te_Item_Total_1">
+                        </div>
+                        <div class="span2">
+                            <select class="selectpicker span12" style="font-style: italic" id="m4_te_Item_Maint_1">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="span1">
+                            <input type="text" class="span12 text-center" style="font-style: italic" readonly id="m4_te_Item_Yrs_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span12 text-right" style="font-style: italic" readonly id="m4_te_Item_Ann_Cost_1">
+                        </div>
+                        <div class="span2">
+                            <input type="text" class="span12 text-right" style="font-style: italic" readonly id="m4_te_Item_Maint_Total_1">
+                        </div>
+                    </div>
+                </div>
+                <!-- end of tech item section -->
+                
+                <div class="row">
+                    <button class="btn btn-info span2" id="btn_add_tech_item">Add more</button>
+                    <button class="btn btn-danger span2" id="btn_remove_tech_item">Remove</button>
+                </div>
+                <div class="row" style="padding-bottom: 20px"></div>
+                <div class="row">
+                    <div class="span4 text-center"><strong>Taxable Items</strong></div>
+                    <div class="span4 text-center"><strong>Non Taxable Items</strong></div>
+                    <div class="span4 text-center"><strong>Total Cost</strong></div>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                    <div class="span12 text-center" style="background-color: gray"></div>
+                </div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Hardware:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Hardware_Total">
+                    </div>
+                    <div class="span2" style="padding-top: 5px">Maintenance:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Maintenance_Total">
+                    </div>
+                    <div class="span2" style="padding-top: 5px">Tax:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Tax_Total">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Software:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Software_Total">
+                    </div>
+                    <div class="span2" style="padding-top: 5px">Shipping:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Shipping_Total">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Installation:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Installation_Total">
+                    </div>
+                    <div class="span2" style="padding-top: 5px">Additional:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" readonly id="m4_te_Additional_Total">
+                    </div>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                    <div class="span12 text-center" style="background-color: gray"></div>
+                </div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Total:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" style="font-weight: bold" readonly id="m4_te_Total_Taxable">
+                    </div>
+                    <div class="span2" style="padding-top: 5px">Total:</div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" style="font-weight: bold" readonly id="m4_te_Total_Nontaxable">
+                    </div>
+                    <div class="span2" style="padding-top: 5px"><strong>Grand Total:</strong></div>
+                    <div class="span2">
+                        <input type="text" class="span2 text-right" style="font-weight: bold; color: blue" readonly id="m4_te_Grand_Total">
+                    </div>
+                </div>
+                <div class="row" style="padding-bottom: 20px"></div>
+                <div class="row">
+                    <div class="span2" style="padding-top: 5px">Project Alternative:</div>
+                    <div class="span10"><textarea class="field span10" style="resize: vertical;" id="m4_te_alt"></textarea></div>
+                </div>
+            </div>
+            <!-- end of Technology Worksheet block -->
+            
+            <!-- bootstrap file input -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <h6 style="text-align: center;"><i>Only pdf form can be attached and uploaded</i></h6>
+            <div class="row">
+                <div class="span2" style="padding-top: 5px">Attach a file:</div>
+                <div class="span5 form-horizontal">
+                    <input type="file" class="filestyle" accept="application/pdf" data-classButton="btn btn-primary" id="m4_file">
+                </div>
+                <button class="btn btn-info span2" id="m4_add_file">Add File</button>
+            </div>
+            <div id="m4_file_list">
+            </div>
+            <div class="row">&nbsp;</div>
+            <!-- end of bootstrap file input -->
+            
+            <!-- navigation -->
+            <div class="row" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="background-color: gray"></div>
+            </div>
+            <div class="row">
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-inverse span2" id="m4_back"><i class="icon-chevron-left icon-white"></i> Back</button>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="row">
+                        <button class="btn btn-success span2 offset4" id="m4_next"><i class="icon-hdd icon-white"></i> Save / Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of navigation block -->
+            
+            <!-- Modal dialog box -->
+            <div class="modal hide fade hidden-print" id="mod_dialog_box">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h5 id="mod_dialog_box_header"></h5>
+                </div>
+                <div class="modal-body">
+                    <div id="mod_dialog_box_body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-inverse" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+            <!-- end of Modal dialog box -->
+        </div>    
+
+        <!-- include javascript -->
+        <script src="../include/jquery/jquery-2.0.3.min.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
+        <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
+        <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
+        <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>
+        <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/RFMain4Technology.js"></script>
+        <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
+    </body>
+</html>

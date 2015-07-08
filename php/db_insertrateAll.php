@@ -1,0 +1,12 @@
+<?php
+    require("config.php");
+    
+    $ResourceID = filter_input(INPUT_POST, 'ResourceID');
+
+    $query = "INSERT INTO [IVCRESOURCES].[dbo].[rateAll] (ResourceID) VALUES ('$ResourceID')";  
+    
+    $cmd = $dbConn->prepare($query);
+    $cmd->execute();
+    $ResultID = $dbConn->lastInsertId();
+
+    echo json_encode($ResultID);

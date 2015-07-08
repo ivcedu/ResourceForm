@@ -1,0 +1,71 @@
+////////////////////////////////////////////////////////////////////////////////
+window.onload = function() {
+    if (sessionStorage.key(0) !== null) {
+        getAllRFList();
+        initializeTable();
+    }
+    else {
+        window.open('Login.html', '_self');
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+function initializeTable() {
+    $("#tbl_RFList").tablesorter({ 
+        headers: { 
+            5: {sorter:'currency'}
+        },
+        widgets: ['stickyHeaders']
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+$(document).ready(function() {
+    $('#nav_home').click(function() {
+        window.open('home.html', '_self');
+    });
+    
+    $('#nav_logout').click(function() {
+        sessionStorage.clear();
+        window.open('Login.html', '_self');
+    });
+    
+    // table row contract click //////////////////////////////////////////////
+    $('table').on('click', 'a', function(e) {
+        e.preventDefault();
+        var currentId = $(this).attr('id');
+        var resource_id = currentId.replace("resource_id_", "");
+
+        sessionStorage.setItem('vrf_resource_id', resource_id);
+        window.open('ViewResourceForm.html?resource_id=' + resource_id, '_blank');
+    });
+});
+
+////////////////////////////////////////////////////////////////////////////////
+function getAllRFList() {
+    var result = new Array(); 
+    result = db_getAllRFList(true);
+    
+    $("#body_tr").empty();
+    if (result.length !== 0) {
+        for(var i = 0; i < result.length; i++) { 
+            var str_amount = formatDollar(Number(result[i]['TotalAmount']));
+            setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], str_amount);
+        }
+    }
+    
+    $("#tbl_RFList").trigger("update");
+}
+
+function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_type, resource_status, str_amount) {   
+    var tbl_html = "<tr>";
+    tbl_html += "<td class='span1'>" + resource_id + "</td>";
+    tbl_html += "<td class='span3'><a href=# id='resource_id_" + resource_id +  "'>" + proposal_title + "</a></td>";
+    tbl_html += "<td class='span1'>" + resource_link + "</td>";
+    tbl_html += "<td class='span3'>" + resource_type + "</td>";
+    tbl_html += "<td class='span2' id='" + resource_id + "_status'>" + resource_status + "</td>";
+    tbl_html += "<td class='span2'>" + str_amount + "</td>";
+    tbl_html += "</tr>";
+    
+    $("#body_tr").append(tbl_html);
+}
