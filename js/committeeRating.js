@@ -568,30 +568,35 @@ $(document).ready(function() {
         if (!master_admin) {
             switch(committee) {
                 case "CHPLDTF":
+                    $('#adm_export_excel').hide();
                     if (column_chpldtf === "") {
                         alert("You are not a member of CHPLDTF committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "SSAMMO":
+                    $('#adm_export_excel').hide();
                     if (column_ssammo === "") {
                         alert("You are not a member of SSAMMO committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "APTC":
+                    $('#adm_export_excel').hide();
                     if (column_aptc === "") {
                         alert("You are not a member of APTC committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "BDRPC":
+                    $('#adm_export_excel').hide();
                     if (column_bdrpc === "") {
                         alert("You are not a member of BDRPC committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "IEC":
+                    $('#adm_export_excel').hide();
                     if (column_iec === "") {
                         alert("You are not a member of IEC committee");
                         $(this).val(cur_committee);
@@ -602,9 +607,20 @@ $(document).ready(function() {
                         alert("You are not a member of SPAC committee");
                         $(this).val(cur_committee);
                     }
+                    else {
+                        $('#adm_export_excel').show();
+                    }
                     break;
                 default:
                     break;
+            }
+        }
+        else {
+            if (committee === "SPAC") {
+                $('#adm_export_excel').show();
+            }
+            else {
+                $('#adm_export_excel').hide();
             }
         }
     });
@@ -613,6 +629,12 @@ $(document).ready(function() {
     $('#adm_refresh').click(function() {
         refreshCommitteeRatingList();        
         setListTotalCountAmount();
+    });
+    
+    // export to excel button click ////////////////////////////////////////////
+    $('#adm_export_excel').click(function() {
+        var url_html = exportExcelCommitteeRatingList();        
+        location.href = "php/csv_saveCommitteeRatingList.php?" + url_html;
     });
     
 ////////////////////////////////////////////////////////////////////////////////
@@ -1126,6 +1148,8 @@ function stopSpin() {
 function setHideAllModal() {
     // navigation option
     $('#nav_committee_admin').hide();
+    // export excel button
+    $('#adm_export_excel').hide();
     
     // modal rating
     $('#mod_rating').modal('hide');
@@ -1270,6 +1294,23 @@ function refreshCommitteeRatingList() {
     setTableHeader(committee);
     getCommitteeRatingList(committee, resource_type, program, funding, one_time);
     $('#user_rf_list').trigger("updateAll");
+}
+
+function exportExcelCommitteeRatingList() {
+    var committee = $('#adm_committee').val();
+    var resource_type = $('#adm_resource_type').val();
+    var program = $('#adm_program').val();
+    var funding = $('#adm_fund_src').val();
+    var one_time = $('#adm_one_time').val();
+    
+    if (master_admin) {
+        setMasterSQLScript(committee);
+    }
+    else {
+        setSQLScript(committee);
+    }
+    
+    return "SqlSelect=" + sql_select + "&SqlFrom=" + sql_from + "&SqlWhere=" + sql_where + "&RatedByID=0&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&OneTime=" + one_time;    
 }
 
 ////////////////////////////////////////////////////////////////////////////////
