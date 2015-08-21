@@ -667,10 +667,23 @@ function getResourceFundSrc(ResourceID) {
             bfs_note = false;
             $("#fs_23").prop('checked', true);
         }
+        $('#fund_source_comments').html(getResourceFundSrcLog(ResourceID, result[0]['fs_comments']));
     }
     
     if (bfs_note) {
         var fs_note_html = "<div class='row-fluid'><div class='span12 text-center' style='padding-top: 5px; font-style: italic; font-weight: bold;'>No Funding Source Selected</div></div>";
         $('#fs_msg').append(fs_note_html);
     }
+}
+
+function getResourceFundSrcLog(ResourceID, req_fs_comments) {
+    var result = new Array(); 
+    result = db_getResourceFundSrcLog(ResourceID);
+    
+    var fs_comments = "";
+    for(var i = 0; i < result.length; i++) { 
+        fs_comments += result[i]['DTStamp'] + ": " + result[i]['LoginName'] + "<br>" + result[i]['Note'].replace(/\n/g, "<br>") + "<br><br>";
+    }
+    
+    return fs_comments + req_fs_comments;
 }

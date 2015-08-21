@@ -51,6 +51,57 @@ var ar_fund_src = [];
 
 var target;
 var spinner;
+
+// new funding source setting parameters
+var pre_fs_1 = false;
+var pre_fs_2 = false;
+var pre_fs_3 = false;
+var pre_fs_4 = false;
+var pre_fs_5 = false;
+var pre_fs_6 = false;
+var pre_fs_7 = false;
+var pre_fs_8 = false;
+var pre_fs_9 = false;
+var pre_fs_10 = false;
+var pre_fs_11 = false;
+var pre_fs_12 = false;
+var pre_fs_13 = false;
+var pre_fs_14 = false;
+var pre_fs_15 = false;
+var pre_fs_16 = false;
+var pre_fs_17 = false;
+var pre_fs_18 = false;
+var pre_fs_19 = false;
+var pre_fs_20 = false;
+var pre_fs_21 = false;
+var pre_fs_22 = false;
+var pre_fs_23 = false;
+var requestor_fs_comments = "";
+
+var new_fs_1 = false;
+var new_fs_2 = false;
+var new_fs_3 = false;
+var new_fs_4 = false;
+var new_fs_5 = false;
+var new_fs_6 = false;
+var new_fs_7 = false;
+var new_fs_8 = false;
+var new_fs_9 = false;
+var new_fs_10 = false;
+var new_fs_11 = false;
+var new_fs_12 = false;
+var new_fs_13 = false;
+var new_fs_14 = false;
+var new_fs_15 = false;
+var new_fs_16 = false;
+var new_fs_17 = false;
+var new_fs_18 = false;
+var new_fs_19 = false;
+var new_fs_20 = false;
+var new_fs_21 = false;
+var new_fs_22 = false;
+var new_fs_23 = false;
+
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) { 
@@ -921,7 +972,8 @@ $(document).ready(function() {
             case "SPAC":
                 str_final_rating = "final_rating_spa_";
                 getSPACOneTimeRequest();
-                getSPACFundSrcList();
+                getSPACFundSrcList2();
+                //getSPACFundSrcList();
                 $('#mod_final_one_time_section').show();
                 $('#mod_final_funding_section').show();
                 break;
@@ -1060,13 +1112,31 @@ $(document).ready(function() {
         alert("One Time Funding Request has been updated");
     });
     
-    // modal final funding src add button click ////////////////////////////////
-    $('#mod_final_body_btn_new_fund_src').click(function() {
-        var fund_src_column = $('#mod_final_body_new_fund_src_list').val();
-        var fund_src_name = $("#mod_final_body_new_fund_src_list option:selected").text();
-        if (fund_src_column === "Select...") {
+    // modal final funding src update button click /////////////////////////////
+    $('#mod_final_body_btn_update_funds_src').click(function() {
+        var note = "";
+        var bFS_changed = updateFundSrcValidation();
+        
+        if (!bFS_changed && $('#mgr_fs_comments').val().replace(/\s+/g, '') === "") {
+            alert("No funding source has been changed or No funding source comments has been entered");
             return false;
         }
+        else {
+            if (bFS_changed) {
+                var err_fs_comments = updateFundSrcCommentsValidation();
+                if (err_fs_comments !== "") {
+                    alert(err_fs_comments);
+                    return false;
+                }
+                else {
+                    updateResourceFundSrc(resource_id);
+                    note += login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                }
+            }
+            if ($('#mgr_fs_comments').val().replace(/\s+/g, '') !== "") {
+                db_insertResourceFundSrcLog(resource_id, login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
+            }
+        }
         
         // if not exist, insert resource fund amt table
         var result = new Array();
@@ -1074,35 +1144,56 @@ $(document).ready(function() {
         if (result.length === 0) {
             db_insertResourceFundAmt(resource_id);
         }
-        
-        db_updateResourceFundSrcColumn(resource_id, fund_src_column, true);
-        var note = login_name + " added funding source: " + fund_src_name;
-        db_insertTransactions(resource_id, login_name, note);
-        getSPACFundSrcList();
-        
-        alert("Funding source has been added");
+        if (note !== "") {
+            db_insertTransactions(resource_id, login_name, note);
+        }
+        alert("Funding source has been updated successfully");
+        getSPACFundSrcList2();
     });
     
+    // modal final funding src add button click ////////////////////////////////
+//    $('#mod_final_body_btn_new_fund_src').click(function() {
+//        var fund_src_column = $('#mod_final_body_new_fund_src_list').val();
+//        var fund_src_name = $("#mod_final_body_new_fund_src_list option:selected").text();
+//        if (fund_src_column === "Select...") {
+//            return false;
+//        }
+//        
+//        // if not exist, insert resource fund amt table
+//        var result = new Array();
+//        result = db_getResourceFundAmt(resource_id);
+//        if (result.length === 0) {
+//            db_insertResourceFundAmt(resource_id);
+//        }
+//        
+//        db_updateResourceFundSrcColumn(resource_id, fund_src_column, true);
+//        var note = login_name + " added funding source: " + fund_src_name;
+//        db_insertTransactions(resource_id, login_name, note);
+//        getSPACFundSrcList();
+//        
+//        alert("Funding source has been added");
+//    });
+    
     // modal final funding src delete button click /////////////////////////////
-    $('#mod_final_funding_section').on('click', '[id^="mod_final_body_selected_btn_delete_column_"]', function() {
-        var fund_src_column = $(this).attr('id').replace("mod_final_body_selected_btn_delete_column_", "");        
-        var fund_src_name = $('#mod_final_body_selected_fund_src_' + fund_src_column).html();
-        
-        // if not exist, insert resource fund amt table
-        var result = new Array();
-        result = db_getResourceFundAmt(resource_id);
-        if (result.length === 0) {
-            db_insertResourceFundAmt(resource_id);
-        }
-        
-        db_updateResourceFundSrcColumn(resource_id, fund_src_column, false);
-        deleteResourceFundAmt(fund_src_column);
-        var note = login_name + " removed funding source: " + fund_src_name;
-        db_insertTransactions(resource_id, login_name, note);
-        getSPACFundSrcList();
-        
-        alert("Funding source has been deleted");
-    });
+//    $('#mod_final_funding_section').on('click', '[id^="mod_final_body_selected_btn_delete_column_"]', function() {
+//        var fund_src_column = $(this).attr('id').replace("mod_final_body_selected_btn_delete_column_", "");        
+//        var fund_src_name = $('#mod_final_body_selected_fund_src_' + fund_src_column).html();
+//        
+//        // if not exist, insert resource fund amt table
+//        var result = new Array();
+//        result = db_getResourceFundAmt(resource_id);
+//        if (result.length === 0) {
+//            db_insertResourceFundAmt(resource_id);
+//        }
+//        
+//        db_updateResourceFundSrcColumn(resource_id, fund_src_column, false);
+//        deleteResourceFundAmt(fund_src_column);
+//        var note = login_name + " removed funding source: " + fund_src_name;
+//        db_insertTransactions(resource_id, login_name, note);
+//        getSPACFundSrcList();
+//        
+//        alert("Funding source has been deleted");
+//    });
     
     // modal rating close button click /////////////////////////////////////////
     $('#mod_final_btn_rating_close').click(function() {
@@ -1127,6 +1218,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // auto size
     $('#mod_final_body_add_comments').autosize();
+    $('#mgr_fs_comments').autosize();
 
     // selectpicker
     $('.selectpicker').selectpicker();
@@ -5192,147 +5284,537 @@ function getSPACOneTimeRequest() {
     }
 }
 
-function getSPACFundSrcList() {
+// selected resource request funding source list ///////////////////////////////
+//function getSPACFundSrcList() {
+//    var result = new Array();
+//    result = db_getResourceFundSrc(resource_id);
+//    
+//    setArraySPACFundSrcList(result);
+//    setSPACFundSrcListHTML();
+//}
+//
+//function setSPACFundSrcListHTML() {
+//    $('#mod_final_body_selected_fund_src_list').empty();
+//    
+//    var tbl_html = "";
+//    for (var i = 0; i < ar_fund_src.length; i++) {
+//        tbl_html += "<div class='row-fluid' style='padding-top: 5px;'>";
+//        tbl_html += "<div class='span6' id='mod_final_body_selected_fund_src_" + ar_fund_src[i][0] + "'>" + ar_fund_src[i][1] + "</div>";
+//        tbl_html += "<div class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_final_body_selected_btn_delete_column_" + ar_fund_src[i][0] + "'><i class='icon-trash icon-black'></i></button></div>";
+//        tbl_html += "</div>";
+//    }
+//    
+//    $("#mod_final_body_selected_fund_src_list").append(tbl_html);
+//}
+
+// New selected resource request funding source list ///////////////////////////
+function getSPACFundSrcList2() {
+    getResourceFundSrc(resource_id);
+}
+
+function getResourceFundSrc(ResourceID) {
+    resetPreviousFundSrc();
+    resetResourceFundSrc();
+    $('#mgr_fs_comments').val("");
+    $('#fund_source_comments').html("");
+    
+    var result = new Array(); 
+    result = db_getResourceFundSrc(ResourceID);
+    
+    if (result.length === 1) {
+        if (result[0]['fs_1'] === "1") {
+            pre_fs_1 = true;
+            $("#fs_1").prop('checked', true);
+        }
+        if (result[0]['fs_2'] === "1") {
+            pre_fs_2 = true;
+            $("#fs_2").prop('checked', true);
+        }
+        if (result[0]['fs_3'] === "1") {
+            pre_fs_3 = true;
+            $("#fs_3").prop('checked', true);
+        }
+        if (result[0]['fs_4'] === "1") {
+            pre_fs_4 = true;
+            $("#fs_4").prop('checked', true);
+        }
+        if (result[0]['fs_5'] === "1") {
+            pre_fs_5 = true;
+            $("#fs_5").prop('checked', true);
+        }
+        if (result[0]['fs_6'] === "1") {
+            pre_fs_6 = true;
+            $("#fs_6").prop('checked', true);
+        }
+        if (result[0]['fs_7'] === "1") {
+            pre_fs_1 = true;
+            $("#fs_7").prop('checked', true);
+        }
+        if (result[0]['fs_8'] === "1") {
+            pre_fs_8 = true;
+            $("#fs_8").prop('checked', true);
+        }
+        if (result[0]['fs_9'] === "1") {
+            pre_fs_9 = true;
+            $("#fs_9").prop('checked', true);
+        }
+        if (result[0]['fs_10'] === "1") {
+            pre_fs_10 = true;
+            $("#fs_10").prop('checked', true);
+        }
+        if (result[0]['fs_11'] === "1") {
+            pre_fs_11 = true;
+            $("#fs_11").prop('checked', true);
+        }
+        if (result[0]['fs_12'] === "1") {
+            pre_fs_12 = true;
+            $("#fs_12").prop('checked', true);
+        }
+        if (result[0]['fs_13'] === "1") {
+            pre_fs_13 = true;
+            $("#fs_13").prop('checked', true);
+        }
+        if (result[0]['fs_14'] === "1") {
+            pre_fs_14 = true;
+            $("#fs_14").prop('checked', true);
+        }
+        if (result[0]['fs_15'] === "1") {
+            pre_fs_15 = true;
+            $("#fs_15").prop('checked', true);
+        }
+        if (result[0]['fs_16'] === "1") {
+            pre_fs_16 = true;
+            $("#fs_16").prop('checked', true);
+        }
+        if (result[0]['fs_17'] === "1") {
+            pre_fs_17 = true;
+            $("#fs_17").prop('checked', true);
+        }
+        if (result[0]['fs_18'] === "1") {
+            pre_fs_18 = true;
+            $("#fs_18").prop('checked', true);
+        }
+        if (result[0]['fs_19'] === "1") {
+            pre_fs_19 = true;
+            $("#fs_19").prop('checked', true);
+        }
+        if (result[0]['fs_20'] === "1") {
+            pre_fs_20 = true;
+            $("#fs_20").prop('checked', true);
+        }
+        if (result[0]['fs_21'] === "1") {
+            pre_fs_21 = true;
+            $("#fs_21").prop('checked', true);
+        }
+        if (result[0]['fs_22'] === "1") {
+            pre_fs_22 = true;
+            $("#fs_22").prop('checked', true);
+        }
+        if (result[0]['fs_23'] === "1") {
+            pre_fs_23 = true;
+            $("#fs_23").prop('checked', true);
+        }
+        requestor_fs_comments = result[0]['fs_comments'];
+        $('#fund_source_comments').html(getResourceFundSrcLog(ResourceID, requestor_fs_comments));
+    }
+}
+
+function getResourceFundSrcLog(ResourceID, req_fs_comments) {
+    var result = new Array(); 
+    result = db_getResourceFundSrcLog(ResourceID);
+    
+    var fs_comments = "";
+    for(var i = 0; i < result.length; i++) { 
+        fs_comments += result[i]['DTStamp'] + ": " + result[i]['LoginName'] + "<br>" + result[i]['Note'].replace(/\n/g, "<br>") + "<br><br>";
+    }
+    
+    return fs_comments + req_fs_comments;
+}
+
+function updateResourceFundSrc(ResourceID) {
+    db_updateResourceFundSrc(ResourceID, new_fs_1, new_fs_2, new_fs_3, new_fs_4, new_fs_5, new_fs_6, new_fs_7, new_fs_8, new_fs_9, new_fs_10,
+                            new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23, requestor_fs_comments);
+}
+
+function getFundSrcType(fund_src_col) {
     var result = new Array();
-    result = db_getResourceFundSrc(resource_id);
+    result = db_getFundSrcType(fund_src_col);
     
-    setArraySPACFundSrcList(result);
-    setSPACFundSrcListHTML();
+    return result[0]['FundSrcType'];
 }
 
-function setSPACFundSrcListHTML() {
-    $('#mod_final_body_selected_fund_src_list').empty();
-    
-    var tbl_html = "";
-    for (var i = 0; i < ar_fund_src.length; i++) {
-        tbl_html += "<div class='row-fluid' style='padding-top: 5px;'>";
-        tbl_html += "<div class='span6' id='mod_final_body_selected_fund_src_" + ar_fund_src[i][0] + "'>" + ar_fund_src[i][1] + "</div>";
-        tbl_html += "<div class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_final_body_selected_btn_delete_column_" + ar_fund_src[i][0] + "'><i class='icon-trash icon-black'></i></button></div>";
-        tbl_html += "</div>";
-    }
-    
-    $("#mod_final_body_selected_fund_src_list").append(tbl_html);
+function resetPreviousFundSrc() {
+    pre_fs_1 = false;
+    pre_fs_2 = false;
+    pre_fs_3 = false;
+    pre_fs_4 = false;
+    pre_fs_5 = false;
+    pre_fs_6 = false;
+    pre_fs_7 = false;
+    pre_fs_8 = false;
+    pre_fs_9 = false;
+    pre_fs_10 = false;
+    pre_fs_11 = false;
+    pre_fs_12 = false;
+    pre_fs_13 = false;
+    pre_fs_14 = false;
+    pre_fs_15 = false;
+    pre_fs_16 = false;
+    pre_fs_17 = false;
+    pre_fs_18 = false;
+    pre_fs_19 = false;
+    pre_fs_20 = false;
+    pre_fs_21 = false;
+    pre_fs_22 = false;
+    pre_fs_23 = false;
 }
 
-function setArraySPACFundSrcList(result) {
-    ar_fund_src.length = 0;
+function resetResourceFundSrc() {
+    $("#fs_1").prop('checked', false);
+    $("#fs_2").prop('checked', false);
+    $("#fs_3").prop('checked', false);
+    $("#fs_4").prop('checked', false);
+    $("#fs_5").prop('checked', false);
+    $("#fs_6").prop('checked', false);
+    $("#fs_7").prop('checked', false);
+    $("#fs_8").prop('checked', false);
+    $("#fs_9").prop('checked', false);
+    $("#fs_10").prop('checked', false);
+    $("#fs_11").prop('checked', false);
+    $("#fs_12").prop('checked', false);
+    $("#fs_13").prop('checked', false);
+    $("#fs_14").prop('checked', false);
+    $("#fs_15").prop('checked', false);
+    $("#fs_16").prop('checked', false);
+    $("#fs_17").prop('checked', false);
+    $("#fs_18").prop('checked', false);
+    $("#fs_19").prop('checked', false);
+    $("#fs_20").prop('checked', false);
+    $("#fs_21").prop('checked', false);
+    $("#fs_22").prop('checked', false);
+    $("#fs_23").prop('checked', false);
+}
+
+function updateFundSrcValidation() {    
+    new_fs_1 = $('#fs_1').is(':checked');
+    new_fs_2 = $('#fs_2').is(':checked');
+    new_fs_3 = $('#fs_3').is(':checked');
+    new_fs_4 = $('#fs_4').is(':checked');
+    new_fs_5 = $('#fs_5').is(':checked');
+    new_fs_6 = $('#fs_6').is(':checked');
+    new_fs_7 = $('#fs_7').is(':checked');
+    new_fs_8 = $('#fs_8').is(':checked');
+    new_fs_9 = $('#fs_9').is(':checked');
+    new_fs_10 = $('#fs_10').is(':checked');
+    new_fs_11 = $('#fs_11').is(':checked');
+    new_fs_12 = $('#fs_12').is(':checked');
+    new_fs_13 = $('#fs_13').is(':checked');
+    new_fs_14 = $('#fs_14').is(':checked');
+    new_fs_15 = $('#fs_15').is(':checked');
+    new_fs_16 = $('#fs_16').is(':checked');
+    new_fs_17 = $('#fs_17').is(':checked');
+    new_fs_18 = $('#fs_18').is(':checked');
+    new_fs_19 = $('#fs_19').is(':checked');
+    new_fs_20 = $('#fs_20').is(':checked');
+    new_fs_21 = $('#fs_21').is(':checked');
+    new_fs_22 = $('#fs_22').is(':checked');
+    new_fs_23 = $('#fs_23').is(':checked');
     
-    if (result[0]['fs_1'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_1', 'General');
-        ar_fund_src.push(ar_fund);
+    if (pre_fs_1 !== new_fs_1 || pre_fs_2 !== new_fs_2 || pre_fs_3 !== new_fs_3 || pre_fs_4 !== new_fs_4 || pre_fs_5 !== new_fs_5
+        || pre_fs_6 !== new_fs_6 || pre_fs_7 !== new_fs_7 || pre_fs_8 !== new_fs_8 || pre_fs_9 !== new_fs_9 || pre_fs_10 !== new_fs_10
+        || pre_fs_11 !== new_fs_11 || pre_fs_12 !== new_fs_12 || pre_fs_13 !== new_fs_13 || pre_fs_14 !== new_fs_14 || pre_fs_15 !== new_fs_15
+        || pre_fs_16 !== new_fs_16 || pre_fs_17 !== new_fs_17 || pre_fs_18 !== new_fs_18 || pre_fs_19 !== new_fs_19 || pre_fs_20 !== new_fs_20
+        || pre_fs_21 !== new_fs_21 || pre_fs_22 !== new_fs_22 || pre_fs_23 !== new_fs_23) {
+        return true;
     }
-    if (result[0]['fs_2'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_2', 'ASIVC');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_3'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_3', 'Basic Aid');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_4'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_4', 'Basic Skills Initiative');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_5'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_5', 'BFAP');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_6'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_6', 'CalWORKs/TANF');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_7'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_7', 'Capital Outlay');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_8'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_8', 'CDC');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_9'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_9', 'College Work Study');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_10'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_10', 'Community Education');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_11'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_11', 'DSPS');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_12'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_12', 'EOPS/CARE');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_13'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_13', 'EWD');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_14'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_14', 'Foundation');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_15'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_15', 'Grants');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_16'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_16', 'Health');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_17'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_17', 'Lottery');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_18'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_18', 'Parking');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_19'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_19', 'Perkins');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_20'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_20', 'PPIS');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_21'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_21', 'SSSP');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_22'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_22', 'Student Equity');
-        ar_fund_src.push(ar_fund);
-    }
-    if (result[0]['fs_23'] === "1") {
-        var ar_fund = new Array();
-        ar_fund.push('fs_23', 'Student Material Fees');
-        ar_fund_src.push(ar_fund);
+    else {
+        return false;
     }
 }
+
+function updateFundSrcCommentsValidation() {
+    var err = "";
+    
+    if (new_fs_2 || new_fs_3 || new_fs_4 || new_fs_5 || new_fs_6 || new_fs_7 || new_fs_8 || new_fs_9 || new_fs_10
+        || new_fs_11 || new_fs_12 || new_fs_13 || new_fs_14 || new_fs_15 || new_fs_16 || new_fs_17 || new_fs_18 || new_fs_19 || new_fs_20
+        || new_fs_21 || new_fs_22 || new_fs_23) {
+        if ($('#mgr_fs_comments').val().replace(/\s+/g, '') === "") {
+            err += "Briefly explain the rationale behind selecting the funding sources is a required\n";
+        }
+    }
+    
+    return err;
+}
+
+function getUpdateFundSrcNote() {
+    var fs_note = "";
+    
+    if (pre_fs_1) {
+        fs_note += getFundSrcType("fs_1") + ", ";
+    }
+    if (pre_fs_2) {
+        fs_note += getFundSrcType("fs_2") + ", ";
+    }
+    if (pre_fs_3) {
+        fs_note += getFundSrcType("fs_3") + ", ";
+    }
+    if (pre_fs_4) {
+        fs_note += getFundSrcType("fs_4") + ", ";
+    }
+    if (pre_fs_5) {
+        fs_note += getFundSrcType("fs_5") + ", ";
+    }
+    if (pre_fs_6) {
+        fs_note += getFundSrcType("fs_6") + ", ";
+    }
+    if (pre_fs_7) {
+        fs_note += getFundSrcType("fs_7") + ", ";
+    }
+    if (pre_fs_8) {
+        fs_note += getFundSrcType("fs_8") + ", ";
+    }
+    if (pre_fs_9) {
+        fs_note += getFundSrcType("fs_9") + ", ";
+    }
+    if (pre_fs_10) {
+        fs_note += getFundSrcType("fs_10") + ", ";
+    }
+    if (pre_fs_11) {
+        fs_note += getFundSrcType("fs_11") + ", ";
+    }
+    if (pre_fs_12) {
+        fs_note += getFundSrcType("fs_12") + ", ";
+    }
+    if (pre_fs_13) {
+        fs_note += getFundSrcType("fs_13") + ", ";
+    }
+    if (pre_fs_14) {
+        fs_note += getFundSrcType("fs_14") + ", ";
+    }
+    if (pre_fs_15) {
+        fs_note += getFundSrcType("fs_15") + ", ";
+    }
+    if (pre_fs_16) {
+        fs_note += getFundSrcType("fs_16") + ", ";
+    }
+    if (pre_fs_17) {
+        fs_note += getFundSrcType("fs_17") + ", ";
+    }
+    if (pre_fs_18) {
+        fs_note += getFundSrcType("fs_18") + ", ";
+    }
+    if (pre_fs_19) {
+        fs_note += getFundSrcType("fs_19") + ", ";
+    }
+    if (pre_fs_20) {
+        fs_note += getFundSrcType("fs_20") + ", ";
+    }
+    if (pre_fs_21) {
+        fs_note += getFundSrcType("fs_21") + ", ";
+    }
+    if (pre_fs_22) {
+        fs_note += getFundSrcType("fs_22") + ", ";
+    }
+    if (pre_fs_23) {
+        fs_note += getFundSrcType("fs_23") + ", ";
+    }
+    
+    fs_note = fs_note.substring(0, fs_note.length -2) + "\nTo: ";
+    
+    if (new_fs_1) {
+        fs_note += getFundSrcType("fs_1") + ", ";
+    }
+    if (new_fs_2) {
+        fs_note += getFundSrcType("fs_2") + ", ";
+    }
+    if (new_fs_3) {
+        fs_note += getFundSrcType("fs_3") + ", ";
+    }
+    if (new_fs_4) {
+        fs_note += getFundSrcType("fs_4") + ", ";
+    }
+    if (new_fs_5) {
+        fs_note += getFundSrcType("fs_5") + ", ";
+    }
+    if (new_fs_6) {
+        fs_note += getFundSrcType("fs_6") + ", ";
+    }
+    if (new_fs_7) {
+        fs_note += getFundSrcType("fs_7") + ", ";
+    }
+    if (new_fs_8) {
+        fs_note += getFundSrcType("fs_8") + ", ";
+    }
+    if (new_fs_9) {
+        fs_note += getFundSrcType("fs_9") + ", ";
+    }
+    if (new_fs_10) {
+        fs_note += getFundSrcType("fs_10") + ", ";
+    }
+    if (new_fs_11) {
+        fs_note += getFundSrcType("fs_11") + ", ";
+    }
+    if (new_fs_12) {
+        fs_note += getFundSrcType("fs_12") + ", ";
+    }
+    if (new_fs_13) {
+        fs_note += getFundSrcType("fs_13") + ", ";
+    }
+    if (new_fs_14) {
+        fs_note += getFundSrcType("fs_14") + ", ";
+    }
+    if (new_fs_15) {
+        fs_note += getFundSrcType("fs_15") + ", ";
+    }
+    if (new_fs_16) {
+        fs_note += getFundSrcType("fs_16") + ", ";
+    }
+    if (new_fs_17) {
+        fs_note += getFundSrcType("fs_17") + ", ";
+    }
+    if (new_fs_18) {
+        fs_note += getFundSrcType("fs_18") + ", ";
+    }
+    if (new_fs_19) {
+        fs_note += getFundSrcType("fs_19") + ", ";
+    }
+    if (new_fs_20) {
+        fs_note += getFundSrcType("fs_20") + ", ";
+    }
+    if (new_fs_21) {
+        fs_note += getFundSrcType("fs_21") + ", ";
+    }
+    if (new_fs_22) {
+        fs_note += getFundSrcType("fs_22") + ", ";
+    }
+    if (new_fs_23) {
+        fs_note += getFundSrcType("fs_23") + ", ";
+    }
+    
+    return fs_note.substring(0, fs_note.length - 2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+//function setArraySPACFundSrcList(result) {
+//    ar_fund_src.length = 0;
+//    
+//    if (result[0]['fs_1'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_1', 'General');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_2'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_2', 'ASIVC');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_3'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_3', 'Basic Aid');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_4'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_4', 'Basic Skills Initiative');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_5'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_5', 'BFAP');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_6'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_6', 'CalWORKs/TANF');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_7'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_7', 'Capital Outlay');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_8'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_8', 'CDC');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_9'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_9', 'College Work Study');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_10'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_10', 'Community Education');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_11'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_11', 'DSPS');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_12'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_12', 'EOPS/CARE');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_13'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_13', 'EWD');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_14'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_14', 'Foundation');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_15'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_15', 'Grants');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_16'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_16', 'Health');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_17'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_17', 'Lottery');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_18'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_18', 'Parking');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_19'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_19', 'Perkins');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_20'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_20', 'PPIS');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_21'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_21', 'SSSP');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_22'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_22', 'Student Equity');
+//        ar_fund_src.push(ar_fund);
+//    }
+//    if (result[0]['fs_23'] === "1") {
+//        var ar_fund = new Array();
+//        ar_fund.push('fs_23', 'Student Material Fees');
+//        ar_fund_src.push(ar_fund);
+//    }
+//}
 
 function updateResourceFundAmt(fs_col_amt, value) {
     var fs_col = fs_col_amt.replace("_amt", "");

@@ -1670,6 +1670,20 @@ function db_getResourceStatusName(RSID) {
     return result;
 }
 
+function db_getResourceFundSrcLog(ResourceID) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getResourceFundSrcLog.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 function db_getrateCHPLDTF(rateCHPLDTF_ID) {
     var result = new Array();
@@ -2241,7 +2255,6 @@ function db_getrateSPACList() {
     return result;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 function db_getEnableCommitteeRating() {
     var result = new Array();
     $.ajax({
@@ -2804,22 +2817,23 @@ function stepRF_ResourceFundSrc(ResourceID, insert) {
     var fs_21 = (sessionStorage.getItem('mFS_fs_21') === "true" ? true : false);
     var fs_22 = (sessionStorage.getItem('mFS_fs_22') === "true" ? true : false);
     var fs_23 = (sessionStorage.getItem('mFS_fs_23') === "true" ? true : false);
+    var fs_comments = sessionStorage.getItem('mFS_fs_comments');
 
     if (insert) {
-        return db_insertResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23);
+        return db_insertResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments);
     }
     else {
-        return db_updateResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23);
+        return db_updateResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments);
     }
 }
 
-function db_insertResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23) {
+function db_insertResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments) {
     var ResultID = "";
     $.ajax({
         type:"POST",
         url:"php/db_insertResourceFundSrc.php",
         data:{ResourceID:ResourceID, fs_1:fs_1, fs_2:fs_2, fs_3:fs_3, fs_4:fs_4, fs_5:fs_5, fs_6:fs_6, fs_7:fs_7, fs_8:fs_8, fs_9:fs_9, fs_10:fs_10, fs_11:fs_11, fs_12:fs_12, fs_13:fs_13, fs_14:fs_14, fs_15:fs_15,
-                fs_16:fs_16, fs_17:fs_17, fs_18:fs_18, fs_19:fs_19, fs_20:fs_20, fs_21:fs_21, fs_22:fs_22, fs_23:fs_23},
+                fs_16:fs_16, fs_17:fs_17, fs_18:fs_18, fs_19:fs_19, fs_20:fs_20, fs_21:fs_21, fs_22:fs_22, fs_23:fs_23, fs_comments:fs_comments},
         async: false,  
         success:function(data) {
             ResultID = JSON.parse(data);
@@ -3131,6 +3145,20 @@ function db_insertrateSSAMMO(ResourceID) {
         type:"POST",
         url:"php/db_insertrateSSAMMO.php",
         data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
+function db_insertResourceFundSrcLog(ResourceID, LoginName, Note) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertResourceFundSrcLog.php",
+        data:{ResourceID:ResourceID, LoginName:LoginName, Note:Note},
         async: false,  
         success:function(data) {
             ResultID = JSON.parse(data);
@@ -3720,13 +3748,13 @@ function db_updateFundSrcBudget(FiscalYear, FundSrcCol, BudgetAmt, BalanceAmt) {
     return Result;
 }
 
-function db_updateResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23) {
+function db_updateResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments) {
     var Result = false;
     $.ajax({
         type:"POST",
         url:"php/db_updateResourceFundSrc.php",
         data:{ResourceID:ResourceID, fs_1:fs_1, fs_2:fs_2, fs_3:fs_3, fs_4:fs_4, fs_5:fs_5, fs_6:fs_6, fs_7:fs_7, fs_8:fs_8, fs_9:fs_9, fs_10:fs_10, fs_11:fs_11, fs_12:fs_12, fs_13:fs_13, fs_14:fs_14, fs_15:fs_15,
-                fs_16:fs_16, fs_17:fs_17, fs_18:fs_18, fs_19:fs_19, fs_20:fs_20, fs_21:fs_21, fs_22:fs_22, fs_23:fs_23},
+                fs_16:fs_16, fs_17:fs_17, fs_18:fs_18, fs_19:fs_19, fs_20:fs_20, fs_21:fs_21, fs_22:fs_22, fs_23:fs_23, fs_comments:fs_comments},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);

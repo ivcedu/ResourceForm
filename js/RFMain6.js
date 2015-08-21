@@ -95,20 +95,18 @@ $(document).ready(function() {
         $("#m6_submit").prop("disabled", true);
         
         var login_name = sessionStorage.getItem('m1_loginName');
-        var resubmit = sessionStorage.getItem('m1_enable_resubmit');
+//        var resubmit = sessionStorage.getItem('m1_enable_resubmit');
         var current_date = new Date();
         var db_date = db_getEnableSubmitBtn();
         var a = db_date.split(" ");
         var d = a[0].split("-");
         var t = a[1].split(":");
         var enable_date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
-        var fs_22 = sessionStorage.getItem('mFS_fs_22');
         
         if (current_date > enable_date //&& resubmit === "No" disable all sent back to draft stage
                 && login_name !== "Rich Kim" 
                 && login_name !== "Bruce Hagan" 
-                && login_name !== "stafftest"
-                && fs_22 !== "true") {
+                && login_name !== "stafftest") {
             
             $('#mod_dialog_box_header').html("Submitting Resource Request Expired");
             $('#mod_dialog_box_body').html("Your request has been saved to DRAFT. Once the next cycle has been opened, you will receive an to complete the submission process.<br><br>Thank you");
@@ -1231,6 +1229,8 @@ function getResourceFundSrc() {
         bfs_note = false;
         $("#fs_23").prop('checked', true);
     }
+    
+    $('#fund_source_comments').html(sessionStorage.getItem('mFS_fs_comments'));
     
     if (bfs_note) {
         var fs_note_html = "<div class='row-fluid'><div class='span12 text-center' style='padding-top: 5px; font-style: italic; font-weight: bold;'>No Funding Source Selected</div></div>";

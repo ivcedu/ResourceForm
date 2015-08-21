@@ -75,68 +75,80 @@
                 </div>
                 <div class="modal-body">
                     <div class="row-fluid">
-                        <button class="btn span12" style="text-align: left;" id="mod_body_btn_committee_setting"><i class="icon-chevron-down icon-black" id="mod_body_icon_committee_setting"></i> Committee Setting</button>
-                        <div id="mod_body_section_committee_setting">
-                            <div class="row-fluid">
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_12">CHPLDTF</label></div>
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_19">SSAMMO</label></div>
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_14">APTC</label></div>
-                                <div class="span3">
-                                    <button class="btn btn-primary span12" id="mod_body_btn_committee_setting_update"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                        <div class="row-fluid" style="padding-bottom: 10px;">
+                            <button class="btn span12" style="text-align: left;" id="mod_body_btn_committee_setting"><i class="icon-chevron-down icon-black" id="mod_body_icon_committee_setting"></i> Committee Setting</button>
+                        </div>
+                        <div class="row-fluid">
+                            <div id="mod_body_section_committee_setting">
+                                <div class="row-fluid">
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_12">CHPLDTF</label></div>
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_19">SSAMMO</label></div>
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_14">APTC</label></div>
+                                    <div class="span3">
+                                        <button class="btn btn-primary span12" id="mod_body_btn_committee_setting_update"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_15">BDRPC</label></div>
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_17">IEC</label></div>
-                                <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_16">SPAC</label></div>
+                                <div class="row-fluid">
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_15">BDRPC</label></div>
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_17">IEC</label></div>
+                                    <div class="span3" style="padding-top: 5px;"><label class="checkbox span12"><input type="checkbox" id="rsid_16">SPAC</label></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <button class="btn span12" style="text-align: left;" id="mod_body_btn_status"><i class="icon-chevron-right icon-black" id="mod_body_icon_status"></i> Status Setting</button>
-                        <div id="mod_body_section_status">
-                            <div class="row-fluid">
-                                <div class="span3 text-left" style="padding-top: 5px;">New Status:</div>
-                                <div class="span6">
-                                    <select class="selectpicker span12" data-container="body" id="mod_body_new_status">
-                                        <option value="Select...">Select...</option>
-                                        <option value="Back to Draft">Back to Draft</option>
-                                        <option value="Closed">Closed</option>
-                                        <option value="Partially Funded">Partially Funded</option>
-                                        <option value="Fully Funded">Fully Funded</option>
-                                    </select>
+                        <div class="row-fluid" style="padding-bottom: 10px;">
+                            <button class="btn span12" style="text-align: left;" id="mod_body_btn_status"><i class="icon-chevron-right icon-black" id="mod_body_icon_status"></i> Status Setting</button>
+                        </div>
+                        <div class="row-fluid">
+                            <div id="mod_body_section_status">
+                                <div class="row-fluid">
+                                    <div class="span3 text-left" style="padding-top: 5px;">New Status:</div>
+                                    <div class="span6">
+                                        <select class="selectpicker span12" data-container="body" id="mod_body_new_status">
+                                            <option value="Select...">Select...</option>
+                                            <option value="Back to Draft">Back to Draft</option>
+                                            <option value="Closed">Closed</option>
+                                            <option value="Partially Funded">Partially Funded</option>
+                                            <option value="Fully Funded">Fully Funded</option>
+                                        </select>
+                                    </div>
+                                    <div class="span3">
+                                        <button class="btn btn-primary span12" id="mod_body_btn_update_status"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                    </div>
                                 </div>
-                                <div class="span3">
-                                    <button class="btn btn-primary span12" id="mod_body_btn_update_status"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                <div class="row-fluid">
+                                    <div class="span3 text-left" style="padding-top: 5px;">Comments:</div>
+                                    <div class="span9"><textarea class="span12" style="resize: vertical;" rows="1" id="mod_body_status_comments"></textarea></div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="span3 text-left" style="padding-top: 5px;">Comments:</div>
-                                <div class="span9"><textarea class="span12" style="resize: vertical;" rows="1" id="mod_body_status_comments"></textarea></div>
                             </div>
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <button class="btn span12" style="text-align: left;" id="mod_body_btn_fund_src"><i class="icon-chevron-right icon-black" id="mod_body_icon_fund_src"></i> Funding Source Setting</button>
-                        <div id="mod_body_section_fund_src">
-                            <div class="row-fluid" style="background-color: grey; color: white; display: inline-block; line-height: 30px; vertical-align: middle; font-weight: bold;">
-                                <div class="span5">Funding Source</div>
-                                <div class="span3">Balance</div>
-                                <div class="span3">Funded Amt</div>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="span5 form-horizontal">
-                                    <select class="selectpicker span12" data-container="body" id="mod_body_new_fund_src">
-                                    </select>
+                        <div class="row-fluid">
+                            <button class="btn span12" style="text-align: left;" id="mod_body_btn_fund_src"><i class="icon-chevron-right icon-black" id="mod_body_icon_fund_src"></i> Funding Source Setting</button>
+                        </div>
+                        <div class="row-fluid">
+                            <div id="mod_body_section_fund_src">
+                                <div class="row-fluid" style="background-color: grey; color: white; display: inline-block; line-height: 30px; vertical-align: middle; font-weight: bold;">
+                                    <div class="span5">Funding Source</div>
+                                    <div class="span3">Balance</div>
+                                    <div class="span3">Funded Amt</div>
                                 </div>
-                                <div class='span3 form-horizontal'>
-                                    <button class="btn span12" id="mod_body_btn_new_fund_src"><i class="icon-plus-sign icon-black"></i> Add</button>
+                                <div class="row-fluid">
+                                    <div class="span5 form-horizontal">
+                                        <select class="selectpicker span12" data-container="body" id="mod_body_new_fund_src">
+                                        </select>
+                                    </div>
+                                    <div class='span3 form-horizontal'>
+                                        <button class="btn span12" id="mod_body_btn_new_fund_src"><i class="icon-plus-sign icon-black"></i> Add</button>
+                                    </div>
+                                    <div class="span3 offset1">
+                                        <button class="btn btn-primary span12" id="mod_body_btn_update_fund_src"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                    </div>
                                 </div>
-                                <div class="span3 offset1">
-                                    <button class="btn btn-primary span12" id="mod_body_btn_update_fund_src"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                <div id="mod_body_fund_src_list" style="padding-top: 10px;">
                                 </div>
-                            </div>
-                            <div id="mod_body_fund_src_list" style="padding-top: 10px;">
                             </div>
                         </div>
                     </div>

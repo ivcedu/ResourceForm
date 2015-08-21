@@ -775,8 +775,9 @@ function setLocalDataStepFS() {
         var fs_21 = (result[0]['fs_21'] === "1" ? true : false);
         var fs_22 = (result[0]['fs_22'] === "1" ? true : false);
         var fs_23 = (result[0]['fs_23'] === "1" ? true : false);
+        var fs_comments = result[0]['fs_comments'];
         
-        localData_setPgFundSrc(fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23);
+        localData_setPgFundSrc(fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments);
         sessionStorage.setItem('m1_ResourceFundSrc', true);
     }
 }

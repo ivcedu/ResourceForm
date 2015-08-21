@@ -37,6 +37,7 @@ var pre_fs_20 = false;
 var pre_fs_21 = false;
 var pre_fs_22 = false;
 var pre_fs_23 = false;
+var requestor_fs_comments = "";
 
 var new_fs_1 = false;
 var new_fs_2 = false;
@@ -145,7 +146,6 @@ $(document).ready(function() {
                 // delete mgr level rating
                 db_deleterateMgr(sel_res_id);
                 db_deleterateVPP(sel_res_id);
-//                db_deleterateUser(sel_res_id);
                 
                 // delete committee rating
                 db_deleterateAll(sel_res_id);
@@ -504,31 +504,26 @@ $(document).ready(function() {
                 else {
                     rating_value = $('input[name="mod_add_rdo_rating"]:checked').val();
                     commt_update += m_login_name + " Saved rating : " + rating_value + "\n";
-                }
-                db_updatePriorityMgr(sel_res_id, rating_value);
-                //db_updaterateMgrRating(sel_res_id, sel_approver_id, rating_value);
+                }   
                 
+                var err_fund_src = updateFundSrcValidation();
+                if (err_fund_src === "") {
+                    var err_fs_comments = updateFundSrcCommentsValidation();
+                    if (err_fs_comments !== "") {
+                        alert(err_fs_comments);
+                        return false;
+                    }
+                    updateResourceFundSrc(sel_res_id);
+                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                }
+                if ($('#mgr_fs_comments').val() !== "") {
+                    db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
+                }
+                    
+                db_updatePriorityMgr(sel_res_id, rating_value);                
                 var new_approver_id = searchNewApproverID(sel_approver_email);
                 moveToVP(sel_res_id, new_approver_id);
-                
                 commt_update += m_login_name + ": Move forward to VP/President";
-            }
-            else if (sel_res_stage === "VP") {
-                if (!$('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
-                    alert("Rating value (0 - 5) is a required field");
-                    return false;
-                }
-                else {
-                    rating_value = $('input[name="mod_add_rdo_rating"]:checked').val();
-                    commt_update += m_login_name + " Saved rating : " + rating_value + "\n";
-                }
-                db_updatePriorityVPP(sel_res_id, rating_value);
-                //db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
-                
-                moveToSPAC(sel_res_id, sel_approver_id);
-                db_updaterateSPACActive(sel_res_id, true);
-                
-                commt_update += m_login_name + ": Move forward to SPAC";
             }
             else {
                 if (!$('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
@@ -539,12 +534,24 @@ $(document).ready(function() {
                     rating_value = $('input[name="mod_add_rdo_rating"]:checked').val();
                     commt_update += m_login_name + " Saved rating : " + rating_value + "\n";
                 }
-                db_updatePriorityVPP(sel_res_id, rating_value);
-                //db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
                 
+                var err_fund_src = updateFundSrcValidation();
+                if (err_fund_src === "") {
+                    var err_fs_comments = updateFundSrcCommentsValidation();
+                    if (err_fs_comments !== "") {
+                        alert(err_fs_comments);
+                        return false;
+                    }
+                    updateResourceFundSrc(sel_res_id);
+                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                }
+                if ($('#mgr_fs_comments').val() !== "") {
+                    db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
+                }
+                
+                db_updatePriorityVPP(sel_res_id, rating_value);                
                 moveToSPAC(sel_res_id, sel_approver_id);
                 db_updaterateSPACActive(sel_res_id, true);
-                
                 commt_update += m_login_name + ": Move forward to SPAC";
             }
             
@@ -553,14 +560,8 @@ $(document).ready(function() {
             if (comments !== "") {
                 note += "\n" + comments;
             }
-            var err_fund_src = updateFundSrcValidation();
-            if (err_fund_src === "") {
-                updateResourceFundSrc(sel_res_id);
-                note += "\nFunding sources changed\nFrom: " + getUpdateFundSrcNote();
-            }
             
             db_insertTransactions(sel_res_id, m_login_name, note);
-            
             resetAddNoteFields();
             reloadRFList();
         }
@@ -583,14 +584,21 @@ $(document).ready(function() {
                 return false;
             }
             
+            if (err_fund_src === "") {
+                var err_fs_comments = updateFundSrcCommentsValidation();
+                if (err_fs_comments !== "") {
+                    alert(err_fs_comments);
+                    return false;
+                }
+            }
+            
+            // start process
             if (rating_value !== "-1") {
                 if (sel_res_stage === "Dean/Director") {
                     db_updatePriorityMgr(sel_res_id, rating_value);
-                    //db_updaterateMgrRating(sel_res_id, sel_approver_id, rating_value);
                 }
                 if (sel_res_stage === "VP" || sel_res_stage === "President") {
                     db_updatePriorityVPP(sel_res_id, rating_value);
-                    //db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
                 }
                 note += m_login_name + " Saved rating: " + rating_value;
             }
@@ -612,6 +620,9 @@ $(document).ready(function() {
                 else {
                     note += "\n" + m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
                 }
+            }
+            if ($('#mgr_fs_comments').val().replace(/\s+/g, '') !== "") {
+                db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
             }
 
             db_insertTransactions(sel_res_id, m_login_name, note);
@@ -717,6 +728,7 @@ $(document).ready(function() {
     $('#mod_fac_rev_description').autosize();
     $('#mod_tec_rev_note').autosize();
     $('#mod_rs_approver_comments').autosize();
+    $('#mgr_fs_comments').autosize();
     
     // selectpicker
     $('.selectpicker').selectpicker();
@@ -956,6 +968,7 @@ function resetAddNoteFields() {
     $('#mod_fac_rev_description').val("").trigger('autosize.resize');
     
     $('#mod_add_note_body').val("").trigger('autosize.resize');
+    $('#mgr_fs_comments').val("").trigger('autosize.resize');
     $('#mod_note_body').html("");
     
     $('input[name="mod_add_rdo_rating"]').prop('checked', false);
@@ -1022,97 +1035,35 @@ function addReasonValidation() {
 function updateFundSrcValidation() {
     var bFS_changed = false;
     
-    new_fs_1 = ($('#fs_1').is(':checked') ? true : false);
-    new_fs_2 = ($('#fs_2').is(':checked') ? true : false);
-    new_fs_3 = ($('#fs_3').is(':checked') ? true : false);
-    new_fs_4 = ($('#fs_4').is(':checked') ? true : false);
-    new_fs_5 = ($('#fs_5').is(':checked') ? true : false);
-    new_fs_6 = ($('#fs_6').is(':checked') ? true : false);
-    new_fs_7 = ($('#fs_7').is(':checked') ? true : false);
-    new_fs_8 = ($('#fs_8').is(':checked') ? true : false);
-    new_fs_9 = ($('#fs_9').is(':checked') ? true : false);
-    new_fs_10 = ($('#fs_10').is(':checked') ? true : false);
-    new_fs_11 = ($('#fs_11').is(':checked') ? true : false);
-    new_fs_12 = ($('#fs_12').is(':checked') ? true : false);
-    new_fs_13 = ($('#fs_13').is(':checked') ? true : false);
-    new_fs_14 = ($('#fs_14').is(':checked') ? true : false);
-    new_fs_15 = ($('#fs_15').is(':checked') ? true : false);
-    new_fs_16 = ($('#fs_16').is(':checked') ? true : false);
-    new_fs_17 = ($('#fs_17').is(':checked') ? true : false);
-    new_fs_18 = ($('#fs_18').is(':checked') ? true : false);
-    new_fs_19 = ($('#fs_19').is(':checked') ? true : false);
-    new_fs_20 = ($('#fs_20').is(':checked') ? true : false);
-    new_fs_21 = ($('#fs_21').is(':checked') ? true : false);
-    new_fs_22 = ($('#fs_22').is(':checked') ? true : false);
-    new_fs_23 = ($('#fs_23').is(':checked') ? true : false);
+    new_fs_1 = $('#fs_1').is(':checked');
+    new_fs_2 = $('#fs_2').is(':checked');
+    new_fs_3 = $('#fs_3').is(':checked');
+    new_fs_4 = $('#fs_4').is(':checked');
+    new_fs_5 = $('#fs_5').is(':checked');
+    new_fs_6 = $('#fs_6').is(':checked');
+    new_fs_7 = $('#fs_7').is(':checked');
+    new_fs_8 = $('#fs_8').is(':checked');
+    new_fs_9 = $('#fs_9').is(':checked');
+    new_fs_10 = $('#fs_10').is(':checked');
+    new_fs_11 = $('#fs_11').is(':checked');
+    new_fs_12 = $('#fs_12').is(':checked');
+    new_fs_13 = $('#fs_13').is(':checked');
+    new_fs_14 = $('#fs_14').is(':checked');
+    new_fs_15 = $('#fs_15').is(':checked');
+    new_fs_16 = $('#fs_16').is(':checked');
+    new_fs_17 = $('#fs_17').is(':checked');
+    new_fs_18 = $('#fs_18').is(':checked');
+    new_fs_19 = $('#fs_19').is(':checked');
+    new_fs_20 = $('#fs_20').is(':checked');
+    new_fs_21 = $('#fs_21').is(':checked');
+    new_fs_22 = $('#fs_22').is(':checked');
+    new_fs_23 = $('#fs_23').is(':checked');
     
-    if (pre_fs_1 !== new_fs_1) {
-        bFS_changed = true;
-    }
-    if (pre_fs_2 !== new_fs_2) {
-        bFS_changed = true;
-    }
-    if (pre_fs_3 !== new_fs_3) {
-        bFS_changed = true;
-    }
-    if (pre_fs_4 !== new_fs_4) {
-        bFS_changed = true;
-    }
-    if (pre_fs_5 !== new_fs_5) {
-        bFS_changed = true;
-    }
-    if (pre_fs_6 !== new_fs_6) {
-        bFS_changed = true;
-    }
-    if (pre_fs_7 !== new_fs_7) {
-        bFS_changed = true;
-    }
-    if (pre_fs_8 !== new_fs_8) {
-        bFS_changed = true;
-    }
-    if (pre_fs_9 !== new_fs_9) {
-        bFS_changed = true;
-    }
-    if (pre_fs_10 !== new_fs_10) {
-        bFS_changed = true;
-    }
-    if (pre_fs_11 !== new_fs_11) {
-        bFS_changed = true;
-    }
-    if (pre_fs_12 !== new_fs_12) {
-        bFS_changed = true;
-    }
-    if (pre_fs_13 !== new_fs_13) {
-        bFS_changed = true;
-    }
-    if (pre_fs_14 !== new_fs_14) {
-        bFS_changed = true;
-    }
-    if (pre_fs_15 !== new_fs_15) {
-        bFS_changed = true;
-    }
-    if (pre_fs_16 !== new_fs_16) {
-        bFS_changed = true;
-    }
-    if (pre_fs_17 !== new_fs_17) {
-        bFS_changed = true;
-    }
-    if (pre_fs_18 !== new_fs_18) {
-        bFS_changed = true;
-    }
-    if (pre_fs_19 !== new_fs_19) {
-        bFS_changed = true;
-    }
-    if (pre_fs_20 !== new_fs_20) {
-        bFS_changed = true;
-    }
-    if (pre_fs_21 !== new_fs_21) {
-        bFS_changed = true;
-    }
-    if (pre_fs_22 !== new_fs_22) {
-        bFS_changed = true;
-    }
-    if (pre_fs_23 !== new_fs_23) {
+    if (pre_fs_1 !== new_fs_1 || pre_fs_2 !== new_fs_2 || pre_fs_3 !== new_fs_3 || pre_fs_4 !== new_fs_4 || pre_fs_5 !== new_fs_5
+        || pre_fs_6 !== new_fs_6 || pre_fs_7 !== new_fs_7 || pre_fs_8 !== new_fs_8 || pre_fs_9 !== new_fs_9 || pre_fs_10 !== new_fs_10
+        || pre_fs_11 !== new_fs_11 || pre_fs_12 !== new_fs_12 || pre_fs_13 !== new_fs_13 || pre_fs_14 !== new_fs_14 || pre_fs_15 !== new_fs_15
+        || pre_fs_16 !== new_fs_16 || pre_fs_17 !== new_fs_17 || pre_fs_18 !== new_fs_18 || pre_fs_19 !== new_fs_19 || pre_fs_20 !== new_fs_20
+        || pre_fs_21 !== new_fs_21 || pre_fs_22 !== new_fs_22 || pre_fs_23 !== new_fs_23) {
         bFS_changed = true;
     }
     
@@ -1122,6 +1073,20 @@ function updateFundSrcValidation() {
     else {
         return "funding sources not changes";
     }
+}
+
+function updateFundSrcCommentsValidation() {
+    var err = "";
+    
+    if (new_fs_2 || new_fs_3 || new_fs_4 || new_fs_5 || new_fs_6 || new_fs_7 || new_fs_8 || new_fs_9 || new_fs_10
+        || new_fs_11 || new_fs_12 || new_fs_13 || new_fs_14 || new_fs_15 || new_fs_16 || new_fs_17 || new_fs_18 || new_fs_19 || new_fs_20
+        || new_fs_21 || new_fs_22 || new_fs_23) {
+        if ($('#mgr_fs_comments').val().replace(/\s+/g, '') === "") {
+            err += "Briefly explain the rationale behind selecting the funding sources is a required\n";
+        }
+    }
+    
+    return err;
 }
 
 function getUpdateFundSrcNote() {
@@ -1735,12 +1700,26 @@ function getResourceFundSrc(ResourceID) {
             pre_fs_23 = true;
             $("#fs_23").prop('checked', true);
         }
+        requestor_fs_comments = result[0]['fs_comments'];
+        $('#fund_source_comments').html(getResourceFundSrcLog(ResourceID, requestor_fs_comments));
     }
+}
+
+function getResourceFundSrcLog(ResourceID, req_fs_comments) {
+    var result = new Array(); 
+    result = db_getResourceFundSrcLog(ResourceID);
+    
+    var fs_comments = "";
+    for(var i = 0; i < result.length; i++) { 
+        fs_comments += result[i]['DTStamp'] + ": " + result[i]['LoginName'] + "<br>" + result[i]['Note'].replace(/\n/g, "<br>") + "<br><br>";
+    }
+    
+    return fs_comments + req_fs_comments;
 }
 
 function updateResourceFundSrc(ResourceID) {
     db_updateResourceFundSrc(ResourceID, new_fs_1, new_fs_2, new_fs_3, new_fs_4, new_fs_5, new_fs_6, new_fs_7, new_fs_8, new_fs_9, new_fs_10,
-                            new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23);
+                            new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23, requestor_fs_comments);
 }
 
 function getFundSrcDescrip(fund_src_col) {

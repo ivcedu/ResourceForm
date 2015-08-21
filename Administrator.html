@@ -153,16 +153,16 @@
                 </div>
                 <div class="modal-body">
                     <!-- Facilities Review Section -->
-                    <div class="row-fluid" style="display: none" id="fac_section_1">
+                    <div class="row-fluid" style="display: none; padding-top: 10px; padding-bottom: 10px;" id="fac_section_1">
                         <div class="span3 text-left" style="padding-top: 5px;">Proj Amount:</div>
                         <div class="span8"><input type="text" class="span12 input-large" id="mod_fac_rev_amount"></div>
                     </div>
-                    <div class="row-fluid" style="display: none" id="fac_section_2">
+                    <div class="row-fluid" style="display: none; padding-bottom: 10px;" id="fac_section_2">
                         <div class="span3 text-left" style="padding-top: 5px;">Proj Description:</div>
                         <div class="span8"><textarea class="span12" style="resize: vertical;" rows="1" id="mod_fac_rev_description"></textarea></div>
                     </div>
                     <!-- add comments section -->
-                    <div class="row-fluid">
+                    <div class="row-fluid" style="padding-bottom: 10px;">
                         <button class="btn span12" style="text-align: left;" id="mod_add_btn_rating"><i class="icon-chevron-right icon-black" id="mod_add_icon_rating"></i> Add Rating</button>
                         <div id="mod_add_body_rating">
                             <div class="row-fluid">
@@ -191,14 +191,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row-fluid">
+                    <div class="row-fluid" style="padding-bottom: 10px;">
                         <button class="btn span12" style="text-align: left;" id="mod_add_btn_comments"><i class="icon-chevron-right icon-black" id="mod_add_icon_comments"></i> Add Comments</button>
                         <div id="mod_add_body_comments">
                             <div class="span12"><textarea class="span12" style="resize: vertical;" rows="1" id="mod_add_note_body"></textarea></div>
                         </div>
                     </div>
                     <!-- funding source section -->
-                    <div class="row-fluid">
+                    <div class="row-fluid" style="padding-bottom: 10px;">
                         <button class="btn span12" style="text-align: left;" id="mod_add_btn_fund_src"><i class="icon-chevron-right icon-black" id="mod_add_icon_fund_src"></i> Modify Funding Sources</button>
                         <div id="mod_add_body_fund_src">
                             <div class="row-fluid">
@@ -240,10 +240,22 @@
                                 <div class="span4" style="padding-top: 5px;"><label class="checkbox span12" id="lable_fs_8"><input type="checkbox" id="fs_8">CDC</label></div>
                                 <div class="span4" style="padding-top: 5px;"><label class="checkbox span12" id="lable_fs_16"><input type="checkbox" id="fs_16">Health</label></div>
                             </div>
+                            <div class="row-fluid">
+                                <div class="span12"><hr style="border-color: grey; margin: 0px 0px"></div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12" style="font-style: italic; font-weight: bold;">Briefly explain the rationale behind selecting the funding sources ablove.</div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12"><textarea class="span12" style="resize: vertical; height: 53px;" id="mgr_fs_comments"></textarea></div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12" id="fund_source_comments"></div>
+                            </div>
                         </div>
                     </div>
                     <!-- comments history section -->
-                    <div class="row-fluid">
+                    <div class="row-fluid" style="padding-bottom: 10px;">
                         <button class="btn span12" style="text-align: left;" id="mod_add_btn_history"><i class="icon-chevron-right icon-black" id="mod_add_icon_history"></i> View History</button>
                         <div id="mod_add_body_history">
                             <!--<div class="span12 text-center" style="padding-top: 5px; border-bottom: 1px solid black;">Comments History</div>-->
@@ -395,8 +407,8 @@
         <script src="../include/jquery/jquery-2.0.3.min.js"></script>
         <script src="../include/jquery-ui/js/jquery-ui-1.10.4.min.js"></script>
         <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
-        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.js"></script>
-        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.widgets.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.min.js"></script>
+        <script src="../include/jquery-tablesorter/js/jquery.tablesorter.widgets.min.js"></script>
         <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
         <script src="../include/bootstrap-popover/js/bootstrap-popover.2.0.1.min.js"></script>
         <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>

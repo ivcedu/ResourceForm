@@ -37,8 +37,8 @@
             <!-- end of status bar -->
             
             <!-- funding sources -->
-            <div class="row-fluid">
-                <div class="span12 text-center" style="font-style: italic; font-weight: bold;">Please select all applicable funding sources</div>
+            <div class="row-fluid" style="padding-bottom: 10px">
+                <div class="span12 text-center" style="font-style: italic; font-weight: bold;">Please check funding source(s) only if you believe that the resource being requested is eligible for those funding source(s). Otherwise, leave boxes unchecked and funding eligibility will be determined during the budget development process.</div>
             </div>
             <div class="row-fluid">
                 <div class="span4" style="padding-top: 5px;"><label class="checkbox span12" id="lable_fs_1"><input type="checkbox" id="fs_1">General</label></div>
@@ -79,11 +79,21 @@
                 <div class="span4" style="padding-top: 5px;"><label class="checkbox span12" id="lable_fs_8"><input type="checkbox" id="fs_8">CDC</label></div>
                 <div class="span4" style="padding-top: 5px;"><label class="checkbox span12" id="lable_fs_16"><input type="checkbox" id="fs_16">Health</label></div>
             </div>
+            <div class="row-fluid">
+                <div class="span12"><hr style="border-color: grey; margin: 0px 0px"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12" style="font-style: italic; font-weight: bold;">Briefly explain the rationale behind selecting the funding sources ablove.</div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12"><textarea class="span12" style="resize: vertical; height: 53px;" id="fund_source_comments"></textarea></div>
+            </div>
             <!-- end of funding sources -->
             
             <!-- navigation -->
-            <div class="row" style="padding-bottom: 10px">
-                <div class="span12 text-center" style="background-color: gray"></div>
+            <div class="row-fluid">
+                <!--<div class="span12 text-center" style="background-color: gray; height: 2px;"></div>-->
+                <div class="span12"><hr style="border-color: grey; margin: 0px 0px"></div>
             </div>
             <div class="row">
                 <div class="span6">
@@ -139,6 +149,7 @@
         <script src="../include/jquery-ui/js/jquery.ui.core.js"></script>
         <script src="../include/jquery-ui/js/jquery.ui.widget.js"></script>
         <script src="../include/jquery-ui/js/jquery.ui.datepicker.js"></script>
+        <script src="../include/jquery-autosize/jquery.autosize.1.18.1.min.js"></script>
         <script src="../include/bootstrap/js/bootstrap.2.3.2.min.js"></script>
         <script src="../include/jquery-tablesorter/js/jquery.tablesorter.2.18.4.js"></script>
         <script src="../include/jquery-tablesorter/js/jquery.tablesorter.widgets.2.18.4.js"></script>
