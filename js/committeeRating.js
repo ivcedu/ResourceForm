@@ -108,7 +108,7 @@ window.onload = function() {
         target = $('#spinner')[0];
         spinner = new Spinner();
         
-        fiscal_year = "2015-2016"; //getFiscalYear();
+        getAllResourceFiscalYear();
         setHideAllModal();
         setSPACFundingSrcList();
         
@@ -676,7 +676,13 @@ $(document).ready(function() {
         }
     });
     
-    // filter refresh //////////////////////////////////////////////////////////
+    // fiscal year refresh button click ////////////////////////////////////////
+    $('#btn_refresh').click(function() {
+        refreshCommitteeRatingList();
+        setListTotalCountAmount();
+    });
+    
+    // filter refresh button click /////////////////////////////////////////////
     $('#adm_refresh').click(function() {
         refreshCommitteeRatingList();        
         setListTotalCountAmount();
@@ -1243,6 +1249,21 @@ function stopSpin() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function setHideAllModal() {
     // navigation option
     $('#nav_committee_admin').hide();
@@ -1530,7 +1551,7 @@ function setSPACHeaderRow() {
     
     if (fund_src === "All") {
         var result = new Array();
-        result = db_getFundSrcBudgetList("2015-2016");
+        result = db_getFundSrcBudgetList($('#all_fiscal_yrs').val());
         
         header_html += "<tr id='tbl_header'>";
         header_html += "<th class='col_50'></th>";
@@ -1547,9 +1568,180 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
+//        for(var i = 0; i < result.length; i++) {
+//            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + (i+1) + "'>" + formatDollar(Number(result[i]['BudgetAmt'])) + "</th>";
+//        }
+        // hard code for funding src /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        var fs_budget_1 = "";
+        var fs_budget_2 = "";
+        var fs_budget_3 = "";
+        var fs_budget_4 = "";
+        var fs_budget_5 = "";
+        var fs_budget_6 = "";
+        var fs_budget_7 = "";
+        var fs_budget_8 = "";
+        var fs_budget_9 = "";
+        var fs_budget_10 = "";
+        var fs_budget_11 = "";
+        var fs_budget_12 = "";
+        var fs_budget_13 = "";
+        var fs_budget_14 = "";
+        var fs_budget_15 = "";
+        var fs_budget_16 = "";
+        var fs_budget_17 = "";
+        var fs_budget_18 = "";
+        var fs_budget_19 = "";
+        var fs_budget_20 = "";
+        var fs_budget_21 = "";
+        var fs_budget_22 = "";
+        var fs_budget_23 = "";
+        
+        var fs_balance_1 = "";
+        var fs_balance_2 = "";
+        var fs_balance_3 = "";
+        var fs_balance_4 = "";
+        var fs_balance_5 = "";
+        var fs_balance_6 = "";
+        var fs_balance_7 = "";
+        var fs_balance_8 = "";
+        var fs_balance_9 = "";
+        var fs_balance_10 = "";
+        var fs_balance_11 = "";
+        var fs_balance_12 = "";
+        var fs_balance_13 = "";
+        var fs_balance_14 = "";
+        var fs_balance_15 = "";
+        var fs_balance_16 = "";
+        var fs_balance_17 = "";
+        var fs_balance_18 = "";
+        var fs_balance_19 = "";
+        var fs_balance_20 = "";
+        var fs_balance_21 = "";
+        var fs_balance_22 = "";
+        var fs_balance_23 = "";
+        
         for(var i = 0; i < result.length; i++) {
-            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + (i+1) + "'>" + formatDollar(Number(result[i]['BudgetAmt'])) + "</th>";
+            switch(result[i]['FundSrcCol']) {
+                case "fs_1":
+                    fs_budget_1 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_1 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_2":
+                    fs_budget_2 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_2 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_3":
+                    fs_budget_3 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_3 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_4":
+                    fs_budget_4 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_4 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_5":
+                    fs_budget_5 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_5 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_6":
+                    fs_budget_6 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_6 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_7":
+                    fs_budget_7 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_7 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_8":
+                    fs_budget_8 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_8 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_9":
+                    fs_budget_9 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_9 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_10":
+                    fs_budget_10 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_10 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_11":
+                    fs_budget_11 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_11 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_12":
+                    fs_budget_12 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_12 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_13":
+                    fs_budget_13 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_13 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_14":
+                    fs_budget_14 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_14 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_15":
+                    fs_budget_15 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_15 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_16":
+                    fs_budget_16 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_16 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_17":
+                    fs_budget_17 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_17 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_18":
+                    fs_budget_18 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_18 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_19":
+                    fs_budget_19 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_19 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_20":
+                    fs_budget_20 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_20 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_21":
+                    fs_budget_21 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_21 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_22":
+                    fs_budget_22 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_22 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                case "fs_23":
+                    fs_budget_23 = formatDollar(Number(result[i]['BudgetAmt']));
+                    fs_balance_23 = formatDollar(Number(result[i]['BalanceAmt']));
+                    break;
+                default:
+                    break;
+            }
         }
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_1'>" + fs_budget_1 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_2'>" + fs_budget_2 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_3'>" + fs_budget_3 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_4'>" + fs_budget_4 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_5'>" + fs_budget_5 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_6'>" + fs_budget_6 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_7'>" + fs_budget_7 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_8'>" + fs_budget_8 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_9'>" + fs_budget_9 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_10'>" + fs_budget_10 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_11'>" + fs_budget_11 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_12'>" + fs_budget_12 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_13'>" + fs_budget_13 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_14'>" + fs_budget_14 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_15'>" + fs_budget_15 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_16'>" + fs_budget_16 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_17'>" + fs_budget_17 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_18'>" + fs_budget_18 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_19'>" + fs_budget_19 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_20'>" + fs_budget_20 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_21'>" + fs_budget_21 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_22'>" + fs_budget_22 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_23'>" + fs_budget_23 + "</th>";
+        
         header_html += "<th class='col_100'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "<th class='col_150'></th>";
@@ -1570,9 +1762,34 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
-        for(var i = 0; i < result.length; i++) {
-            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + (i+1) + "'>" + formatDollar(Number(result[i]['BalanceAmt'])) + "</th>";
-        }
+        
+//        for(var i = 0; i < result.length; i++) {
+//            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + (i+1) + "'>" + formatDollar(Number(result[i]['BalanceAmt'])) + "</th>";
+//        }
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_1'>" + fs_balance_1 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_2'>" + fs_balance_2 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_3'>" + fs_balance_3 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_4'>" + fs_balance_4 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_5'>" + fs_balance_5 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_6'>" + fs_balance_6 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_7'>" + fs_balance_7 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_8'>" + fs_balance_8 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_9'>" + fs_balance_9 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_10'>" + fs_balance_10 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_11'>" + fs_balance_11 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_12'>" + fs_balance_12 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_13'>" + fs_balance_13 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_14'>" + fs_balance_14 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_15'>" + fs_balance_15 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_16'>" + fs_balance_16 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_17'>" + fs_balance_17 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_18'>" + fs_balance_18 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_19'>" + fs_balance_19 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_20'>" + fs_balance_20 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_21'>" + fs_balance_21 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_22'>" + fs_balance_22 + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_23'>" + fs_balance_23 + "</th>";
+        
         header_html += "<th class='col_100'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "<th class='col_150'></th>";
@@ -1595,7 +1812,7 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         
         var result2 = new Array();
-        result2 = db_getResourceFundAmtTotalList();               
+        result2 = db_getResourceFundAmtTotalList($('#all_fiscal_yrs').val());               
         
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_1'>" + formatDollar(Number(result2[0]['fs_1_amt_total'])) + "</th>";
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_2'>" + formatDollar(Number(result2[0]['fs_2_amt_total'])) + "</th>";
@@ -2294,7 +2511,7 @@ function setMasterSQLScript(sel_committee) {
     }
 
     sql_where = sql_where.substring(0, sql_where.length-1);
-    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21";
+    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
 }
 
 function setSQLScript(sel_committee) {
@@ -2407,7 +2624,7 @@ function setSQLScript(sel_committee) {
         sql_where = sql_where.substring(3, sql_where.length);
     }
     sql_where = sql_where.substring(0, sql_where.length-1);
-    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21";
+    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
 }
 
 ////////////////////////////////////////////////////////////////////////////////

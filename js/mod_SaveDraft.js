@@ -819,12 +819,12 @@ function mod_updateResourceLink(ResourceID) {
 }
 
 // get DB //////////////////////////////////////////////////////////////////////
-function db_getAllRFList(bSubmitted) {
+function db_getAllRFList(bSubmitted, FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getAllRFList.php",
-        data:{bSubmitted:bSubmitted},
+        data:{bSubmitted:bSubmitted, FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -833,11 +833,12 @@ function db_getAllRFList(bSubmitted) {
     return result;
 }
 
-function db_getASIVCReportList() {
+function db_getASIVCReportList(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getASIVCReportList.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -846,12 +847,12 @@ function db_getASIVCReportList() {
     return result;
 }
 
-function db_getLoginUserRFList(login_email) {
+function db_getLoginUserRFList(login_email, FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getLoginUserRFList.php",
-        data:{LoginEmail:login_email},
+        data:{LoginEmail:login_email, FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -875,12 +876,12 @@ function db_getLoginUserRFLinkList(login_email) {
     return result;
 }
 
-function db_getCCUserRFList(login_email) {
+function db_getCCUserRFList(login_email, FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getCCUserRFList.php",
-        data:{LoginEmail:login_email},
+        data:{LoginEmail:login_email, FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -917,12 +918,12 @@ function db_getTechReviewRFList(login_email) {
     return result;
 }
 
-function db_getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program, FundingSrc, OneTime) {
+function db_getAdminRFList(FiscalYear, Status, StageLevel, StageAppEmail, ResourceType, Program, FundingSrc, OneTime) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getAdminRFList.php",
-        data:{Status:Status, StageLevel:StageLevel, StageAppEmail:StageAppEmail, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, OneTime:OneTime},
+        data:{FiscalYear:FiscalYear, Status:Status, StageLevel:StageLevel, StageAppEmail:StageAppEmail, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, OneTime:OneTime},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -1601,11 +1602,12 @@ function db_getResourceFundAmt(ResourceID) {
     return result;
 }
 
-function db_getResourceFundAmtTotalList() {
+function db_getResourceFundAmtTotalList(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getResourceFundAmtTotalList.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -1676,6 +1678,19 @@ function db_getResourceFundSrcLog(ResourceID) {
         type:"POST",
         url:"php/db_getResourceFundSrcLog.php",
         data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getAllResourceFiscalYear() {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getAllResourceFiscalYear.php",
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

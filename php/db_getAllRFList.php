@@ -2,9 +2,11 @@
     require("config.php");
     
     $bSubmitted = filter_input(INPUT_POST, 'bSubmitted');
-    $sql_where = "";
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
+    
+    $sql_where = "WHERE resr.FiscalYear = '".$FiscalYear."'";
     if ($bSubmitted === "true") {
-        $sql_where = "WHERE resr.RSID <> 1";
+        $sql_where = $sql_where." AND resr.RSID <> 1";
     }
        
     $query = "SELECT resr.ResourceID, "

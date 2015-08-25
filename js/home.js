@@ -20,6 +20,7 @@ window.onload = function() {
         $("#h_cc_list").empty();
         
         setAdminOption();
+        getAllResourceFiscalYear();
         getLoginUserRFList();
         getCCUserRFList();
     }
@@ -73,6 +74,12 @@ $(document).ready(function() {
     
     $('#rpt_all_rf_list').click(function() {
         window.open('rptAllRFList.html', '_self');
+    });
+    
+    
+    $('#btn_refresh').click(function() {
+        getLoginUserRFList();
+        getCCUserRFList();
     });
     
     // RF list /////////////////////////////////////////////////////////////////
@@ -134,6 +141,9 @@ $(document).ready(function() {
         $("#h_RFList").empty();
         getLoginUserRFList();
     });
+    
+    // selectpicker
+    $('.selectpicker').selectpicker();
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,13 +160,29 @@ function setAdminOption() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function getLoginUserRFList() {
     var loginEmail = sessionStorage.getItem('m1_loginEmail');
     
     var result = new Array(); 
-    result = db_getLoginUserRFList(loginEmail);
+    result = db_getLoginUserRFList(loginEmail, $('#all_fiscal_yrs').val());
     
     $("#h_RFList").empty();
+    var html = "";
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) { 
             var str_totalAmount = "";
@@ -164,9 +190,11 @@ function getLoginUserRFList() {
             if (f_totalAmount > 0) {
                 str_totalAmount = formatDollar(f_totalAmount);
             }
-            setResourceFormList(result[i][0], result[i][1], result[i][2], result[i][3], str_totalAmount, result[i][5]);
+            html += setResourceFormList(result[i][0], result[i][1], result[i][2], result[i][3], str_totalAmount, result[i][5]);
         }
     }
+    
+    $("#h_RFList").append(html);
 }
 
 function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, LinkNum) {
@@ -186,8 +214,7 @@ function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Lin
     }
     tbody += "<div class='span1' style='display: none;' id='ptitle_full_" + ResourceID + "'>" + PTile + "</div>";
     tbody += "</div>";
-    
-    $("#h_RFList").append(tbody);
+    return tbody;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,9 +222,10 @@ function getCCUserRFList() {
     var loginEmail = sessionStorage.getItem('m1_loginEmail');
     
     var result = new Array(new Array()); 
-    result = db_getCCUserRFList(loginEmail);
+    result = db_getCCUserRFList(loginEmail, $('#all_fiscal_yrs').val());
     
     $("#h_cc_list").empty();
+    var html = "";
     if (result.length !== 0) {
         $('#h_cc_block').show();
   
@@ -207,9 +235,11 @@ function getCCUserRFList() {
             if (f_totalAmount > 0) {
                 str_totalAmount = formatDollar(f_totalAmount);
             }
-            setCCResourceFormList(result[i][0], result[i][1], result[i][2], result[i][3], str_totalAmount, result[i][5]);
+            html += setCCResourceFormList(result[i][0], result[i][1], result[i][2], result[i][3], str_totalAmount, result[i][5]);
         }
     }
+    
+    $("#h_cc_list").append(html);
 }
 
 function setCCResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Creator) {
@@ -223,8 +253,7 @@ function setCCResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, C
     tbody += "<div class='span2'>" + Creator + "</div>";
     tbody += "<div class='span1' style='display: none;' id='cc_ptitle_full_" + ResourceID + "'>" + PTile + "</div>";
     tbody += "</div>";
-    
-    $("#h_cc_list").append(tbody);
+    return tbody;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

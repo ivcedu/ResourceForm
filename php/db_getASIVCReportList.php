@@ -1,5 +1,7 @@
 <?php
     require("config.php");
+    
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
        
     $query = "SELECT resr.ResourceID, "
                 ."resr.ProposalTitle, "
@@ -25,7 +27,7 @@
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceLink] AS rslk ON resr.ResourceID = rslk.ResourceID "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON resr.CreatorID = crtr.CreatorID "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rfsr ON rfsr.ResourceID = resr.ResourceID "
-                ."WHERE rfsr.fs_2 = 1";
+                ."WHERE resr.FiscalYear = '".$FiscalYear."' AND rfsr.fs_2 = 1";
     
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 

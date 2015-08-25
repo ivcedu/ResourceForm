@@ -4,6 +4,7 @@ var sql_where = "";
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) { 
+        getAllResourceFiscalYear();
         getFundingSrcTypeList();   
         setTableHeader();
         getCommitteeRatingList("All", "All", "All Resource", "All Program", 0, "All Request");
@@ -40,7 +41,13 @@ $(document).ready(function() {
         refreshCommitteeRatingList();
         $('#user_rf_list').trigger("updateAll");
         $('#user_rf_list').trigger("appendCache");
-        
+        setListTotalCountAmount();
+    });
+    
+    $('#btn_refresh').click(function() {
+        refreshCommitteeRatingList();
+        $('#user_rf_list').trigger("updateAll");
+        $('#user_rf_list').trigger("appendCache");
         setListTotalCountAmount();
     });
     
@@ -71,6 +78,20 @@ $(document).ready(function() {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function getFundingSrcTypeList() {
     var result = new Array();
     result = db_getFundSrcTypeAll();
@@ -123,7 +144,7 @@ function refreshCommitteeRatingList() {
 function setSQLScript(sel_committee) {
     sql_select = "";
     sql_from = "";
-    sql_where = "";
+    sql_where = "resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "' AND ";
     
     sql_select += "rchp.Active AS CHPLDTF_Active, rchp.Median AS CHPLDTF_Median, rchp.Mean AS CHPLDTF_Mean, rchp.FinalRating AS CHPLDTF_FinalRating, ";
     sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateCHPLDTF] AS rchp ON rchp.ResourceID = resr.ResourceID ";

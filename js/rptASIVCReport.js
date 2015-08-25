@@ -2,6 +2,7 @@
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         $('.container').css('width', '970px');
+        getAllResourceFiscalYear();
         getASIVCReportList();
         initializeTable();
     }
@@ -31,6 +32,10 @@ $(document).ready(function() {
         window.open('Login.html', '_self');
     });
     
+    $('#btn_refresh').click(function() {
+        getASIVCReportList();
+    });
+    
     // table row contract click //////////////////////////////////////////////
     $('table').on('click', 'a', function(e) {
         e.preventDefault();
@@ -40,22 +45,42 @@ $(document).ready(function() {
         sessionStorage.setItem('vrf_resource_id', resource_id);
         window.open('ViewResourceForm.html?resource_id=' + resource_id, '_blank');
     });
+    
+    // selectpicker
+    $('.selectpicker').selectpicker();
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function getASIVCReportList() {
     var result = new Array(); 
-    result = db_getASIVCReportList();
+    result = db_getASIVCReportList($('#all_fiscal_yrs').val());
     
     $("#body_tr").empty();
+    var html = "";
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) { 
             var str_totalAmount = formatDollar(Number(result[i]['TotalAmount']));
-            setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], result[i]['CreatorName'], str_totalAmount);
+            html += setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], result[i]['CreatorName'], str_totalAmount);
         }
     }
     
-    $("#tbl_RFList").trigger("update");
+    $("#body_tr").append(html);
+    $('#tbl_RFList').trigger("updateAll");
+    $('#tbl_RFList').trigger("appendCache");
 }
 
 function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_type, resource_status, creator, str_amount) {   
@@ -68,6 +93,5 @@ function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_t
     tbl_html += "<td class='col_150'>" + creator + "</td>";
     tbl_html += "<td class='col_100'>" + str_amount + "</td>";
     tbl_html += "</tr>";
-    
-    $("#body_tr").append(tbl_html);
+    return tbl_html;
 }

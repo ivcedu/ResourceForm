@@ -3,7 +3,7 @@ window.onload = function() {
     if (sessionStorage.key(0) !== null) {       
         $('#mod_popup_cancel').modal('hide');
         $("#h_RFList").empty();
-
+        getAllResourceFiscalYear();
         getAllRFList();
         initializeTable();
     }
@@ -26,6 +26,10 @@ $(document).ready(function() {
     $('#nav_logout').click(function() {
         sessionStorage.clear();
         window.open('Login.html', '_self');
+    });
+    
+    $('#btn_refresh').click(function() {
+        getAllRFList();
     });
     
     // table row contract click //////////////////////////////////////////////
@@ -65,19 +69,36 @@ $(document).ready(function() {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function getAllRFList() {
     var result = new Array(); 
-    result = db_getAllRFList(false);
+    result = db_getAllRFList(false, $('#all_fiscal_yrs').val());
     
     $("#body_tr").empty();
+    var html = "";
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) { 
             var str_amount = formatDollar(Number(result[i]['TotalAmount']));
-            setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], str_amount);
+            html += setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], str_amount);
         }
     }
     
-    $("#tbl_RFList").trigger("update");
+    $("#body_tr").append(html);
+    $('#tbl_RFList').trigger("updateAll");
+    $('#tbl_RFList').trigger("appendCache");
 }
 
 function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_type, resource_status, str_amount) {   
@@ -94,8 +115,7 @@ function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_t
         tbl_html += "<td class='span1'></td>";
     }
     tbl_html += "</tr>";
-    
-    $("#body_tr").append(tbl_html);
+    return tbl_html;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

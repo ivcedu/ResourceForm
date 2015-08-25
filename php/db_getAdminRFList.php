@@ -1,6 +1,7 @@
 <?php
     require("config.php");
     
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
     $Status = filter_input(INPUT_POST, 'Status');
     $StageLevel = filter_input(INPUT_POST, 'StageLevel');
     $StageAppEmail = filter_input(INPUT_POST, 'StageAppEmail');
@@ -9,7 +10,7 @@
     $FundingSrc = filter_input(INPUT_POST, 'FundingSrc');
     $OneTime = filter_input(INPUT_POST, 'OneTime');
     
-    $sql_where = "WHERE ";
+    $sql_where = "WHERE resr.FiscalYear = '".$FiscalYear."' AND ";
     $sql_status = "";
     $sql_stage_level = "";
     $sql_resource_type = "";

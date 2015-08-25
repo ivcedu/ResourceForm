@@ -70,6 +70,7 @@ window.onload = function() {
         setHideAllNavigationButton();
         setAdminOption();
 
+        getAllResourceFiscalYear();
         setAssignToLoginName();
         getFundingSrcTypeList();
         getAdminRFList("Active", "Me", m_login_email, "All Resource", "All Program", 0, "All Request");
@@ -640,7 +641,12 @@ $(document).ready(function() {
         resetAddNoteFields();
     });
     
-    // filter refresh //////////////////////////////////////////////////////////
+    // fiscal year refresh button click ////////////////////////////////////////
+    $('#btn_refresh').click(function() {
+        reloadRFList();
+    });
+    
+    // filter refresh button click /////////////////////////////////////////////
     $('#adm_refresh').click(function() {        
         reloadRFList();
     });
@@ -782,6 +788,20 @@ function setAdminOption() {
     }
 }
 
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function setAssignToLoginName() {
     var pos = m_login_name.indexOf(' ');
     var first_name = m_login_name.substr(0, pos);
@@ -838,7 +858,7 @@ function refreshAdminRFList() {
 ////////////////////////////////////////////////////////////////////////////////
 function getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime) { 
     var admin_rf_list = new Array(); 
-    admin_rf_list = db_getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime);
+    admin_rf_list = db_getAdminRFList($('#all_fiscal_yrs').val(), Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime);
     
     $('#body_tr').empty();
     if (admin_rf_list.length !== 0) {
