@@ -271,6 +271,14 @@ function selObjective(Id, value) {
         
         $('#m5_impact_1').attr('placeholder', '');
     }
+    else if (value === "District-wide Technology Objective") {
+        $("#" + goalID).children().remove();
+        $("#" + goalID).append(setDistrictTechObjective());
+        $("#" + goalID).selectpicker('refresh');
+        $("#" + goalID).selectpicker('show');
+        
+        $('#m5_impact_1').attr('placeholder', '');
+    }
     else if (value === "Program Review-Strategy") {
         $('#m5_impact_' + objIDIndex).attr('placeholder', 'Please copy and paste the narrative into this box');
         $("#" + goalID).selectpicker('hide');
@@ -300,6 +308,32 @@ function setDistrictObjective() {
     result += "<option value='Objective 4.1 (Effective planning ...)'>Objective 4.1 (Effective planning ...)</option>";
     result += "<option value='Objective 4.2 (Improve efficiences ...)'>Objective 4.2 (Improve efficiences ...)</option>";
     result += "<option value='Objective 4.3 (Financial planning ...)'>Objective 4.3 (Financial planning ...)</option>";
+    
+    return result;
+}
+
+function setDistrictTechObjective() {
+    var result = "";
+    
+    result += "<option value='Objective 1.1 (Investigate and test ...)'>Objective 1.1 (Investigate and test ...)</option>";
+    result += "<option value='Objective 1.2 (Sustain a culture ...)'>Objective 1.2 (Sustain a culture ...)</option>";
+    result += "<option value='Objective 1.3 (Increase use ...)'>Objective 1.3 (Increase use ...)</option>";
+    result += "<option value='Objective 1.4 (Seek out innovation ...)'>Objective 1.4 (Seek out innovation ...)</option>";
+    result += "<option value='Objective 2.1 (Engage in team ...)'>Objective 2.1 (Engage in team ...)</option>";
+    result += "<option value='Objective 2.2 (Coordinate opportunities ...)'>Objective 2.2 (Coordinate opportunities ...)</option>";
+    result += "<option value='Objective 2.3 (Continue to support ...)'>Objective 2.3 (Continue to support ...)</option>";
+    result += "<option value='Objective 2.4 (Prioritize district-wide ...)'>Objective 2.4 (Prioritize district-wide ...)</option>";
+    result += "<option value='Objective 3.1 (Identify, investigate, ...)'>Objective 3.1 (Identify, investigate, ...)</option>";
+    result += "<option value='Objective 3.2 (Develop and expand ...)'>Objective 3.2 (Develop and expand ...)</option>";
+    result += "<option value='Objective 3.3 (Expand inter-segmental ...)'>Objective 3.3 (Expand inter-segmental ...)</option>";
+    result += "<option value='Objective 3.4 (Leverage data from ...)'>Objective 3.4 (Leverage data from ...)</option>";
+    result += "<option value='Objective 4.1 (Incorporate additional ...)'>Objective 4.1 (Incorporate additional ...)</option>";
+    result += "<option value='Objective 4.2 (Re-architect data ...)'>Objective 4.2 (Re-architect data ...)</option>";
+    result += "<option value='Objective 4.3 (Transform use of data ...)'>Objective 4.3 (Transform use of data ...)</option>";
+    result += "<option value='Objective 5.1 (Continue to implement ...)'>Objective 5.1 (Continue to implement ...)</option>";
+    result += "<option value='Objective 5.2 (Increase computing ...)'>Objective 5.2 (Increase computing ...)</option>";
+    result += "<option value='Objective 5.3 (Remain current with ...)'>Objective 5.3 (Remain current with ...)</option>";
+    result += "<option value='Objective 5.4 (Maintain security ...)'>Objective 5.4 (Maintain security ...)</option>";
     
     return result;
 }
