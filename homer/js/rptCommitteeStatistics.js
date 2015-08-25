@@ -16,7 +16,8 @@ var total_amount = 0.00;
 
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) { 
+    if (sessionStorage.key(0) !== null) {
+        rpt_getAllResourceFiscalYear();
         rpt_getCommitteeStatistics();
         rpt_setCommitteeStatisticsList();
     }
@@ -115,19 +116,6 @@ $(document).ready(function() {
         negBarColor: '#53ac2a'
     });
     
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('#nav_home').click(function() {
-        window.open('../home.html', '_self');
-        return false;
-    });
-    
-    $('#nav_logout').click(function() {
-        sessionStorage.clear();
-        window.open('../Login.html', '_self');
-        return false;
-    });
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // Initialize tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]"
@@ -139,6 +127,31 @@ $(document).ready(function() {
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
     $('.modal').appendTo("body");
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#nav_home').click(function() {
+        window.open('../home.html', '_self');
+        return false;
+    });
+    
+    $('#nav_logout').click(function() {
+        sessionStorage.clear();
+        window.open('../Login.html', '_self');
+        return false;
+    });
+    
+    $('#btn_refresh').click(function() {
+        rpt_resetCommitteeStatistics();
+        rpt_resetCommitteeStatisticsList();
+        
+        rpt_getCommitteeStatistics();
+        rpt_setCommitteeStatisticsList();
+    });
+    
+    // bootstrap selectpicker
+    $('.selectpicker').selectpicker();
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -208,9 +221,23 @@ $.fn['animatePanel'] = function() {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+function rpt_getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_rpt_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function rpt_getCommitteeStatistics() {
     var result = new Array();
-    result = db_rpt_getCommitteeStatistic();
+    result = db_rpt_getCommitteeStatistic($('#all_fiscal_yrs').val());
     
     total_count = result.length;
     for(var i = 0; i < result.length; i++) {     
@@ -278,4 +305,60 @@ function rpt_setCommitteeStatisticsList() {
     $('#ssa_amount').html(formatDollar(ssa_amount));
     $('#ssa_pct_amount').html(Number((ssa_amount/total_amount)*100).toFixed(2) + "% <i class='fa fa-level-up text-success'></i>");
     $('#cur_date_ssa').html("Last update: " + new Date().toLocaleDateString());
+}
+
+function rpt_resetCommitteeStatistics() {
+    apt_count = 0;
+    bdr_count = 0;
+    chp_count = 0;
+    iec_count = 0;
+    spa_count = 0;
+    ssa_count = 0;
+    total_count = 0;
+
+    apt_amount = 0.00;
+    bdr_amount = 0.00;
+    chp_amount = 0.00;
+    iec_amount = 0.00;
+    spa_amount = 0.00;
+    ssa_amount = 0.00;
+    total_amount = 0.00;
+}
+
+function rpt_resetCommitteeStatisticsList() {
+    $('#apt_count').html("");
+    $('#apt_pct_count').html("");
+    $('#apt_amount').html("");
+    $('#apt_pct_amount').html("");
+    $('#cur_date_apt').html("");
+    
+    $('#bdr_count').html("");
+    $('#bdr_pct_count').html("");
+    $('#bdr_amount').html("");
+    $('#bdr_pct_amount').html("");
+    $('#cur_date_bdr').html("");
+    
+    $('#chp_count').html("");
+    $('#chp_pct_count').html("");
+    $('#chp_amount').html("");
+    $('#chp_pct_amount').html("");
+    $('#cur_date_chp').html("");
+    
+    $('#iec_count').html("");
+    $('#iec_pct_count').html("");
+    $('#iec_amount').html("");
+    $('#iec_pct_amount').html("");
+    $('#cur_date_iec').html("");
+    
+    $('#spa_count').html("");
+    $('#spa_pct_count').html("");
+    $('#spa_amount').html("");
+    $('#spa_pct_amount').html("");
+    $('#cur_date_spa').html("");
+    
+    $('#ssa_count').html("");
+    $('#ssa_pct_count').html("");
+    $('#ssa_amount').html("");
+    $('#ssa_pct_amount').html("");
+    $('#cur_date_ssa').html("");
 }

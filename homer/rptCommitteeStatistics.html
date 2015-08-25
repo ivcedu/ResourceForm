@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
         <link rel="stylesheet" href="../../homer-1.5/fonts/pe-icon-7-stroke/css/helper.css"/>
         <link rel="stylesheet" href="../../homer-1.5/styles/style.css"/>
+        <!-- include css -->
+        <link rel="stylesheet" href="../../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
     </head>
     <body>
         <!-- Simple splash screen-->
@@ -64,6 +66,19 @@
                 <div class="row">
                     <div class="col-lg-12 text-center m-t-md">
                         <h2>Resource Request Committee Statistics</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="hpanel">
+                            <div class="panel-body">
+                                <div class="row form-horizontal">
+                                    <div class="col-lg-1 font-extra-bold" style="padding-top: 17px;">Fiscal Yrs:</div>
+                                    <div class="col-lg-2" style="padding-top: 10px;"><select class="selectpicker form-control" data-container="body" id="all_fiscal_yrs"></select></div>
+                                    <div class="col-lg-1" style="padding-top: 10px;"><button type="button" class="btn btn-primary" id="btn_refresh"><i class="fa fa-refresh"></i> Refresh</button></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -237,6 +252,8 @@
         <script src="../../homer-1.5/vendor/metisMenu/dist/metisMenu.min.js"></script>
         <script src="../../homer-1.5/vendor/iCheck/icheck.min.js"></script>
         <script src="../../homer-1.5/vendor/sparkline/index.js"></script>
+        <!-- include javascript -->
+        <script src="../../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
         <!-- javascript -->
         <script src="js/rptCommitteeStatistics.js"></script>
         <script src="js/db_rpt_access.js"></script>

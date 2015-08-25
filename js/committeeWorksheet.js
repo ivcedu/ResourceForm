@@ -59,7 +59,6 @@ var new_fs_23 = false;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
-        fiscal_year = "2015-2016"; //getFiscalYear();
         setFundingSrcList();
         setHideAllModal();
         setAdminOption();
@@ -245,6 +244,7 @@ $(document).ready(function() {
     $('table').on('click', '[id^="resource_id_"]', function(e) {
         e.preventDefault();
         resource_id = $(this).attr('id').replace("resource_id_", "");
+        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
         var title = $('#resource_title_full_' + resource_id).html();
         $('#mod_add_header_title').html(title);
         
@@ -392,6 +392,10 @@ $(document).ready(function() {
         var note = login_name + " updated " + fund_src_name + " funded amount: " + formatDollar(fund_amt);
         db_insertTransactions(resource_id, login_name, note);
         
+        alert("Funded amount has been updated successfully");
+        getResourceFundSrc();
+        getFundSrcList();
+        
         // old delete funding source and funded amount 
 //        var result = new Array();
 //        result = db_getResourceFundAmt(resource_id);
@@ -428,7 +432,6 @@ $(document).ready(function() {
                 }
                 else {
                     updateResourceFundSrc();
-                    deleteResourceFundAmtList();
                     note += login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
                 }
             }
@@ -443,9 +446,13 @@ $(document).ready(function() {
         if (result.length === 0) {
             db_insertResourceFundAmt(resource_id);
         }
+        
+        deleteResourceFundAmtList();
+        
         if (note !== "") {
             db_insertTransactions(resource_id, login_name, note);
         }
+        
         alert("Funding source has been updated successfully");
         getResourceFundSrc();
         getFundSrcList();
@@ -655,7 +662,7 @@ function getCommitteeWorksheetList() {
         for(var i = 0; i < result.length; i++) { 
             var str_totalAmount = formatDollar(Number(result[i]['TotalAmount']));
             var committee = setCommitteeValue(result[i]['APTC_Active'], result[i]['BDRPC_Active'], result[i]['CHPLDTF_Active'], result[i]['IEC_Active'], result[i]['SPAC_Active'], result[i]['SSAMMO_Active']);
-            setCommitteeWorksheetHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], str_totalAmount, result[i]['ResourceType'], result[i]['CreatorName'], committee);
+            setCommitteeWorksheetHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], str_totalAmount, result[i]['ResourceType'], result[i]['CreatorName'], committee, result[i]['FiscalYear']);
             
             setAllValue(result[i]['ResourceID'], result[i]['ALL_Median'], result[i]['ALL_Mean']);
 //            setMgrValue(result[i]['ResourceID'], result[i]['DepartMgr']);
@@ -670,7 +677,7 @@ function getCommitteeWorksheetList() {
     }
 }
 
-function setCommitteeWorksheetHTML(resource_id, title, amount, type, creator, committee) {
+function setCommitteeWorksheetHTML(resource_id, title, amount, type, creator, committee, fiscal_year) {
     var brief_title = textTruncate(25, title);
     
     var tbl_html = "<tr class='row_tr' id='res_tr_" + resource_id + "'>";
@@ -702,6 +709,7 @@ function setCommitteeWorksheetHTML(resource_id, title, amount, type, creator, co
     
     // hide html
     tbl_html += "<td class='span1' style='display: none;' id='resource_title_full_" + resource_id + "'>" + title + "</td>";
+    tbl_html += "<td class='span1' style='display: none;' id='resource_fiscal_year_" + resource_id + "'>" + fiscal_year + "</td>";
     tbl_html += "</tr>";
     
     $("#body_tr").append(tbl_html);
@@ -1060,73 +1068,73 @@ function updateResourceFundSrc() {
 }
 
 function deleteResourceFundAmtList() {
-    if (!new_fs_1) {
+    if (pre_fs_1 !== new_fs_1 && !new_fs_1) {
         deleteResourceFundAmtByFS("fs_1");
     }
-    if (!new_fs_2) {
+    if (pre_fs_2 !== new_fs_2 && !new_fs_2) {
         deleteResourceFundAmtByFS("fs_2");
     }
-    if (!new_fs_3) {
+    if (pre_fs_3 !== new_fs_3 && !new_fs_3) {
         deleteResourceFundAmtByFS("fs_3");
     }
-    if (!new_fs_4) {
+    if (pre_fs_4 !== new_fs_4 && !new_fs_4) {
         deleteResourceFundAmtByFS("fs_4");
     }
-    if (!new_fs_5) {
+    if (pre_fs_5 !== new_fs_5 && !new_fs_5) {
         deleteResourceFundAmtByFS("fs_5");
     }
-    if (!new_fs_6) {
+    if (pre_fs_6 !== new_fs_6 && !new_fs_6) {
         deleteResourceFundAmtByFS("fs_6");
     }
-    if (!new_fs_7) {
+    if (pre_fs_7 !== new_fs_7 && !new_fs_7) {
         deleteResourceFundAmtByFS("fs_7");
     }
-    if (!new_fs_8) {
+    if (pre_fs_8 !== new_fs_8 && !new_fs_8) {
         deleteResourceFundAmtByFS("fs_8");
     }
-    if (!new_fs_9) {
+    if (pre_fs_9 !== new_fs_9 && !new_fs_9) {
         deleteResourceFundAmtByFS("fs_9");
     }
-    if (!new_fs_10) {
+    if (pre_fs_10 !== new_fs_10 && !new_fs_10) {
         deleteResourceFundAmtByFS("fs_10");
     }
-    if (!new_fs_11) {
+    if (pre_fs_11 !== new_fs_11 && !new_fs_11) {
         deleteResourceFundAmtByFS("fs_11");
     }
-    if (!new_fs_12) {
+    if (pre_fs_12 !== new_fs_12 && !new_fs_12) {
         deleteResourceFundAmtByFS("fs_12");
     }
-    if (!new_fs_13) {
+    if (pre_fs_13 !== new_fs_13 && !new_fs_13) {
         deleteResourceFundAmtByFS("fs_13");
     }
-    if (!new_fs_14) {
+    if (pre_fs_14 !== new_fs_14 && !new_fs_14) {
         deleteResourceFundAmtByFS("fs_14");
     }
-    if (!new_fs_15) {
+    if (pre_fs_15 !== new_fs_15 && !new_fs_15) {
         deleteResourceFundAmtByFS("fs_15");
     }
-    if (!new_fs_16) {
+    if (pre_fs_16 !== new_fs_16 && !new_fs_16) {
         deleteResourceFundAmtByFS("fs_16");
     }
-    if (!new_fs_17) {
+    if (pre_fs_17 !== new_fs_17 && !new_fs_17) {
         deleteResourceFundAmtByFS("fs_17");
     }
-    if (!new_fs_18) {
+    if (pre_fs_18 !== new_fs_18 && !new_fs_18) {
         deleteResourceFundAmtByFS("fs_18");
     }
-    if (!new_fs_19) {
+    if (pre_fs_19 !== new_fs_19 && !new_fs_19) {
         deleteResourceFundAmtByFS("fs_19");
     }
-    if (!new_fs_20) {
+    if (pre_fs_20 !== new_fs_20 && !new_fs_20) {
         deleteResourceFundAmtByFS("fs_20");
     }
-    if (!new_fs_21) {
+    if (pre_fs_21 !== new_fs_21 && !new_fs_21) {
         deleteResourceFundAmtByFS("fs_21");
     }
-    if (!new_fs_22) {
+    if (pre_fs_22 !== new_fs_22 && !new_fs_22) {
         deleteResourceFundAmtByFS("fs_22");
     }
-    if (!new_fs_23) {
+    if (pre_fs_23 !== new_fs_23 && !new_fs_23) {
         deleteResourceFundAmtByFS("fs_23");
     }
 }
@@ -1519,9 +1527,11 @@ function updateResourceFundAmt() {
         
         var result = new Array();
         result = db_getFundSrcBudget(fiscal_year, fund_src_col);
-        var budget_amt = Number(result[0]['BudgetAmt']);
-        var new_balance_amt = budget_amt - funded_amt;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        if (result.length === 1) {
+            var budget_amt = Number(result[0]['BudgetAmt']);
+            var new_balance_amt = budget_amt - funded_amt;
+            db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        }
     }
     
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", total_amt);
@@ -1548,11 +1558,13 @@ function updateResourceFundAmtByFS(fund_src_col, fund_amt) {
     
     var result2 = new Array();
     result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
-    var budget_amt = Number(result2[0]['BudgetAmt']);
-    var balance_amt = Number(result2[0]['BalanceAmt']);
-    
-    var new_balance_amt = balance_amt + diff_fund_amt;
-    db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    if (result2.length === 1) {
+        var budget_amt = Number(result2[0]['BudgetAmt']);
+        var balance_amt = Number(result2[0]['BalanceAmt']);
+
+        var new_balance_amt = balance_amt - diff_fund_amt;
+        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    }
 }
 
 function deleteResourceFundAmt(fund_src_col, fund_amt) {
@@ -1567,11 +1579,13 @@ function deleteResourceFundAmt(fund_src_col, fund_amt) {
     
     var result2 = new Array();
     result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
-    var budget_amt = Number(result2[0]['BudgetAmt']);
-    var balance_amt = Number(result2[0]['BalanceAmt']);
-    
-    var new_balance_amt = balance_amt + fund_amt;
-    db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    if (result2.length === 1) {
+        var budget_amt = Number(result2[0]['BudgetAmt']);
+        var balance_amt = Number(result2[0]['BalanceAmt']);
+
+        var new_balance_amt = balance_amt + fund_amt;
+        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    }
 }
 
 function deleteResourceFundAmtByFS(fund_src_col) {
@@ -1587,11 +1601,13 @@ function deleteResourceFundAmtByFS(fund_src_col) {
     
     var result2 = new Array();
     result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
-    var budget_amt = Number(result2[0]['BudgetAmt']);
-    var balance_amt = Number(result2[0]['BalanceAmt']);
-    
-    var new_balance_amt = balance_amt + pre_fund_amt;
-    db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    if (result2.length === 1) {
+        var budget_amt = Number(result2[0]['BudgetAmt']);
+        var balance_amt = Number(result2[0]['BalanceAmt']);
+
+        var new_balance_amt = balance_amt + pre_fund_amt;
+        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

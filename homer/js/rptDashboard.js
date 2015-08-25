@@ -3,7 +3,8 @@ var total_amount = 0.00;
 
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) { 
+    if (sessionStorage.key(0) !== null) {
+        rpt_getAllResourceFiscalYear();
         rpt_getRFDashboard();
     }
     else {
@@ -101,19 +102,6 @@ $(document).ready(function() {
         negBarColor: '#53ac2a'
     });
     
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('#nav_home').click(function() {
-        window.open('../home.html', '_self');
-        return false;
-    });
-
-    $('#nav_logout').click(function() {
-        sessionStorage.clear();
-        window.open('../Login.html', '_self');
-        return false;
-    });
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // Initialize tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]"
@@ -125,6 +113,28 @@ $(document).ready(function() {
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
     $('.modal').appendTo("body");
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#nav_home').click(function() {
+        window.open('../home.html', '_self');
+        return false;
+    });
+
+    $('#nav_logout').click(function() {
+        sessionStorage.clear();
+        window.open('../Login.html', '_self');
+        return false;
+    });
+    
+    $('#btn_refresh').click(function() {
+        rpt_resetRFDashboard();
+        rpt_getRFDashboard();
+    });
+    
+    // bootstrap selectpicker
+    $('.selectpicker').selectpicker();
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -194,9 +204,23 @@ $.fn['animatePanel'] = function() {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+function rpt_getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_rpt_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function rpt_getRFDashboard() {
     var result = new Array();
-    result = db_rpt_getRFDashboard();
+    result = db_rpt_getRFDashboard($('#all_fiscal_yrs').val());
     
     for(var i = 0; i < result.length; i++) {         
         if (result[i]['RType'] === "Facilities") {
@@ -256,4 +280,55 @@ function rpt_getRFDashboard() {
     $('#rf_total_count').html(total_count);
     $('#rf_total_amount').html(formatDollar(total_amount));
     $('#cur_date').html("Last update: " + new Date().toLocaleDateString());
+}
+
+function rpt_resetRFDashboard() {
+    $('#fc_count').html("");
+    $('#fc_pct_count').html("");
+    $('#fc_amount').html("");
+    $('#fc_pct_amount').html("");
+    $('#cur_date_fc').html("");
+
+    $('#in_count').html("");
+    $('#in_pct_count').html("");
+    $('#in_amount').html("");
+    $('#in_pct_amount').html("");
+    $('#cur_date_in').html("");
+
+    $('#te_count').html("");
+    $('#te_pct_count').html("");
+    $('#te_amount').html("");
+    $('#te_pct_amount').html("");
+    $('#cur_date_te').html("");
+
+    $('#ot_count').html("");
+    $('#ot_pct_count').html("");
+    $('#ot_amount').html("");
+    $('#ot_pct_amount').html("");
+    $('#cur_date_ot').html("");
+
+    $('#cb_count').html("");
+    $('#cb_pct_count').html("");
+    $('#cb_amount').html("");
+    $('#cb_pct_amount').html("");
+    $('#cur_date_cb').html("");
+
+    $('#cm_count').html("");
+    $('#cm_pct_count').html("");
+    $('#cm_amount').html("");
+    $('#cm_pct_amount').html("");
+    $('#cur_date_cm').html("");
+
+    $('#st_count').html("");
+    $('#st_pct_count').html("");
+    $('#st_amount').html("");
+    $('#st_pct_amount').html("");
+    $('#cur_date_st').html("");
+
+    total_count = 0;
+    total_amount = 0.00;
+    
+    $('#rf_total_count').html("");
+    $('#rf_total_amount').html("");
+    $('#cur_date').html("");
 }

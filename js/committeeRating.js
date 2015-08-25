@@ -712,6 +712,8 @@ $(document).ready(function() {
         }
         
         resource_id = str_tr_id.replace("res_tr_", "");
+        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        
         $("[id^='res_tr_']").css('background-color', '');
         $("#res_tr_" + resource_id).css('background-color', '#CCCCFF');
     });
@@ -936,6 +938,7 @@ $(document).ready(function() {
         str_resource_id = str_resource_id.replace("iec_", "");
         str_resource_id = str_resource_id.replace("spa_", "");
         resource_id = str_resource_id;
+        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
 
         resetModalFinalDialog();
         var title = $('#resource_title_full_' + resource_id).html();
@@ -1144,6 +1147,9 @@ $(document).ready(function() {
         if (result.length === 0) {
             db_insertResourceFundAmt(resource_id);
         }
+        
+        deleteResourceFundAmtList();
+        
         if (note !== "") {
             db_insertTransactions(resource_id, login_name, note);
         }
@@ -2461,7 +2467,7 @@ function getCommitteeRatingList(committee, resource_type, program, fund_src, one
         for(var i = 0; i < result.length; i++) {
             var str_totalAmount = formatDollar(Number(result[i]['TotalAmount']));
             setCommitteeRatingListHTML(committee, result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['NeedBy'], result[i]['CreatorName'], 
-                                        result[i]['ResourceType'], result[i]['Funding'], str_totalAmount, i, result);
+                                        result[i]['ResourceType'], result[i]['Funding'], str_totalAmount, i, result, result[i]['FiscalYear']);
             
             if (!master_admin) {
                 setRatingEnable(result[i]['ResourceID'], i, result);
@@ -2481,7 +2487,7 @@ function getCommitteeRatingList(committee, resource_type, program, fund_src, one
     }
 }
 
-function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, resource_type, fund_src, total_amount, i, result) {
+function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, resource_type, fund_src, total_amount, i, result, fiscal_year) {
     var brief_ptitle = textTruncate(25, proposal_title);
     
     var tbl_html = "";
@@ -2495,6 +2501,7 @@ function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need
         tbl_html += "<td class='col_100'>" + need_by + "</td>";
         tbl_html += "<td class='col_150'>" + creator + "</td>";
         tbl_html += "<td class='col_150'>" + resource_type + "</td>";
+        tbl_html += "<td class='col_50' style='display: none;' id='resource_fiscal_year_" + resource_id + "'>" + fiscal_year + "</td>";
     }
     else {
         tbl_html += "<tr class='row_tr' id='res_tr_" + resource_id + "'>";
@@ -5436,6 +5443,78 @@ function updateResourceFundSrc(ResourceID) {
                             new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23, requestor_fs_comments);
 }
 
+function deleteResourceFundAmtList() {
+    if (pre_fs_1 !== new_fs_1 && !new_fs_1) {
+        deleteResourceFundAmtByFS("fs_1");
+    }
+    if (pre_fs_2 !== new_fs_2 && !new_fs_2) {
+        deleteResourceFundAmtByFS("fs_2");
+    }
+    if (pre_fs_3 !== new_fs_3 && !new_fs_3) {
+        deleteResourceFundAmtByFS("fs_3");
+    }
+    if (pre_fs_4 !== new_fs_4 && !new_fs_4) {
+        deleteResourceFundAmtByFS("fs_4");
+    }
+    if (pre_fs_5 !== new_fs_5 && !new_fs_5) {
+        deleteResourceFundAmtByFS("fs_5");
+    }
+    if (pre_fs_6 !== new_fs_6 && !new_fs_6) {
+        deleteResourceFundAmtByFS("fs_6");
+    }
+    if (pre_fs_7 !== new_fs_7 && !new_fs_7) {
+        deleteResourceFundAmtByFS("fs_7");
+    }
+    if (pre_fs_8 !== new_fs_8 && !new_fs_8) {
+        deleteResourceFundAmtByFS("fs_8");
+    }
+    if (pre_fs_9 !== new_fs_9 && !new_fs_9) {
+        deleteResourceFundAmtByFS("fs_9");
+    }
+    if (pre_fs_10 !== new_fs_10 && !new_fs_10) {
+        deleteResourceFundAmtByFS("fs_10");
+    }
+    if (pre_fs_11 !== new_fs_11 && !new_fs_11) {
+        deleteResourceFundAmtByFS("fs_11");
+    }
+    if (pre_fs_12 !== new_fs_12 && !new_fs_12) {
+        deleteResourceFundAmtByFS("fs_12");
+    }
+    if (pre_fs_13 !== new_fs_13 && !new_fs_13) {
+        deleteResourceFundAmtByFS("fs_13");
+    }
+    if (pre_fs_14 !== new_fs_14 && !new_fs_14) {
+        deleteResourceFundAmtByFS("fs_14");
+    }
+    if (pre_fs_15 !== new_fs_15 && !new_fs_15) {
+        deleteResourceFundAmtByFS("fs_15");
+    }
+    if (pre_fs_16 !== new_fs_16 && !new_fs_16) {
+        deleteResourceFundAmtByFS("fs_16");
+    }
+    if (pre_fs_17 !== new_fs_17 && !new_fs_17) {
+        deleteResourceFundAmtByFS("fs_17");
+    }
+    if (pre_fs_18 !== new_fs_18 && !new_fs_18) {
+        deleteResourceFundAmtByFS("fs_18");
+    }
+    if (pre_fs_19 !== new_fs_19 && !new_fs_19) {
+        deleteResourceFundAmtByFS("fs_19");
+    }
+    if (pre_fs_20 !== new_fs_20 && !new_fs_20) {
+        deleteResourceFundAmtByFS("fs_20");
+    }
+    if (pre_fs_21 !== new_fs_21 && !new_fs_21) {
+        deleteResourceFundAmtByFS("fs_21");
+    }
+    if (pre_fs_22 !== new_fs_22 && !new_fs_22) {
+        deleteResourceFundAmtByFS("fs_22");
+    }
+    if (pre_fs_23 !== new_fs_23 && !new_fs_23) {
+        deleteResourceFundAmtByFS("fs_23");
+    }
+}
+
 function getFundSrcType(fund_src_col) {
     var result = new Array();
     result = db_getFundSrcType(fund_src_col);
@@ -5832,15 +5911,17 @@ function updateResourceFundAmt(fs_col_amt, value) {
     // update fund src budget, balance and funded total
     var result = new Array();
     result = db_getFundSrcBudget(fiscal_year, fs_col);
-    var budget_amt = Number(result[0]['BudgetAmt']);
-    var fund_src_sum = db_getResourceFundAmtTotalSrc(fs_col_amt);
-    var new_balance_amt = budget_amt - Number(fund_src_sum);
-    
-    db_updateFundSrcBudget(fiscal_year, fs_col, budget_amt, new_balance_amt);
-    var fund_src_index = fs_col.replace("fs_", "");
-    
-    $('#fs_balance_' + fund_src_index).html(formatDollar(new_balance_amt));
-    $('#fs_funded_' + fund_src_index).html(formatDollar(Number(fund_src_sum)));
+    if (result.length === 1) {
+        var budget_amt = Number(result[0]['BudgetAmt']);
+        var fund_src_sum = db_getResourceFundAmtTotalSrc(fs_col_amt);
+        var new_balance_amt = budget_amt - Number(fund_src_sum);
+
+        db_updateFundSrcBudget(fiscal_year, fs_col, budget_amt, new_balance_amt);
+        var fund_src_index = fs_col.replace("fs_", "");
+
+        $('#fs_balance_' + fund_src_index).html(formatDollar(new_balance_amt));
+        $('#fs_funded_' + fund_src_index).html(formatDollar(Number(fund_src_sum)));
+    }
 }
 
 function deleteResourceFundAmt(fund_src_col) {
@@ -5857,11 +5938,35 @@ function deleteResourceFundAmt(fund_src_col) {
     
     var result2 = new Array();
     result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
-    var budget_amt = Number(result2[0]['BudgetAmt']);
-    var balance_amt = Number(result2[0]['BalanceAmt']);
+    if (result2.length === 1) {
+        var budget_amt = Number(result2[0]['BudgetAmt']);
+        var balance_amt = Number(result2[0]['BalanceAmt']);
+
+        var new_balance_amt = balance_amt + fund_amount;
+        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    }
+}
+
+function deleteResourceFundAmtByFS(fund_src_col) {
+    var fund_amt_col = fund_src_col + "_amt";
     
-    var new_balance_amt = balance_amt + fund_amount;
-    db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    var result = new Array();
+    result = db_getResourceFundAmt(resource_id);
+    
+    var total_amount = Number(result[0]['TotalAmount']);
+    var pre_fund_amt = Number(result[0][fund_amt_col]);
+    db_updateResourceFundAmtColumn(resource_id, fund_amt_col, 0.00);
+    db_updateResourceFundAmtColumn(resource_id, "TotalAmount", total_amount - pre_fund_amt);
+    
+    var result2 = new Array();
+    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    if (result2.length === 1) {
+        var budget_amt = Number(result2[0]['BudgetAmt']);
+        var balance_amt = Number(result2[0]['BalanceAmt']);
+
+        var new_balance_amt = balance_amt + pre_fund_amt;
+        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+    }
 }
 
 function getSelectedID_FundSrcColumn(selected_id) {

@@ -450,10 +450,10 @@ function getFiscalYear() {
     var yr = today.getFullYear();
     
     if (mon > 6) {
-        return (yr + 1) + "-" + (yr + 2);
+        return yr + "-" + (yr + 1);
     }
     else {
-        return yr + "-" + (yr + 1);
+        return (yr - 1) + "-" + yr;
     }
 }
 

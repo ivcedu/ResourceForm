@@ -1,6 +1,8 @@
 <?php
     require("config.php");
     
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
+    
     $query = "SELECT rffs.fs_1, rffs.fs_2, rffs.fs_3, rffs.fs_4, rffs.fs_5, rffs.fs_6, rffs.fs_7, rffs.fs_8, rffs.fs_9, rffs.fs_10, "
                 ."rffs.fs_11, rffs.fs_12, rffs.fs_13, rffs.fs_14, rffs.fs_15, rffs.fs_16, rffs.fs_17, rffs.fs_18, rffs.fs_19, rffs.fs_20, "
                 ."rffs.fs_21, rffs.fs_22, rffs.fs_23, "
@@ -22,7 +24,7 @@
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rffs ON rffs.ResourceID = resr.ResourceID "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundAmt] AS rsfa ON rsfa.ResourceID = resr.ResourceID "
-                ."WHERE resr.RSID <> 1 AND resr.RSID <> 18";
+                ."WHERE resr.FiscalYear = '".$FiscalYear."' AND resr.RSID <> 1 AND resr.RSID <> 18";
                
     $cmd = $dbConn->prepare($query);
     $cmd->execute();

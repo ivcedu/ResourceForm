@@ -1,10 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // db report get ///////////////////////////////////////////////////////////////
-function db_rpt_getRFDashboard() {
+function db_rpt_getRFDashboard(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_rpt_getRFDashboard.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -13,11 +14,12 @@ function db_rpt_getRFDashboard() {
     return result;
 }
 
-function db_rpt_getFundingSrc() {
+function db_rpt_getFundingSrc(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_rpt_getFundingSrc.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -26,11 +28,12 @@ function db_rpt_getFundingSrc() {
     return result;
 }
 
-function db_rpt_getFundSrcBudgetList() {
+function db_rpt_getFundSrcBudgetList(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_rpt_getFundSrcBudgetList.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -39,11 +42,25 @@ function db_rpt_getFundSrcBudgetList() {
     return result;
 }
 
-function db_rpt_getCommitteeStatistic() {
+function db_rpt_getCommitteeStatistic(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_rpt_getCommitteeStatistic.php",
+        data:{FiscalYear:FiscalYear},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_rpt_getAllResourceFiscalYear() {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_rpt_getAllResourceFiscalYear.php",
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

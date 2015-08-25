@@ -1,5 +1,7 @@
 <?php
     require("config.php");
+    
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
        
     $dbConn->setAttribute(constant('PDO::SQLSRV_ATTR_DIRECT_QUERY'), true);
     
@@ -19,11 +21,11 @@
                     ."ELSE 0.0 END AS TotalAmount "
                     ."FROM [IVCRESOURCES].[dbo].[Resource] AS resr LEFT JOIN [IVCRESOURCES].[dbo].[ResourceTypeItem] AS rtim ON rtim.ResourceID = resr.ResourceID "
                     ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
-                    ."WHERE resr.RSID <> 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+                    ."WHERE resr.FiscalYear = '".$FiscalYear."' AND resr.RSID <> 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
     
     $query_get_result = "SELECT RType, COUNT(RType) AS TotalCount, "
                         ."CONVERT(DECIMAL(5,2),(CONVERT(DECIMAL(5,2),COUNT(RType))/CONVERT(DECIMAL(5,2),(SELECT COUNT(RType) FROM #RESULT)))*100) AS Pct_Count, "
-                        ."SUM(Amount) AS TotalAmount, (SUM(Amount)/(SELECT SUM(Amount) FROM #RESULT))*100 AS Pct_Amount FROM #RESULT GROUP BY RType";
+                        ."SUM(Amount) AS TotalAmount, (SUM(Amount)/(SELECT CASE WHEN SUM(Amount) = 0 THEN 1 ELSE SUM(Amount) END FROM #RESULT))*100 AS Pct_Amount FROM #RESULT GROUP BY RType";
     
     $query_drop_table = "DROP TABLE #RESULT";
     

@@ -606,10 +606,10 @@ function setToday() {
     sessionStorage.setItem('m1_currentDate', curDate);
     
     // set fiscal yrs
-    var fiscal_yrs_1 = yr + "-" + (yr + 1);
-    var fiscal_yrs_2 = (yr + 1) + "-" + (yr + 2);
-    var fiscal_yrs_3 = (yr + 2) + "-" + (yr + 3);
-    var fiscal_yrs_4 = (yr + 3) + "-" + (yr + 4);
+    var fiscal_yrs_1 = (yr - 1) + "-" + yr;
+    var fiscal_yrs_2 = yr + "-" + (yr + 1);
+    var fiscal_yrs_3 = (yr + 1) + "-" + (yr + 2);
+    var fiscal_yrs_4 = (yr + 2) + "-" + (yr + 3);
     
     var fiscal_html = "<option value='" + fiscal_yrs_1 + "'>" + fiscal_yrs_1 + "</option>";
     fiscal_html += "<option value='" + fiscal_yrs_2 + "'>" + fiscal_yrs_2 + "</option>";

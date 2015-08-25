@@ -1,6 +1,8 @@
 <?php
     require("config.php");
     
+    $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
+    
     $query = "SELECT resr.ResourceID, "
                 ."rapt.Active AS APTC, "
                 ."rbdr.Active AS BDRPC, "
@@ -27,7 +29,7 @@
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON (riec.ResourceID = resr.ResourceID AND riec.Active = 1) "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON (rspa.ResourceID = resr.ResourceID AND rspa.Active = 1) "
                 ."LEFT JOIN [IVCRESOURCES].[dbo].[rateSSAMMO] AS rssa ON (rssa.ResourceID = resr.ResourceID AND rssa.Active = 1) "
-                ."WHERE resr.RSID <> 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+                ."WHERE resr.FiscalYear = '".$FiscalYear."' AND resr.RSID <> 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
                
     $cmd = $dbConn->prepare($query);
     $cmd->execute();

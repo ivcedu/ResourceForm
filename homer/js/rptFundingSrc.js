@@ -99,6 +99,7 @@ var fa_23_amount = 0.00;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) { 
+        rpt_getAllResourceFiscalYear();
         rpt_getFundingSrc();
         rpt_getFundSrcBudgetList();
     }
@@ -197,19 +198,6 @@ $(document).ready(function() {
         negBarColor: '#53ac2a'
     });
     
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('#nav_home').click(function() {
-        window.open('../home.html', '_self');
-        return false;
-    });
-    
-    $('#nav_logout').click(function() {
-        sessionStorage.clear();
-        window.open('../Login.html', '_self');
-        return false;
-    });
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // Initialize tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]"
@@ -221,6 +209,31 @@ $(document).ready(function() {
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
     $('.modal').appendTo("body");
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#nav_home').click(function() {
+        window.open('../home.html', '_self');
+        return false;
+    });
+    
+    $('#nav_logout').click(function() {
+        sessionStorage.clear();
+        window.open('../Login.html', '_self');
+        return false;
+    });
+    
+    $('#btn_refresh').click(function() {
+        rpt_resetFundingSrc();
+        rpt_resetFundSrcBudgetList();
+        
+        rpt_getFundingSrc();
+        rpt_getFundSrcBudgetList();
+    });
+    
+    // bootstrap selectpicker
+    $('.selectpicker').selectpicker();
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,9 +303,23 @@ $.fn['animatePanel'] = function() {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+function rpt_getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_rpt_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
 function rpt_getFundingSrc() {
     var result = new Array();
-    result = db_rpt_getFundingSrc();
+    result = db_rpt_getFundingSrc($('#all_fiscal_yrs').val());
     
     fs_total_count = result.length;
     for(var i = 0; i < result.length; i++) {         
@@ -531,7 +558,7 @@ function rpt_getFundingSrc() {
 
 function rpt_getFundSrcBudgetList() {
     var result = new Array();
-    result = db_rpt_getFundSrcBudgetList();
+    result = db_rpt_getFundSrcBudgetList($('#all_fiscal_yrs').val());
     
     for(var i = 0; i < result.length; i++) { 
         if (result[i]['FundSrcCol'] === "fs_1") {
@@ -903,4 +930,401 @@ function rpt_getFundSrcBudgetList() {
             $('#cur_date_fs_23').html("Last update: " + new Date().toLocaleDateString());
         }
     }
+}
+
+function rpt_resetFundingSrc() {
+    fs_1_count = 0;
+    fs_1_amount = 0.00;
+    fa_1_count = 0;
+    fa_1_amount = 0.00;
+    
+    fs_2_count = 0;
+    fs_2_amount = 0.00;
+    fa_2_count = 0;
+    fa_2_amount = 0.00;
+    
+    fs_3_count = 0;
+    fs_3_amount = 0.00;
+    fa_3_count = 0;
+    fa_3_amount = 0.00;
+    
+    fs_4_count = 0;
+    fs_4_amount = 0.00;
+    fa_4_count = 0;
+    fa_4_amount = 0.00;
+    
+    fs_5_count = 0;
+    fs_5_amount = 0.00;
+    fa_5_count = 0;
+    fa_5_amount = 0.00;
+    
+    fs_6_count = 0;
+    fs_6_amount = 0.00;
+    fa_6_count = 0;
+    fa_6_amount = 0.00;
+    
+    fs_7_count = 0;
+    fs_7_amount = 0.00;
+    fa_7_count = 0;
+    fa_7_amount = 0.00;
+    
+    fs_8_count = 0;
+    fs_8_amount = 0.00;
+    fa_8_count = 0;
+    fa_8_amount = 0.00;
+    
+    fs_9_count = 0;
+    fs_9_amount = 0.00;
+    fa_9_count = 0;
+    fa_9_amount = 0.00;
+    
+    fs_10_count = 0;
+    fs_10_amount = 0.00;
+    fa_10_count = 0;
+    fa_10_amount = 0.00;
+    
+    fs_11_count = 0;
+    fs_11_amount = 0.00;
+    fa_11_count = 0;
+    fa_11_amount = 0.00;
+    
+    fs_12_count = 0;
+    fs_12_amount = 0.00;
+    fa_12_count = 0;
+    fa_12_amount = 0.00;
+    
+    fs_13_count = 0;
+    fs_13_amount = 0.00;
+    fa_13_count = 0;
+    fa_12_amount = 0.00;
+    
+    fs_14_count = 0;
+    fs_14_amount = 0.00;
+    fa_14_count = 0;
+    fa_14_amount = 0.00;
+    
+    fs_15_count = 0;
+    fs_15_amount = 0.00;
+    fa_15_count = 0;
+    fa_15_amount = 0.00;
+    
+    fs_16_count = 0;
+    fs_16_amount = 0.00;
+    fa_16_count = 0;
+    fa_16_amount = 0.00;
+    
+    fs_17_count = 0;
+    fs_17_amount = 0.00;
+    fa_17_count = 0;
+    fa_17_amount = 0.00;
+    
+    fs_18_count = 0;
+    fs_18_amount = 0.00;
+    fa_18_count = 0;
+    fa_18_amount = 0.00;
+    
+    fs_19_count = 0;
+    fs_18_amount = 0.00;
+    fa_18_count = 0;
+    fa_18_amount = 0.00;
+    
+    fs_20_count = 0;
+    fs_20_amount = 0.00;
+    fa_20_count = 0;
+    fa_20_amount = 0.00;
+    
+    fs_21_count = 0;
+    fs_21_amount = 0.00;
+    fa_21_count = 0;
+    fa_21_amount = 0.00;
+    
+    fs_22_count = 0;
+    fs_22_amount = 0.00;
+    fa_22_count = 0;
+    fa_22_amount = 0.00;
+    
+    fs_23_count = 0;
+    fs_23_amount = 0.00;
+    fa_23_count = 0;
+    fa_23_amount = 0.00;
+            
+    fs_total_amount = 0.00;           
+}
+
+function rpt_resetFundSrcBudgetList() {
+    $('#fs_1_budget_amt').html("");
+    $('#fs_1_balance').html("");
+    $('#fs_1_count').html("");
+    $('#fs_1_pct_count').html("");
+    $('#fs_1_amount').html("");
+    $('#fs_1_pct_amount').html("");
+    $('#fa_1_count').html("");
+    $('#fa_1_pct_count').html("");
+    $('#fa_1_amount').html("");
+    $('#fa_1_pct_amount').html("");
+    $('#cur_date_fs_1').html("");
+    
+    $('#fs_2_budget_amt').html("");
+    $('#fs_2_balance').html("");
+    $('#fs_2_count').html("");
+    $('#fs_2_pct_count').html("");
+    $('#fs_2_amount').html("");
+    $('#fs_2_pct_amount').html("");
+    $('#fa_2_count').html("");
+    $('#fa_2_pct_count').html("");
+    $('#fa_2_amount').html("");
+    $('#fa_2_pct_amount').html("");
+    $('#cur_date_fs_2').html("");
+    
+    $('#fs_3_budget_amt').html("");
+    $('#fs_3_balance').html("");
+    $('#fs_3_count').html("");
+    $('#fs_3_pct_count').html("");
+    $('#fs_3_amount').html("");
+    $('#fs_3_pct_amount').html("");
+    $('#fa_3_count').html("");
+    $('#fa_3_pct_count').html("");
+    $('#fa_3_amount').html("");
+    $('#fa_3_pct_amount').html("");
+    $('#cur_date_fs_3').html("");
+    
+    $('#fs_4_budget_amt').html("");
+    $('#fs_4_balance').html("");
+    $('#fs_4_count').html("");
+    $('#fs_4_pct_count').html("");
+    $('#fs_4_amount').html("");
+    $('#fs_4_pct_amount').html("");
+    $('#fa_4_count').html("");
+    $('#fa_4_pct_count').html("");
+    $('#fa_4_amount').html("");
+    $('#fa_4_pct_amount').html("");
+    $('#cur_date_fs_4').html("");
+    
+    $('#fs_5_budget_amt').html("");
+    $('#fs_5_balance').html("");
+    $('#fs_5_count').html("");
+    $('#fs_5_pct_count').html("");
+    $('#fs_5_amount').html("");
+    $('#fs_5_pct_amount').html("");
+    $('#fa_5_count').html("");
+    $('#fa_5_pct_count').html("");
+    $('#fa_5_amount').html("");
+    $('#fa_5_pct_amount').html("");
+    $('#cur_date_fs_5').html("");
+    
+    $('#fs_6_budget_amt').html("");
+    $('#fs_6_balance').html("");
+    $('#fs_6_count').html("");
+    $('#fs_6_pct_count').html("");
+    $('#fs_6_amount').html("");
+    $('#fs_6_pct_amount').html("");
+    $('#fa_6_count').html("");
+    $('#fa_6_pct_count').html("");
+    $('#fa_6_amount').html("");
+    $('#fa_6_pct_amount').html("");
+    $('#cur_date_fs_6').html("");
+    
+    $('#fs_7_budget_amt').html("");
+    $('#fs_7_balance').html("");
+    $('#fs_7_count').html("");
+    $('#fs_7_pct_count').html("");
+    $('#fs_7_amount').html("");
+    $('#fs_7_pct_amount').html("");
+    $('#fa_7_count').html("");
+    $('#fa_7_pct_count').html("");
+    $('#fa_7_amount').html("");
+    $('#fa_7_pct_amount').html("");
+    $('#cur_date_fs_7').html("");
+    
+    $('#fs_8_budget_amt').html("");
+    $('#fs_8_balance').html("");
+    $('#fs_8_count').html("");
+    $('#fs_8_pct_count').html("");
+    $('#fs_8_amount').html("");
+    $('#fs_8_pct_amount').html("");
+    $('#fa_8_count').html("");
+    $('#fa_8_pct_count').html("");
+    $('#fa_8_amount').html("");
+    $('#fa_8_pct_amount').html("");
+    $('#cur_date_fs_8').html("");
+    
+    $('#fs_9_budget_amt').html("");
+    $('#fs_9_balance').html("");
+    $('#fs_9_count').html("");
+    $('#fs_9_pct_count').html("");
+    $('#fs_9_amount').html("");
+    $('#fs_9_pct_amount').html("");
+    $('#fa_9_count').html("");
+    $('#fa_9_pct_count').html("");
+    $('#fa_9_amount').html("");
+    $('#fa_9_pct_amount').html("");
+    $('#cur_date_fs_9').html("");
+    
+    $('#fs_10_budget_amt').html("");
+    $('#fs_10_balance').html("");
+    $('#fs_10_count').html("");
+    $('#fs_10_pct_count').html("");
+    $('#fs_10_amount').html("");
+    $('#fs_10_pct_amount').html("");
+    $('#fa_10_count').html("");
+    $('#fa_10_pct_count').html("");
+    $('#fa_10_amount').html("");
+    $('#fa_10_pct_amount').html("");
+    $('#cur_date_fs_10').html("");
+    
+    $('#fs_11_budget_amt').html("");
+    $('#fs_11_balance').html("");
+    $('#fs_11_count').html("");
+    $('#fs_11_pct_count').html("");
+    $('#fs_11_amount').html("");
+    $('#fs_11_pct_amount').html("");
+    $('#fa_11_count').html("");
+    $('#fa_11_pct_count').html("");
+    $('#fa_11_amount').html("");
+    $('#fa_11_pct_amount').html("");
+    $('#cur_date_fs_11').html("");
+    
+    $('#fs_12_budget_amt').html("");
+    $('#fs_12_balance').html("");
+    $('#fs_12_count').html("");
+    $('#fs_12_pct_count').html("");
+    $('#fs_12_amount').html("");
+    $('#fs_12_pct_amount').html("");
+    $('#fa_12_count').html("");
+    $('#fa_12_pct_count').html("");
+    $('#fa_12_amount').html("");
+    $('#fa_12_pct_amount').html("");
+    $('#cur_date_fs_12').html("");
+    
+    $('#fs_13_budget_amt').html("");
+    $('#fs_13_balance').html("");
+    $('#fs_13_count').html("");
+    $('#fs_13_pct_count').html("");
+    $('#fs_13_amount').html("");
+    $('#fs_13_pct_amount').html("");
+    $('#fa_13_count').html("");
+    $('#fa_13_pct_count').html("");
+    $('#fa_13_amount').html("");
+    $('#fa_13_pct_amount').html("");
+    $('#cur_date_fs_13').html("");
+    
+    $('#fs_14_budget_amt').html("");
+    $('#fs_14_balance').html("");
+    $('#fs_14_count').html("");
+    $('#fs_14_pct_count').html("");
+    $('#fs_14_amount').html("");
+    $('#fs_14_pct_amount').html("");
+    $('#fa_14_count').html("");
+    $('#fa_14_pct_count').html("");
+    $('#fa_14_amount').html("");
+    $('#fa_14_pct_amount').html("");
+    $('#cur_date_fs_14').html("");
+    
+    $('#fs_15_budget_amt').html("");
+    $('#fs_15_balance').html("");
+    $('#fs_15_count').html("");
+    $('#fs_15_pct_count').html("");
+    $('#fs_15_amount').html("");
+    $('#fs_15_pct_amount').html("");
+    $('#fa_15_count').html("");
+    $('#fa_15_pct_count').html("");
+    $('#fa_15_amount').html("");
+    $('#fa_15_pct_amount').html("");
+    $('#cur_date_fs_15').html("");
+    
+    $('#fs_16_budget_amt').html("");
+    $('#fs_16_balance').html("");
+    $('#fs_16_count').html("");
+    $('#fs_16_pct_count').html("");
+    $('#fs_16_amount').html("");
+    $('#fs_16_pct_amount').html("");
+    $('#fa_16_count').html("");
+    $('#fa_16_pct_count').html("");
+    $('#fa_16_amount').html("");
+    $('#fa_16_pct_amount').html("");
+    $('#cur_date_fs_16').html("");
+    
+    $('#fs_17_budget_amt').html("");
+    $('#fs_17_balance').html("");
+    $('#fs_17_count').html("");
+    $('#fs_17_pct_count').html("");
+    $('#fs_17_amount').html("");
+    $('#fs_17_pct_amount').html("");
+    $('#fa_17_count').html("");
+    $('#fa_17_pct_count').html("");
+    $('#fa_17_amount').html("");
+    $('#fa_17_pct_amount').html("");
+    $('#cur_date_fs_17').html("");
+    
+    $('#fs_18_budget_amt').html("");
+    $('#fs_18_balance').html("");
+    $('#fs_18_count').html("");
+    $('#fs_18_pct_count').html("");
+    $('#fs_18_amount').html("");
+    $('#fs_18_pct_amount').html("");
+    $('#fa_18_count').html("");
+    $('#fa_18_pct_count').html("");
+    $('#fa_18_amount').html("");
+    $('#fa_18_pct_amount').html("");
+    $('#cur_date_fs_18').html("");
+    
+    $('#fs_19_budget_amt').html("");
+    $('#fs_19_balance').html("");
+    $('#fs_19_count').html("");
+    $('#fs_19_pct_count').html("");
+    $('#fs_19_amount').html("");
+    $('#fs_19_pct_amount').html("");
+    $('#fa_19_count').html("");
+    $('#fa_19_pct_count').html("");
+    $('#fa_19_amount').html("");
+    $('#fa_19_pct_amount').html("");
+    $('#cur_date_fs_19').html("");
+    
+    $('#fs_20_budget_amt').html("");
+    $('#fs_20_balance').html("");
+    $('#fs_20_count').html("");
+    $('#fs_20_pct_count').html("");
+    $('#fs_20_amount').html("");
+    $('#fs_20_pct_amount').html("");
+    $('#fa_20_count').html("");
+    $('#fa_20_pct_count').html("");
+    $('#fa_20_amount').html("");
+    $('#fa_20_pct_amount').html("");
+    $('#cur_date_fs_20').html("");
+    
+    $('#fs_21_budget_amt').html("");
+    $('#fs_21_balance').html("");
+    $('#fs_21_count').html("");
+    $('#fs_21_pct_count').html("");
+    $('#fs_21_amount').html("");
+    $('#fs_21_pct_amount').html("");
+    $('#fa_21_count').html("");
+    $('#fa_21_pct_count').html("");
+    $('#fa_21_amount').html("");
+    $('#fa_21_pct_amount').html("");
+    $('#cur_date_fs_21').html("");
+    
+    $('#fs_22_budget_amt').html("");
+    $('#fs_22_balance').html("");
+    $('#fs_22_count').html("");
+    $('#fs_22_pct_count').html("");
+    $('#fs_22_amount').html("");
+    $('#fs_22_pct_amount').html("");
+    $('#fa_22_count').html("");
+    $('#fa_22_pct_count').html("");
+    $('#fa_22_amount').html("");
+    $('#fa_22_pct_amount').html("");
+    $('#cur_date_fs_22').html("");
+    
+    $('#fs_23_budget_amt').html("");
+    $('#fs_23_balance').html("");
+    $('#fs_23_count').html("");
+    $('#fs_23_pct_count').html("");
+    $('#fs_23_amount').html("");
+    $('#fs_23_pct_amount').html("");
+    $('#fa_23_count').html("");
+    $('#fa_23_pct_count').html("");
+    $('#fa_23_amount').html("");
+    $('#fa_23_pct_amount').html("");
+    $('#cur_date_fs_23').html("");
 }
