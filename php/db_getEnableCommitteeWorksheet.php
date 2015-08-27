@@ -1,7 +1,7 @@
 <?php
     require("config.php");
 
-    $query = "SELECT EnableDate FROM [IVCRESOURCES].[dbo].[EnableSubmitBtn]";
+    $query = "SELECT EnableDate FROM [IVCRESOURCES].[dbo].[EnableCommitteeWorksheet]";
     
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 

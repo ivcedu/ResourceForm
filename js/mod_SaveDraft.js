@@ -932,11 +932,12 @@ function db_getAdminRFList(FiscalYear, Status, StageLevel, StageAppEmail, Resour
     return result;
 }
 
-function db_getCommitteeWorksheetList() {
+function db_getCommitteeWorksheetList(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getCommitteeWorksheetList.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -1348,6 +1349,32 @@ function db_getEnableSubmitBtn() {
     $.ajax({
         type:"POST",
         url:"php/db_getEnableSubmitBtn.php",
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getEnableMgrWorksheet() {
+    var result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/db_getEnableMgrWorksheet.php",
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getEnableCommitteeWorksheet() {
+    var result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/db_getEnableCommitteeWorksheet.php",
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -3496,6 +3523,20 @@ function db_updateRFStatus(ResourceID, Status, ApproverID) {
     return Result;
 }
 
+function db_updateRFFiscalYear(ResourceID, FiscalYear) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateRFFiscalYear.php",
+        data:{ResourceID:ResourceID, FiscalYear:FiscalYear},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
 function db_updateRFSubmissionDate(ResourceID) {
     var Result = false;
     $.ajax({
@@ -4461,6 +4502,48 @@ function db_updateEnableCommitteeRating(ECRatingID, StartDate, EndDate) {
         type:"POST",
         url:"php/db_updateEnableCommitteeRating.php",
         data:{ECRatingID:ECRatingID, StartDate:StartDate, EndDate:EndDate},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateEnableSubmitBtn(EnableDate) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateEnableCommitteeRating.php",
+        data:{EnableDate:EnableDate},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateEnableMgrWorksheet(EnableDate) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateEnableMgrWorksheet.php",
+        data:{EnableDate:EnableDate},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateEnableCommitteeWorksheet(EnableDate) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateEnableCommitteeWorksheet.php",
+        data:{EnableDate:EnableDate},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);

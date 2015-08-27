@@ -7,6 +7,7 @@ window.onload = function() {
     $('#m5_goal_1').selectpicker('hide');
     
     if (sessionStorage.key(0) !== null) {
+        $('#m5_ref_link').hide();
         var curPgs = sessionStorage.getItem('m5_pgNum');
         if (curPgs === "Page5") { 
             var m5_index = sessionStorage.getItem('m5_index');
@@ -229,6 +230,8 @@ function btnAddObjective() {
     tbody += "<option value='AUR-Strategy'>AUR-Strategy</option>";
     tbody += "<option value='Program Review-Strategy'>Program Review-Strategy</option>";
     tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
+    tbody += "<option value='District-wide Technology Objective'>District-wide Technology Objective</option>";
+    tbody += "<option value='College Technology Plan'>College Technology Plan</option>";
     tbody += "</select>";
     tbody += "</div>";
     tbody += "<div class='row-fluid'>";
@@ -246,6 +249,7 @@ function btnAddObjective() {
     $('#' + goalID).selectpicker('refresh');
     $('#' + goalID).selectpicker('hide');
     $('#' + impactID).autosize();
+    $('#m5_ref_link').hide();
     
     index_obj = new_index_obj;
 }
@@ -268,24 +272,40 @@ function selObjective(Id, value) {
         $("#" + goalID).append(setDistrictObjective());
         $("#" + goalID).selectpicker('refresh');
         $("#" + goalID).selectpicker('show');
-        
         $('#m5_impact_1').attr('placeholder', '');
+        $('#m5_ref_link').prop('href', 'doc/District-wide_Objective.pdf');
+        $('#m5_ref_link').html(value);
+        $('#m5_ref_link').show();
     }
     else if (value === "District-wide Technology Objective") {
         $("#" + goalID).children().remove();
         $("#" + goalID).append(setDistrictTechObjective());
         $("#" + goalID).selectpicker('refresh');
         $("#" + goalID).selectpicker('show');
-        
         $('#m5_impact_1').attr('placeholder', '');
+        $('#m5_ref_link').prop('href', 'doc/SOCCCD_Technology_Master_Plan_Final_Draft_August_2015.pdf');
+        $('#m5_ref_link').html(value);
+        $('#m5_ref_link').show();
+    }
+    else if (value === "College Technology Plan") {
+        $("#" + goalID).children().remove();
+        $("#" + goalID).append(setCollegeTechnologyPlan());
+        $("#" + goalID).selectpicker('refresh');
+        $("#" + goalID).selectpicker('show');
+        $('#m5_impact_1').attr('placeholder', '');
+        $('#m5_ref_link').prop('href', 'doc/IVC_Technology_Plan_2016-2021.pdf');
+        $('#m5_ref_link').html(value);
+        $('#m5_ref_link').show();
     }
     else if (value === "Program Review-Strategy") {
         $('#m5_impact_' + objIDIndex).attr('placeholder', 'Please copy and paste the narrative into this box');
         $("#" + goalID).selectpicker('hide');
+        $('#m5_ref_link').hide();
     }
     else {
         $('#m5_impact_' + objIDIndex).attr('placeholder', '');
         $("#" + goalID).selectpicker('hide');
+        $('#m5_ref_link').hide();
     }
 }
 
@@ -338,6 +358,35 @@ function setDistrictTechObjective() {
     return result;
 }
 
+function setCollegeTechnologyPlan() {
+    var result = "";
+    
+    //////////////////////////Objective 2.4 (Prioritize district-wide ...)
+    result += "<option value='Gov-Standards for hardware and software'>Gov-Standards for hardware and software</option>";
+    result += "<option value='Gov-Tools for decision making abilities'>Gov-Tools for decision making abilities</option>";
+    result += "<option value='Gov-Review of Technology plan'>Gov-Review of Technology plan</option>";
+    result += "<option value='App-Replace paper-based forms'>App-Replace paper-based forms</option>";
+    result += "<option value='App-Alternative computing devices'>App-Alternative computing devices</option>";
+    result += "<option value='App-Video technology'>App-Video technology</option>";
+    result += "<option value='App-Campus communications and emergency'>App-Campus communications and emergency</option>";
+    result += "<option value='App-Campus efficiencies'>App-Campus efficiencies</option>";
+    result += "<option value='App-Colleges web presence'>App-Colleges web presence</option>";
+    result += "<option value='Net-Technology refresh'>Net-Technology refresh</option>";
+    result += "<option value='Net-Business continuity plans and systems'>Net-Business continuity plans and systems</option>";
+    result += "<option value='Net-Virtualization technology'>Net-Virtualization technology</option>";
+    result += "<option value='Net-Network security'>Net-Network security</option>";
+    result += "<option value='Net-Instructional electronic devices'>Net-Instructional electronic devices</option>";
+    result += "<option value='Ops-Help Desk ticketing system'>Ops-Help Desk ticketing system</option>";
+    result += "<option value='Ops-Online Education training center'>Ops-Online Education training center</option>";
+    result += "<option value='Ops-SharePoint training'>Ops-SharePoint training</option>";
+    result += "<option value='Ops-Professional development opportunities'>Ops-Professional development opportunities</option>";
+    result += "<option value='Ops-Professional development support'>Ops-Professional development support</option>";
+    result += "<option value='Ops-Technology Services staff expansion'>Ops-Technology Services staff expansion</option>";
+    result += "<option value='Ops-Software delivery system'>Ops-Software delivery system</option>";
+    
+    return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 function saveLocalData() {
     localData_setPg5(index_obj);
@@ -374,6 +423,8 @@ function setLocalData(index, objID, goalID, impactID) {
         tbody += "<option value='AUR-Strategy'>AUR-Strategy</option>";
         tbody += "<option value='Program Review-Strategy'>Program Review-Strategy</option>";
         tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
+        tbody += "<option value='District-wide Technology Objective'>District-wide Technology Objective</option>";
+        tbody += "<option value='College Technology Plan'>College Technology Plan</option>";
         tbody += "</select>";
         tbody += "</div>";
         tbody += "<div class='row-fluid'>";
@@ -402,6 +453,36 @@ function setLocalData(index, objID, goalID, impactID) {
         $('#' + goalID).val(sessionStorage.getItem(goalID));
         $('#' + goalID).selectpicker('refresh');
         $('#' + goalID).selectpicker('show');
+        if (index === index_obj) {
+            $('#m5_ref_link').prop('href', 'doc/District-wide_Objective.pdf');
+            $('#m5_ref_link').html(objective);
+            $('#m5_ref_link').show();
+        }
+    }
+    else if (objective === "District-wide Technology Objective") {
+        $("#" + goalID).append(setDistrictTechObjective());
+        $('#' + goalID).val(sessionStorage.getItem(goalID));
+        $('#' + goalID).selectpicker('refresh');
+        $('#' + goalID).selectpicker('show');
+        if (index === index_obj) {
+            $('#m5_ref_link').prop('href', 'doc/IVC_Technology_Plan_2016-2021.pdf');
+            $('#m5_ref_link').html(objective);
+            $('#m5_ref_link').show();
+        }
+    }
+    else if (objective === "College Technology Plan") {
+        $("#" + goalID).append(setCollegeTechnologyPlan());
+        $('#' + goalID).val(sessionStorage.getItem(goalID));
+        $('#' + goalID).selectpicker('refresh');
+        $('#' + goalID).selectpicker('show');
+        if (index === index_obj) {
+            $('#m5_ref_link').prop('href', 'doc/IVC_Technology_Plan_2016-2021.pdf');
+            $('#m5_ref_link').html(objective);
+            $('#m5_ref_link').show();
+        }
+    }
+    else {
+        $('#m5_ref_link').hide();
     }
 }
 

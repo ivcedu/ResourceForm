@@ -48,24 +48,31 @@
                 </div>
             </div>
             
+            <div class="row-fluid" style="padding-bottom: 10px;">
+                <div class="span2" style="padding-top: 5px;"><b>Fiscal Yrs:</b></div>
+                <div class="span2 form-horizontal"><select class="selectpicker form-control" data-container="body" id="all_fiscal_yrs"></select></div>
+                <div class="span2"><button class="btn btn-success span12" id="btn_refresh"><i class="icon-refresh icon-white"></i> Refresh</button></div>
+            </div>
             <!-- RF List section  -->
-            <table class="table tablesorter table-condensed table-bordered" id="rf_list">
-                <thead style="font-size: 90%; background-color: grey;" id="head_tr">
-                    <tr id="res_tr_header">
-                        <th class="col_50" style="text-align: left;"><a href="#" style="color: white;">ID</a></th>
-                        <th class="col_30" id="header_edit_raw"></th>
-                        <th class="col_200" style="text-align: left;"><a href="#" style="color: white;">Proposal Title</a></th>
-                        <th class="col_100" style="text-align: right;"><a href="#" style="color: white;">T. Amount</a></th>
-                        <th class="col_150" style="text-align: left;"><a href="#" style="color: white;">Resource Type</a></th>
-                        <th class="col_150" style="text-align: left;"><a href="#" style="color: white;">Creator</a></th>
-                        <th class="col_100" style="text-align: left;"><a href="#" style="color: white;">Committee</a></th>
-                        <th class="col_50" style="text-align: center;" id="header_all_median"><a href="#" style="color: white;">Overall Median</a></th>
-                        <th class="col_50" style="text-align: center;" id="header_all_mean"><a href="#" style="color: white;">Overall Mean</a></th>
-                    </tr>
-                </thead>
-                <tbody style="font-size: 90%;" id="body_tr">
-                </tbody>
-            </table>
+            <div class="row-fluid">
+                <table class="table tablesorter table-condensed table-bordered" id="rf_list">
+                    <thead style="font-size: 90%; background-color: grey;" id="head_tr">
+                        <tr id="res_tr_header">
+                            <th class="col_50" style="text-align: left;"><a href="#" style="color: white;">ID</a></th>
+                            <th class="col_30" id="header_edit_raw"></th>
+                            <th class="col_200" style="text-align: left;"><a href="#" style="color: white;">Proposal Title</a></th>
+                            <th class="col_100" style="text-align: right;"><a href="#" style="color: white;">T. Amount</a></th>
+                            <th class="col_150" style="text-align: left;"><a href="#" style="color: white;">Resource Type</a></th>
+                            <th class="col_150" style="text-align: left;"><a href="#" style="color: white;">Creator</a></th>
+                            <th class="col_100" style="text-align: left;"><a href="#" style="color: white;">Committee</a></th>
+                            <th class="col_50" style="text-align: center;" id="header_all_median"><a href="#" style="color: white;">Overall Median</a></th>
+                            <th class="col_50" style="text-align: center;" id="header_all_mean"><a href="#" style="color: white;">Overall Mean</a></th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 90%;" id="body_tr">
+                    </tbody>
+                </table>
+            </div>
             
             <!-- Modal admin option -->
             <div class="modal hide fade" id="mod_admin_option">
@@ -182,29 +189,6 @@
                                 <div class="span12" id="fund_source_comments"></div>
                             </div>
                         </div>
-                        <!--
-                        <div id="mod_body_section_fund_src">
-                            <div class="row-fluid" style="background-color: grey; color: white; display: inline-block; line-height: 30px; vertical-align: middle; font-weight: bold;">
-                                <div class="span5">Funding Source</div>
-                                <div class="span3">Balance</div>
-                                <div class="span3">Funded Amt</div>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="span5 form-horizontal">
-                                    <select class="selectpicker span12" data-container="body" id="mod_body_new_fund_src">
-                                    </select>
-                                </div>
-                                <div class='span3 form-horizontal'>
-                                    <button class="btn span12" id="mod_body_btn_new_fund_src"><i class="icon-plus-sign icon-black"></i> Add</button>
-                                </div>
-                                <div class="span3 offset1">
-                                    <button class="btn btn-primary span12" id="mod_body_btn_update_fund_src"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
-                                </div>
-                            </div>
-                            <div id="mod_body_fund_src_list" style="padding-top: 10px;">
-                            </div>
-                        </div>
-                        -->
                     </div>
                     <div class="row-fluid">
                         <div class="row-fluid">

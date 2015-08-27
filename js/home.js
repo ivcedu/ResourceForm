@@ -9,6 +9,7 @@ window.onload = function() {
         var loginName = sessionStorage.getItem('m1_loginName');
         $('#logn_name').text('Welcome ' + loginName);
         $('#mod_popup_cancel').modal('hide');
+        $('#mod_popup_restart').modal('hide');
         
         // administrator button
         $('#show_admin').hide();
@@ -124,19 +125,59 @@ $(document).ready(function() {
     
     // delete resource form ////////////////////////////////////////////////////
     $(document).on('click', 'button[id^="btn_delete_RF_"]', function() {
-        var currentId = $(this).attr('id');
-        var ID = currentId.replace("btn_delete_RF_", "");
+        var ID = $(this).attr('id').replace("btn_delete_RF_", "");
         sessionStorage.setItem('m1_ResourceID', ID);
         $('#mod_popup_cancel').modal('show');
     });
     
-    $('#mod_cancel_yes').click(function() {
-//        var ResourceID = sessionStorage.getItem('m1_ResourceID');
-//        var data = db_getResourceStep(ResourceID);
-//        setDraftLocalData(data[0][0]);
+    // restart resource form ///////////////////////////////////////////////////
+    $(document).on('click', 'button[id^="btn_restart_RF_"]', function() {
+        var ID = $(this).attr('id').replace("btn_restart_RF_", "");
+        sessionStorage.setItem('m1_ResourceID', ID);
+        var ptitle_full = $('#ptitle_full_' + ID).html();
         
+        var mod_restart_body = "Are you sure you want to restart " + ptitle_full + " for consideration for Fiscal Year: ";
+        mod_restart_body += getFiscalYear() + "? Click Yes to continue or No to cancel this request. If Yes, If you select Yes, ";
+        mod_restart_body += "you can find your request in the Fiscal Year: " + getFiscalYear() + " list located on the home screen.";
+        $('#mod_restart_body').html(mod_restart_body);
+        $('#mod_popup_restart').modal('show');
+    });
+    
+    $('#mod_cancel_yes').click(function() {        
         deleteAttachFileByResourceID();
         mod_deleteResource();
+        
+        $("#h_RFList").empty();
+        getLoginUserRFList();
+    });
+    
+    $('#mod_restart_yes').click(function() {   
+        var resource_id = sessionStorage.getItem('m1_ResourceID');     
+        // delete resource
+        db_deleteResourceStage(resource_id);
+        db_deletePriority(resource_id);
+        // delete mgr level rating
+        db_deleterateMgr(resource_id);
+        db_deleterateVPP(resource_id);
+        // delete committee rating
+        db_deleterateAll(resource_id);
+        db_deleterateAPTC(resource_id);
+        db_deleterateBDRPC(resource_id);
+        db_deleterateCHPLDTF(resource_id);
+        db_deleterateIEC(resource_id);
+        db_deleterateSPAC(resource_id);
+        db_deleterateSSAMMO(resource_id);
+        
+        db_insertBacktodraft(resource_id, 1);
+        db_updateResourcePage(resource_id, "Page1");
+        
+        db_updateRFStatus(resource_id, 1, 0);
+        db_updateRFFiscalYear(resource_id, getFiscalYear());
+        
+        // insert transaction
+        var login_name = sessionStorage.getItem('m1_loginName');
+        var note = login_name + " restart for fiscal year: " + getFiscalYear();
+        db_insertTransactions(resource_id, login_name, note);
         
         $("#h_RFList").empty();
         getLoginUserRFList();
@@ -200,7 +241,7 @@ function getLoginUserRFList() {
 function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, LinkNum) {
     var ptitle_brief = textTruncate(35, PTile);
     
-    var tbody = "<div class='row'>";
+    var tbody = "<div class='row' style='padding-bottom: 5px;'>";
     tbody += "<div class='span4'><a data-toggle='modal' href=# id='ptitle_brief_" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
     tbody += "<div class='span1 text-left'>" + LinkNum + "</div>"; 
     tbody += "<div class='span2'>" + RType + "</div>";  
@@ -208,6 +249,9 @@ function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Lin
     tbody += "<div class='span2 text-right'>" + TotalAmount + "</div>";
     if (RStatus === "Draft") {
         tbody += "<div class='span1 text-center'><button class='btn btn-mini' id='btn_delete_RF_" + ResourceID + "'><i class='icon-trash icon-black'></i></button></div>";
+    }
+    else if (RStatus === "Closed" || RStatus === "Partially Funded") {
+        tbody += "<div class='span1 text-center'><button class='btn btn-primary btn-mini' id='btn_restart_RF_" + ResourceID + "'><i class='icon-repeat icon-white'></i></button></div>";
     }
     else {
         tbody += "<div class='span1 text-center'></div>";
@@ -245,7 +289,7 @@ function getCCUserRFList() {
 function setCCResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Creator) {
     var ptitle_brief = textTruncate(35, PTile);
     
-    var tbody = "<div class='row'>";
+    var tbody = "<div class='row' style='padding-bottom: 5px;'>";
     tbody += "<div class='span4'><a data-toggle='modal' href=# id='" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
     tbody += "<div class='span2'>" + RType + "</div>";  
     tbody += "<div class='span2' id='" + ResourceID + "_status'>" + RStatus + "</div>";

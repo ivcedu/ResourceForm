@@ -1,14 +1,10 @@
 <?php
     require("config.php");
     
-    if (isset($_POST['ResourceID']))
-    {
-        $ResourceID= $_POST['ResourceID'];
+    $ResourceID = filter_input(INPUT_POST, 'ResourceID');
 
-        $query = "DELETE [IVCRESOURCES].[dbo].[ResourceStage] WHERE ResourceID = '".$ResourceID ."'";
-        $cmd = $dbConn->prepare($query);
-        $result = $cmd->execute();           
+    $query = "DELETE [IVCRESOURCES].[dbo].[ResourceStage] WHERE ResourceID = '".$ResourceID ."'";
+    $cmd = $dbConn->prepare($query);
+    $result = $cmd->execute();           
 
-        echo json_encode($result);
-    }
-?>
+    echo json_encode($result);

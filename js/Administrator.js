@@ -524,6 +524,9 @@ $(document).ready(function() {
                 db_updatePriorityMgr(sel_res_id, rating_value);                
                 var new_approver_id = searchNewApproverID(sel_approver_email);
                 moveToVP(sel_res_id, new_approver_id);
+                if (commt_update !== "") {
+                    commt_update += "\n";
+                }
                 commt_update += m_login_name + ": Move forward to VP/President";
             }
             else {
@@ -553,6 +556,9 @@ $(document).ready(function() {
                 db_updatePriorityVPP(sel_res_id, rating_value);                
                 moveToSPAC(sel_res_id, sel_approver_id);
                 db_updaterateSPACActive(sel_res_id, true);
+                if (commt_update !== "") {
+                    commt_update += "\n";
+                }
                 commt_update += m_login_name + ": Move forward to SPAC";
             }
             
