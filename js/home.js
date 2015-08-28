@@ -135,9 +135,9 @@ $(document).ready(function() {
         sessionStorage.setItem('m1_ResourceID', ID);
         var ptitle_full = $('#ptitle_full_' + ID).html();
         
-        var mod_restart_body = "Are you sure you want to restart " + ptitle_full + " for consideration for Fiscal Year: ";
-        mod_restart_body += getFiscalYear() + "? Click Yes to continue or No to cancel this request. If Yes, If you select Yes, ";
-        mod_restart_body += "you can find your request in the Fiscal Year: " + getFiscalYear() + " list located on the home screen.";
+        var mod_restart_body = "Are you sure you want to restart (" + ptitle_full + ") for Fiscal Year: ";
+        mod_restart_body += getFiscalYear() + "? Click Yes to continue or No to cancel. If Yes, ";
+        mod_restart_body += "you can find your request in the Fiscal Year: " + getFiscalYear() + " listed on the home screen.";
         $('#mod_restart_body').html(mod_restart_body);
         $('#mod_popup_restart').modal('show');
     });
@@ -249,7 +249,7 @@ function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Lin
     if (RStatus === "Draft") {
         tbody += "<div class='span1 text-center'><button class='btn btn-mini' id='btn_delete_RF_" + ResourceID + "'><i class='icon-trash icon-black'></i></button></div>";
     }
-    else if (RStatus === "Closed" || RStatus === "Partially Funded") {
+    else if (RStatus === "Closed" || RStatus === "Partially Funded" || RStatus === "Unfunded") {
         tbody += "<div class='span1 text-center'><button class='btn btn-primary btn-mini' id='btn_restart_RF_" + ResourceID + "'><i class='icon-repeat icon-white'></i></button></div>";
     }
     else {
