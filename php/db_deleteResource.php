@@ -28,10 +28,11 @@
         $query21 = "DELETE [IVCRESOURCES].[dbo].[Transactions] WHERE ResourceID = '".$ResourceID ."'";
         $query22 = "DELETE [IVCRESOURCES].[dbo].[Backtodraft] WHERE ResourceID = '".$ResourceID ."'";
         $query23 = "DELETE [IVCRESOURCES].[dbo].[ResourceTypeItem] WHERE ResourceID = '".$ResourceID ."'";
-        $query24 = "DELETE [IVCRESOURCES].[dbo].[ApprovedAmount] WHERE ResourceID = '".$ResourceID ."'";
         $query25 = "DELETE [IVCRESOURCES].[dbo].[ResourceFundSrc] WHERE ResourceID = '".$ResourceID ."'";
         $query26 = "DELETE [IVCRESOURCES].[dbo].[ResourceFundAmt] WHERE ResourceID = '".$ResourceID ."'";
         $query27 = "DELETE [IVCRESOURCES].[dbo].[ResourceFundSrcLog] WHERE ResourceID = '".$ResourceID ."'";
+        $query28 = "DELETE [IVCRESOURCES].[dbo].[ResourceStage] WHERE ResourceID = '".$ResourceID ."'";
+        $query29 = "DELETE [IVCRESOURCES].[dbo].[Priority] WHERE ResourceID = '".$ResourceID ."'";
         
         $cmd = $dbConn->prepare($query);
         $result = $cmd->execute();     
@@ -100,9 +101,6 @@
         $result = $cmd->execute();
         
         $cmd = $dbConn->prepare($query23);
-        $result = $cmd->execute();
-        
-        $cmd = $dbConn->prepare($query24);
         $result = $cmd->execute();
         
         $cmd = $dbConn->prepare($query25);
