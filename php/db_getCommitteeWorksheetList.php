@@ -55,7 +55,7 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON riec.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateSSAMMO] AS rssa ON rssa.ResourceID = resr.ResourceID "
-                . "WHERE resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.FiscalYear = '".$FiscalYear."'";
+                . "WHERE resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 AND resr.FiscalYear = '".$FiscalYear."'";
 
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 

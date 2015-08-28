@@ -591,6 +591,9 @@ function updateResourceStatus(status) {
             
             emailBackToDraft(resource_id, login_email, status, comments);
             note = login_email + " send back to Draft stage";
+            if (comments !== "") {
+                note += "\n" + comments;
+            }
             break;
         case "Closed":
             var RSID = db_getResourceStatusID(status);
@@ -610,9 +613,13 @@ function updateResourceStatus(status) {
             
             emailToCreatorCompleted(resource_id, status, comments);
             note = login_name + " change status to Closed";
+            if (comments !== "") {
+                note += "\n" + comments;
+            }
             break;
         case "Partially Funded":
         case "Fully Funded":
+        case "Unfunded":
             var RSID = db_getResourceStatusID(status);
             var stage_level_Id = db_getStageLevelID(status);
 
@@ -630,6 +637,9 @@ function updateResourceStatus(status) {
             
             emailToCreatorCompleted(resource_id, status, comments);
             note = login_name + " change status to " + status;
+            if (comments !== "") {
+                note += "\n" + comments;
+            }
             break;
         default:
             break;

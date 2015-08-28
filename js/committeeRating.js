@@ -2511,7 +2511,7 @@ function setMasterSQLScript(sel_committee) {
     }
 
     sql_where = sql_where.substring(0, sql_where.length-1);
-    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
+    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 21 AND resr.RSID <> 22 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
 }
 
 function setSQLScript(sel_committee) {

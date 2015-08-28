@@ -166,25 +166,25 @@ function setSQLScript(sel_committee) {
     
     switch(sel_committee) {
         case "All":
-            sql_where += "(rapt.Active = 1 OR rbdr.Active = 1 OR rchp.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 OR rssa.Active = 1) AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "(rapt.Active = 1 OR rbdr.Active = 1 OR rchp.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 OR rssa.Active = 1) AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "CHPLDTF":
-            sql_where += "rchp.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "rchp.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "SSAMMO":
-            sql_where += "rssa.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "rssa.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "APTC":
-            sql_where += "rapt.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "rapt.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "BDRPC":
-            sql_where += "rbdr.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "rbdr.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "IEC":
-            sql_where += "riec.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "riec.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         case "SPAC":
-            sql_where += "rspa.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21";
+            sql_where += "rspa.Active = 1 AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22";
             break;
         default:
             break;
