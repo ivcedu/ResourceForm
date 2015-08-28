@@ -223,7 +223,7 @@ $(document).ready(function() {
         return false;
     });
     
-    $('#btn_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         rpt_resetFundingSrc();
         rpt_resetFundSrcBudgetList();
         

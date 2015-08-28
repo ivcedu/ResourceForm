@@ -114,7 +114,7 @@ $(document).ready(function() {
     });
     
     // fiscal year refresh button click ////////////////////////////////////////
-    $('#btn_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         getCommitteeWorksheetList();
         $('#rf_list').trigger("updateAll");
     });

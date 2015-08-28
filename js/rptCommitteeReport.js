@@ -36,15 +36,15 @@ $(document).ready(function() {
         window.open('Login.html', '_self');
     });
     
-    // filter refresh //////////////////////////////////////////////////////////
-    $('#adm_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         refreshCommitteeRatingList();
         $('#user_rf_list').trigger("updateAll");
         $('#user_rf_list').trigger("appendCache");
         setListTotalCountAmount();
     });
     
-    $('#btn_refresh').click(function() {
+    // filter refresh //////////////////////////////////////////////////////////
+    $('#adm_refresh').click(function() {
         refreshCommitteeRatingList();
         $('#user_rf_list').trigger("updateAll");
         $('#user_rf_list').trigger("appendCache");

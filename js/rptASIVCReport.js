@@ -32,7 +32,7 @@ $(document).ready(function() {
         window.open('Login.html', '_self');
     });
     
-    $('#btn_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         getASIVCReportList();
     });
     

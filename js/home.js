@@ -77,8 +77,7 @@ $(document).ready(function() {
         window.open('rptAllRFList.html', '_self');
     });
     
-    
-    $('#btn_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         getLoginUserRFList();
         getCCUserRFList();
     });

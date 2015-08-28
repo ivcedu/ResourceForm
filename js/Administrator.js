@@ -515,7 +515,7 @@ $(document).ready(function() {
                         return false;
                     }
                     updateResourceFundSrc(sel_res_id);
-                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote() + "\n";
                 }
                 if ($('#mgr_fs_comments').val() !== "") {
                     db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
@@ -524,9 +524,6 @@ $(document).ready(function() {
                 db_updatePriorityMgr(sel_res_id, rating_value);                
                 var new_approver_id = searchNewApproverID(sel_approver_email);
                 moveToVP(sel_res_id, new_approver_id);
-                if (commt_update !== "") {
-                    commt_update += "\n";
-                }
                 commt_update += m_login_name + ": Move forward to VP/President";
             }
             else {
@@ -547,7 +544,7 @@ $(document).ready(function() {
                         return false;
                     }
                     updateResourceFundSrc(sel_res_id);
-                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                    commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote() + "\n";
                 }
                 if ($('#mgr_fs_comments').val() !== "") {
                     db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
@@ -556,9 +553,6 @@ $(document).ready(function() {
                 db_updatePriorityVPP(sel_res_id, rating_value);                
                 moveToSPAC(sel_res_id, sel_approver_id);
                 db_updaterateSPACActive(sel_res_id, true);
-                if (commt_update !== "") {
-                    commt_update += "\n";
-                }
                 commt_update += m_login_name + ": Move forward to SPAC";
             }
             
@@ -648,7 +642,7 @@ $(document).ready(function() {
     });
     
     // fiscal year refresh button click ////////////////////////////////////////
-    $('#btn_refresh').click(function() {
+    $('#all_fiscal_yrs').change(function() {
         reloadRFList();
     });
     
