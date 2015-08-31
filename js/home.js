@@ -13,6 +13,7 @@ window.onload = function() {
         
         // administrator button
         $('#show_admin').hide();
+        $('#show_committee_rating').hide();
         $('#show_master').hide();        
         $('#h_cc_block').hide();
         
@@ -43,12 +44,7 @@ $(document).ready(function() {
     });
     
     $('#nav_committee_rating').click(function() {
-        if (!isMemberOfCommittee()) {
-            alert("You are not a member of any committee");
-        }
-        else {
-            window.open('committeeRating.html', '_self');
-        }
+        window.open('committeeRating.html', '_self');
     });
     
     $('#nav_mgr_worksheet').click(function() {
@@ -191,11 +187,15 @@ function setAdminOption() {
     var LoginEmail = sessionStorage.getItem("m1_loginEmail");
     var ApproverID = db_getApproverID(LoginEmail);
     
-    if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu" || LoginEmail === "deantest0@ivc.edu" || LoginEmail === "vptest@ivc.edu" || LoginEmail === "presidenttest@ivc.edu") {
+    if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu" || LoginEmail === "deantest@ivc.edu" || LoginEmail === "vptest@ivc.edu" || LoginEmail === "presidenttest@ivc.edu") {
         $('#show_admin').show();
         if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu") {
             $('#show_master').show();
         }
+    }
+    
+    if (isMemberOfCommittee()) {
+        $('#show_committee_rating').show();
     }
 }
 

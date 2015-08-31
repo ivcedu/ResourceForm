@@ -24,7 +24,13 @@
                         <li><a href=# id="nav_committee_rating"><i class="icon-th icon-white"></i> Committee Worksheet</a></li>
                     </ul>
                     <ul class="nav">
-                        <li><a href=# id="nav_committee_setting"><i class="icon-cog icon-white"></i> Committee Rating Date</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href=#>System Date Setting <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href=# id="nav_committee_setting">Committee Rating Date</a></li>
+                                <li><a href=# id="nav_due_start_date">Due/Start Date</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav">
                         <li><a href=# id="nav_fun_src_setting"><i class="icon-cog icon-white"></i> Funding Src Setting</a></li>
@@ -225,6 +231,35 @@
                                 </tr>
                             </thead>
                             <tbody style="font-size: 90%;" id="mod_body_tr">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row-fluid">
+                        <div class="span2 offset10"><button class="btn btn-inverse span12" data-dismiss="modal">Close</button></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of Modal committee rating date setting -->
+            
+            <!-- Modal committee rating date setting -->
+            <div class="modal hide fade" id="mod_due_start_date">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h4>Due/Start Date Setting</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+                        <table class="table table-condensed table-bordered" id="mod_due_start_date_list">
+                            <thead style="font-size: 90%; background-color: grey; color: white;">
+                                <tr>
+                                    <th class="span7">System Setting</th>
+                                    <th class="span4">Due/Start Date</th>
+                                    <th class="span1" style="text-align: center;">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 90%;" id="mod_body2_tr">
                             </tbody>
                         </table>
                     </div>

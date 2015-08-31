@@ -5334,3 +5334,9 @@ function convertDBDateToDateTimeFormat(db_date) {
     var t = a[1].split(":");
     return new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+function convertStringDateToDBDateFormat(str_date) {
+    var ar_date = str_date.split("/");
+    return ar_date[2] + "-" + ar_date[0] + "-" + ar_date[1];
+}

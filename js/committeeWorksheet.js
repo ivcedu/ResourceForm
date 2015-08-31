@@ -461,7 +461,7 @@ $(document).ready(function() {
         $('#mod_comm_rate_date').modal('show');
     }); 
     
-    $('table').on('click', '[id^="mod_table_update_"]', function(e) {
+    $('#mod_comm_rate_date_list').on('click', '[id^="mod_table_update_"]', function() {
         var ec_rating_id = $(this).attr('id').replace("mod_table_update_", "");
         var start_date = $('#mod_table_startdate_id_' + ec_rating_id).val();
         var end_date = $('#mod_table_enddate_id_' + ec_rating_id).val();
@@ -471,10 +471,48 @@ $(document).ready(function() {
             alert("Start and End date updated successfully");
         }
         else {
-            alert("Please contact Rich Kim at 949.451.5595 or ykim160@ivc.edu");
+            alert("Committee start and end date update failed");
         }
     });
     
+    // due/start date click event //////////////////////////////////////////////
+    $('#nav_due_start_date').click(function() {
+        getSystemDueStartDateList();
+        $('#mod_due_start_date').modal('show');
+    });
+    
+    // enable submit date update button click //////////////////////////////////
+    $('#mod_due_start_date_list').on('click', '[id^="mod_table_update_enable_submit"]', function() {
+        var db_enable_submit_date = convertStringDateToDBDateFormat($('#mod_table_enable_submit').val());
+        if (db_updateEnableSubmitBtn(db_enable_submit_date)) {
+            alert("Resource Request submission due date has been updated successfully");
+        }
+        else {
+            alert("Resource Request submission due date updated failed");
+        }
+    });
+    
+    // mgr worksheet start date update button click ////////////////////////////
+    $('#mod_due_start_date_list').on('click', '[id^="mod_table_update_mgr_start"]', function() {
+        var db_mgr_start_date = convertStringDateToDBDateFormat($('#mod_table_mgr_start').val());
+        if (db_updateEnableMgrWorksheet(db_mgr_start_date)) {
+            alert("Resource Request submission due date has been updated successfully");
+        }
+        else {
+            alert("Resource Request submission due date updated failed");
+        }
+    });
+    
+    // committee worksheet start date update button click //////////////////////
+    $('#mod_due_start_date_list').on('click', '[id^="mod_table_update_committee_start"]', function() {
+        var db_committee_start_date = convertStringDateToDBDateFormat($('#mod_table_committee_start').val());
+        if (db_updateEnableCommitteeWorksheet(db_committee_start_date)) {
+            alert("Resource Request submission due date has been updated successfully");
+        }
+        else {
+            alert("Resource Request submission due date updated failed");
+        }
+    });
 ////////////////////////////////////////////////////////////////////////////////
     // selectpicker
     $('.selectpicker').selectpicker();
@@ -534,6 +572,7 @@ function setHideAllModal() {
     $('#mod_body_section_fund_src').hide();
     
     $('#mod_comm_rate_date').modal('hide');
+    $('#mod_due_start_date').modal('hide');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1495,6 +1534,37 @@ function getCommitteeSettingList() {
         $('#mod_table_startdate_id_' + result[i]['ECRatingID']).val(convertDBDateToStringFormat(result[i]['StartDate']));
         $('#mod_table_enddate_id_' + result[i]['ECRatingID']).val(convertDBDateToStringFormat(result[i]['EndDate']));
     }
+}
+
+function getSystemDueStartDateList() {
+    var enable_submit_date = convertDBDateToStringFormat(db_getEnableSubmitBtn());
+    var mgr_start_date = convertDBDateToStringFormat(db_getEnableMgrWorksheet());
+    var committee_start_date = convertDBDateToStringFormat(db_getEnableCommitteeWorksheet());
+    
+    $('#mod_body2_tr').empty();
+    var tbl_html = "<tr>";
+    tbl_html += "<td class='span7' style='padding-top: 10px;'>Submission Due Date</td>";
+    tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_table_enable_submit' value='" + enable_submit_date + "'></td>";
+    tbl_html += "<td class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_table_update_enable_submit'><i class='icon-circle-arrow-up icon-black'></i></button></td>";
+    tbl_html += "</tr>";
+    
+    tbl_html += "<tr>";
+    tbl_html += "<td class='span7' style='padding-top: 10px;'>Mgr Worksheet Start Date</td>";
+    tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_table_mgr_start' value='" + mgr_start_date + "'></td>";
+    tbl_html += "<td class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_table_update_mgr_start'><i class='icon-circle-arrow-up icon-black'></i></button></td>";
+    tbl_html += "</tr>";
+    
+    tbl_html += "<tr>";
+    tbl_html += "<td class='span7' style='padding-top: 10px;'>Committee Worksheet Start Date</td>";
+    tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_table_committee_start' value='" + committee_start_date + "'></td>";
+    tbl_html += "<td class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_table_update_committee_start'><i class='icon-circle-arrow-up icon-black'></i></button></td>";
+    tbl_html += "</tr>";
+    
+    $("#mod_body2_tr").append(tbl_html);
+    
+    $('#mod_table_enable_submit').datepicker();
+    $('#mod_table_mgr_start').datepicker();
+    $('#mod_table_committee_start').datepicker();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
