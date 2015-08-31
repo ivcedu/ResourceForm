@@ -590,10 +590,7 @@ function updateResourceStatus(status) {
             db_updateResourcePage(resource_id, "Page1");
             
             emailBackToDraft(resource_id, login_email, status, comments);
-            note = login_email + " send back to Draft stage";
-            if (comments !== "") {
-                note += "\n" + comments;
-            }
+            note = login_email + " send back to Draft stage\n" + comments;
             break;
         case "Closed":
             var RSID = db_getResourceStatusID(status);
@@ -612,10 +609,7 @@ function updateResourceStatus(status) {
             db_updaterateSSAMMOComplete(resource_id, true);
             
             emailToCreatorCompleted(resource_id, status, comments);
-            note = login_name + " change status to Closed";
-            if (comments !== "") {
-                note += "\n" + comments;
-            }
+            note = login_name + " change status to Closed\n" + comments;
             break;
         case "Partially Funded":
         case "Fully Funded":
@@ -636,10 +630,7 @@ function updateResourceStatus(status) {
             db_updaterateSSAMMOComplete(resource_id, true);
             
             emailToCreatorCompleted(resource_id, status, comments);
-            note = login_name + " change status to " + status;
-            if (comments !== "") {
-                note += "\n" + comments;
-            }
+            note = login_name + " change status to " + status + "\n" + comments;
             break;
         default:
             break;
