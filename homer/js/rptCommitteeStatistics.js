@@ -232,6 +232,7 @@ function rpt_getAllResourceFiscalYear() {
     }
     
     $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').val(rpt_getFiscalYear());
     $('#all_fiscal_yrs').selectpicker('refresh');
 }
 

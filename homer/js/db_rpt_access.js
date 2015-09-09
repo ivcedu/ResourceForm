@@ -90,3 +90,17 @@ function formatDollar(num) {
         return "$" + result;
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+function rpt_getFiscalYear() {
+    var today = new Date();
+    var mon = today.getMonth()+1;
+    var yr = today.getFullYear();
+    
+    if (mon > 6) {
+        return yr + "-" + (yr + 1);
+    }
+    else {
+        return (yr - 1) + "-" + yr;
+    }
+}

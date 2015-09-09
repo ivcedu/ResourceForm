@@ -543,6 +543,7 @@ function getAllResourceFiscalYear() {
     }
     
     $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').val(getFiscalYear());
     $('#all_fiscal_yrs').selectpicker('refresh');
 }
 
