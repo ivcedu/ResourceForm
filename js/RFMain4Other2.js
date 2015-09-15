@@ -134,6 +134,8 @@ $(document).ready(function() {
         var qty = Number($(this).val());
         if (qty < 1) {
             $(this).val('');
+            $('#m4_ot2_total_' + ID).val('');
+            $('#m4_ot2_total_amount').val('');
             return false;
         }
         
@@ -148,6 +150,8 @@ $(document).ready(function() {
         var cost = Number($(this).val());
         if (cost < 0.01) {
             $(this).val('');
+            $('#m4_ot2_total_' + ID).val('');
+            $('#m4_ot2_total_amount').val('');
             return false;
         }
         

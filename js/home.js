@@ -48,7 +48,7 @@ $(document).ready(function() {
     });
     
     $('#nav_mgr_worksheet').click(function() {
-        window.open('administrator.html', '_self');
+        window.open('Administrator.html', '_self');
     });
     
     $('#logout').click(function() {

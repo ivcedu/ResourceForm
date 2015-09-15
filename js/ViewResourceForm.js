@@ -5,7 +5,7 @@ var cc_list = new Array();
 
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) {
+    if (sessionStorage.key(0) !== null) {        
         hideWorkbookSection();
         $('#vrf_attach_files').empty();
         $('#m6_CB_questionnaire').hide();

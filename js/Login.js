@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-window.onload = function() {    
+window.onload = function() {   
+    $('#logn_error').hide();
     var curBrowser = bowser.name;
     var curVersion = Number(bowser.version);
     
@@ -23,8 +24,6 @@ window.onload = function() {
         default:     
             break;
     }
-    
-    $('#logn_error').hide();
     
     if (sessionStorage.getItem('m1_loginName') !== null) {
         var url_param = sessionStorage.getItem('ss_rf_url_param');

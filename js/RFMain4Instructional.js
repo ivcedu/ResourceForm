@@ -118,6 +118,8 @@ $(document).ready(function() {
         var n_qty = Number($(this).val());
         if (n_qty < 1) {
             $(this).val('');
+            $('#m4_ie_total').val('');
+            return false;
         }
         
         updateQty();
@@ -128,6 +130,8 @@ $(document).ready(function() {
         var n_cost = Number($(this).val());
         if (n_cost < 0.01) {
             $(this).val('');
+            $('#m4_ie_total').val('');
+            return false;
         }
         
         updateCost();

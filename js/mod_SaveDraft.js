@@ -1726,6 +1726,48 @@ function db_getAllResourceFiscalYear() {
     return result;
 }
 
+function db_getResourceFSBSI(ResourceID) {
+    var result;
+    $.ajax({
+        type:"POST",
+        url:"php/db_getResourceFSBSI.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getCommentsMgr(ResourceID) {
+    var result;
+    $.ajax({
+        type:"POST",
+        url:"php/db_getCommentsMgr.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getCommentsVPP(ResourceID) {
+    var result;
+    $.ajax({
+        type:"POST",
+        url:"php/db_getCommentsVPP.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 function db_getrateCHPLDTF(rateCHPLDTF_ID) {
     var result = new Array();
@@ -3209,6 +3251,48 @@ function db_insertResourceFundSrcLog(ResourceID, LoginName, Note) {
     return ResultID;
 }
 
+function db_insertResourceFSBSI(ResourceID) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertResourceFSBSI.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
+function db_insertCommentsMgr(ResourceID, ApproverID, Comments) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertCommentsMgr.php",
+        data:{ResourceID:ResourceID, ApproverID:ApproverID, Comments:Comments},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
+function db_insertCommentsVPP(ResourceID, ApproverID, Comments) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertCommentsVPP.php",
+        data:{ResourceID:ResourceID, ApproverID:ApproverID, Comments:Comments},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
 // update DB ///////////////////////////////////////////////////////////////////
 function mod_updateResource(ResourceID, CreatorID, status) {
     var date = sessionStorage.getItem('m1_currentDate');
@@ -3839,6 +3923,34 @@ function db_updateResourceFundAmtColumn(ResourceID, ColumnName, Value) {
         type:"POST",
         url:"php/db_updateResourceFundAmtColumn.php",
         data:{ResourceID:ResourceID, ColumnName:ColumnName, Value:Value},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateCommentsMgr(ResourceID, ApproverID, Comments) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateCommentsMgr.php",
+        data:{ResourceID:ResourceID, ApproverID:ApproverID, Comments:Comments},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateCommentsVPP(ResourceID, ApproverID, Comments) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateCommentsVPP.php",
+        data:{ResourceID:ResourceID, ApproverID:ApproverID, Comments:Comments},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);
@@ -4827,6 +4939,20 @@ function db_deleteBacktodraft(ResourceID) {
     $.ajax({
         type:"POST",
         url:"php/db_deleteBacktodraft.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_deleteResourceFSBSI(ResourceID) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_deleteResourceFSBSI.php",
         data:{ResourceID:ResourceID},
         async: false,  
         success:function(data) {

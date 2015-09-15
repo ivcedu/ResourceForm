@@ -625,7 +625,10 @@ function updateResourceStatus(status) {
             db_deleterateSSAMMO(resource_id);
             
             deleteAllResourceFundAmt();
-
+            
+            if (!pre_fs_4) {
+                db_deleteResourceFSBSI(resource_id);
+            }
             db_insertBacktodraft(resource_id, 1);
             db_updateResourcePage(resource_id, "Page1");
             
@@ -994,6 +997,14 @@ function getResourceFundSrcLog(ResourceID, req_fs_comments) {
 function updateResourceFundSrc() {
     db_updateResourceFundSrc(resource_id, new_fs_1, new_fs_2, new_fs_3, new_fs_4, new_fs_5, new_fs_6, new_fs_7, new_fs_8, new_fs_9, new_fs_10,
                             new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23, requestor_fs_comments);
+                            
+    // send BSI instruction email
+    if (new_fs_4) {
+        if (db_getResourceFSBSI(resource_id) === null) {
+            db_insertResourceFSBSI(resource_id);
+            sendEmailBSIFundingInstructionToCreator();
+        }
+    }
 }
 
 function deleteResourceFundAmtList() {
@@ -1251,7 +1262,9 @@ function getUpdateFundSrcNote() {
         fs_note += getFundSrcType("fs_23") + ", ";
     }
     
-    fs_note = fs_note.substring(0, fs_note.length -2) + "\nTo: ";
+    if (fs_note !== "") {
+        fs_note = fs_note.slice(0,-2) + "\nTo: ";
+    }
     
     if (new_fs_1) {
         fs_note += getFundSrcType("fs_1") + ", ";
@@ -1323,7 +1336,11 @@ function getUpdateFundSrcNote() {
         fs_note += getFundSrcType("fs_23") + ", ";
     }
     
-    return fs_note.substring(0, fs_note.length - 2);
+    if (fs_note !== "") {
+        fs_note = fs_note.slice(0,-2);
+    }
+    
+    return fs_note;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1641,4 +1658,35 @@ function emailToCreatorCompleted(ResourceID, status, reason) {
         
         proc_sendEmail(email, creator, subject, msg);
     }
+}
+
+function sendEmailBSIFundingInstructionToCreator() {
+    var res_title = $('#resource_title_full_' + resource_id).html();
+    
+    var result2 = new Array();
+    result2 = db_getResource2(resource_id);
+    var creator = result2[0]['CreatorName'];
+    var email = result2[0]['CreatorEmail'];
+    
+    var result = new Array();
+    result = db_getFundSrcType("fs_4");
+    var fs_admin_name = result[0]['FundSrcAdmin'];
+    var fs_admin_email = result[0]['FundSrcEmail'];
+    var fs_type = result[0]['FundSrcType'];
+    
+    var str_url = location.href;
+    str_url = str_url.replace("committeeWorksheet.html", "/doc/BSI_Funding_Request_Form_Fall_2015.pdf");
+    
+    var Subject = "BSI Request Form";
+    var Message = "Dear " + creator + ",<br/><br/>";
+    Message += "Your resource request titled <b>" + res_title + "</b> was selected for " + fs_type + " as a possible funding source by committee: <b>" + login_name + "</b>.<br>";
+    Message += "Please complete the PDF form <a href='" + str_url + "'>BSI Funding Request Form Fall 2015</a> send back to " + fs_admin_name + " at " + fs_admin_email + ".<br>";
+    Message += "If you have any questions about completing the form, the funding source can help to answer your question.<br><br>";
+    
+    Message += "Thank you.<br><br>";
+    Message += "IVC Fiscal Services<br>";
+    Message += "IVCFiscal@ivc.edu<br>";
+    Message += "x5326";
+    
+    proc_sendEmailWithCC(email, creator, fs_admin_email, fs_admin_name, Subject, Message);
 }

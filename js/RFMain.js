@@ -605,25 +605,37 @@ function setToday() {
     $('#currentDate').val(curDate);
     sessionStorage.setItem('m1_currentDate', curDate);
     
-    // set fiscal yrs
-    var fiscal_yrs_1 = (yr - 1) + "-" + yr;
-    var fiscal_yrs_2 = yr + "-" + (yr + 1);
-    var fiscal_yrs_3 = (yr + 1) + "-" + (yr + 2);
-    var fiscal_yrs_4 = (yr + 2) + "-" + (yr + 3);
+    var fiscal_html = "";
+    if (mon > 6) {
+        fiscal_html += "<option value='" + (yr + "-" + (yr + 1)) + "'>" + (yr + "-" + (yr + 1)) + "</option>";
+        fiscal_html += "<option value='" + ((yr + 1) + "-" + (yr + 2)) + "'>" + ((yr + 1) + "-" + (yr + 2)) + "</option>";
+        fiscal_html += "<option value='" + ((yr + 2) + "-" + (yr + 3)) + "'>" + ((yr + 2) + "-" + (yr + 3)) + "</option>";
+    }
+    else {
+        fiscal_html += "<option value='" + ((yr - 1) + "-" + yr) + "'>" + ((yr - 1) + "-" + yr) + "</option>";
+        fiscal_html += "<option value='" + (yr + "-" + (yr + 1)) + "'>" + (yr + "-" + (yr + 1)) + "</option>";
+        fiscal_html += "<option value='" + ((yr + 1) + "-" + (yr + 2)) + "'>" + ((yr + 1) + "-" + (yr + 2)) + "</option>";
+    }
     
-    var fiscal_html = "<option value='" + fiscal_yrs_1 + "'>" + fiscal_yrs_1 + "</option>";
-    fiscal_html += "<option value='" + fiscal_yrs_2 + "'>" + fiscal_yrs_2 + "</option>";
-    fiscal_html += "<option value='" + fiscal_yrs_3 + "'>" + fiscal_yrs_3 + "</option>";
-    fiscal_html += "<option value='" + fiscal_yrs_4 + "'>" + fiscal_yrs_4 + "</option>";
+    // set fiscal yrs
+//    var fiscal_yrs_1 = (yr - 1) + "-" + yr;
+//    var fiscal_yrs_2 = yr + "-" + (yr + 1);
+//    var fiscal_yrs_3 = (yr + 1) + "-" + (yr + 2);
+//    var fiscal_yrs_4 = (yr + 2) + "-" + (yr + 3);
+//    
+//    var fiscal_html = "<option value='" + fiscal_yrs_1 + "'>" + fiscal_yrs_1 + "</option>";
+//    fiscal_html += "<option value='" + fiscal_yrs_2 + "'>" + fiscal_yrs_2 + "</option>";
+//    fiscal_html += "<option value='" + fiscal_yrs_3 + "'>" + fiscal_yrs_3 + "</option>";
+//    fiscal_html += "<option value='" + fiscal_yrs_4 + "'>" + fiscal_yrs_4 + "</option>";
     
     $("#fiscal").append(fiscal_html);
     
-    if (mon > 6) {
-        $("#fiscal").val(fiscal_yrs_2);
-    }
-    else {
-        $("#fiscal").val(fiscal_yrs_1);
-    }
+//    if (mon > 6) {
+//        $("#fiscal").val(fiscal_yrs_2);
+//    }
+//    else {
+//        $("#fiscal").val(fiscal_yrs_1);
+//    }
     
     $('#fiscal').selectpicker('refresh');
 }
@@ -633,8 +645,8 @@ function setCreatorInfo() {
     $('#creatorTitle').val(sessionStorage.getItem('m1_creatorTitle'));
     $('#currentDate').val(sessionStorage.getItem('m1_currentDate'));
     
-//    $('#fiscal').val(sessionStorage.getItem('m1_fiscal'));
-//    $('#fiscal').selectpicker('refresh');
+    $('#fiscal').val(sessionStorage.getItem('m1_fiscal'));
+    $('#fiscal').selectpicker('refresh');
     
     $('#creatorDiv').val(sessionStorage.getItem('m1_creatorDiv'));
     $('#cc').val(sessionStorage.getItem('m1_cc'));

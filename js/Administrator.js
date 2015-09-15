@@ -65,7 +65,7 @@ var new_fs_23 = false;
 
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) { 
+    if (sessionStorage.key(0) !== null) {        
         setHideAllModal();
         setHideAllNavigationButton();
         setAdminOption();
@@ -321,7 +321,7 @@ $(document).ready(function() {
         if (sel_res_id !== "") {
             getSelectedTransactions(sel_res_id);
             
-            if (sel_res_stage === "Facilities Review") {
+            if (sel_res_stage === "Facilities Review") {                
                 $('#fac_section_1').show();
                 $('#fac_section_2').show();
                 $('#mod_add_btn_rating').hide();
@@ -342,6 +342,13 @@ $(document).ready(function() {
                 disableResourceFundSrc();
             }
             else if (sel_res_stage === "Dean/Director" || sel_res_stage === "VP" || sel_res_stage === "President") {
+                if (sel_res_stage === "Dean/Director") {
+                    getMgrComments();
+                }
+                else {
+                    getVPPComments();
+                }
+                
                 $('#fac_section_1').hide();
                 $('#fac_section_2').hide();
                 $('#mod_add_btn_rating').show();
@@ -359,8 +366,6 @@ $(document).ready(function() {
                 
                 $('#mod_add_move_forward').hide();
                 $('#mod_add_note_save').show();
-                
-                enableResourceFundSrc();
             }
 
             $('#mod_add_note').modal('show');
@@ -498,8 +503,14 @@ $(document).ready(function() {
                 commt_update += m_login_name + ": IT Review completed and move forward";
             }
             else if (sel_res_stage === "Dean/Director") {
-                if (!$('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
-                    alert("Rating value (0 - 5) is a required field");
+                var err_comments = addCommentsValidation();
+                var rdo_rating = $('input:radio[name=mod_add_rdo_rating]').is(':checked');
+                if (!rdo_rating|| err_comments !== "") {
+                    var err = err_comments;
+                    if (!rdo_rating) {
+                        err += "\n" + "Rating value (0 - 5) is a required";
+                    }
+                    alert(err);
                     return false;
                 }
                 else {
@@ -514,21 +525,31 @@ $(document).ready(function() {
                         alert(err_fs_comments);
                         return false;
                     }
-                    updateResourceFundSrc(sel_res_id);
+                    updateResourceFundSrc(sel_res_id, true);
                     commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote() + "\n";
                 }
                 if ($('#mgr_fs_comments').val() !== "") {
                     db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
                 }
                     
-                db_updatePriorityMgr(sel_res_id, rating_value);                
+                db_updatePriorityMgr(sel_res_id, rating_value);   
+                db_updaterateMgrRating(sel_res_id, sel_approver_id, rating_value);
+                
                 var new_approver_id = searchNewApproverID(sel_approver_email);
                 moveToVP(sel_res_id, new_approver_id);
                 commt_update += m_login_name + ": Move forward to VP/President";
+                
+                db_updateCommentsMgr(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
             else {
-                if (!$('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
-                    alert("Rating value (0 - 5) is a required field");
+                var err_comments = addCommentsValidation();
+                var rdo_rating = $('input:radio[name=mod_add_rdo_rating]').is(':checked');
+                if (!rdo_rating|| err_comments !== "") {
+                    var err = err_comments;
+                    if (!rdo_rating) {
+                        err += "\n" + "Rating value (0 - 5) is a required";
+                    }
+                    alert(err);
                     return false;
                 }
                 else {
@@ -543,17 +564,21 @@ $(document).ready(function() {
                         alert(err_fs_comments);
                         return false;
                     }
-                    updateResourceFundSrc(sel_res_id);
+                    updateResourceFundSrc(sel_res_id, true);
                     commt_update += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote() + "\n";
                 }
                 if ($('#mgr_fs_comments').val() !== "") {
                     db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
                 }
                 
-                db_updatePriorityVPP(sel_res_id, rating_value);                
+                db_updatePriorityVPP(sel_res_id, rating_value);  
+                db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
+                
                 moveToSPAC(sel_res_id, sel_approver_id);
                 db_updaterateSPACActive(sel_res_id, true);
                 commt_update += m_login_name + ": Move forward to SPAC";
+                
+                db_updateCommentsVPP(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
             
             var note = commt_update;
@@ -571,7 +596,7 @@ $(document).ready(function() {
     // comments save button event //////////////////////////////////////////////
     $('#mod_add_note_save').click(function() {       
         if (sel_res_id !== "") {
-            var note = "";
+//            var note = "";
             var rating_value = "-1";
             
             if ($('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
@@ -580,53 +605,33 @@ $(document).ready(function() {
             var err_comments = addCommentsValidation();
             var err_fund_src = updateFundSrcValidation();
             
+            // save validation, nothing to save
             if (rating_value === "-1" && err_comments !== "" && err_fund_src !== "") {
                 alert("You did not select rating or entered comments or " + err_fund_src);
                 return false;
             }
             
-            if (err_fund_src === "") {
-                var err_fs_comments = updateFundSrcCommentsValidation();
-                if (err_fs_comments !== "") {
-                    alert(err_fs_comments);
-                    return false;
-                }
-            }
-            
-            // start process
-            if (rating_value !== "-1") {
-                if (sel_res_stage === "Dean/Director") {
+            // update mgr worksheet rating and comments
+            if (sel_res_stage === "Dean/Director") {
+                if (rating_value !== "-1") {
                     db_updatePriorityMgr(sel_res_id, rating_value);
                 }
-                if (sel_res_stage === "VP" || sel_res_stage === "President") {
+                db_updateCommentsMgr(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
+            }
+            else if (sel_res_stage === "VP" || sel_res_stage === "President") {
+                if (rating_value !== "-1") {
                     db_updatePriorityVPP(sel_res_id, rating_value);
                 }
-                note += m_login_name + " Saved rating: " + rating_value;
-            }
-            
-            var comments = $('#mod_add_note_body').val();
-            if (comments !== "") {
-                if (note === "") {
-                    note += m_login_name + ": Saved comments\n" + comments;
-                }
-                else {
-                    note += "\n" + m_login_name + ": Saved comments\n" + comments;
-                }
-            }
-            if (err_fund_src === "") {
-                updateResourceFundSrc(sel_res_id);
-                if (note === "") {
-                    note += m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
-                }
-                else {
-                    note += "\n" + m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
-                }
-            }
-            if ($('#mgr_fs_comments').val().replace(/\s+/g, '') !== "") {
-                db_insertResourceFundSrcLog(sel_res_id, m_login_name, textReplaceApostrophe($('#mgr_fs_comments').val()));
+                db_updateCommentsVPP(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
 
-            db_insertTransactions(sel_res_id, m_login_name, note);
+            // funding src change log
+            if (err_fund_src === "") {
+                updateResourceFundSrc(sel_res_id, false);
+                var note = m_login_name + ": Funding sources changed\nFrom: " + getUpdateFundSrcNote();
+                db_insertTransactions(sel_res_id, m_login_name, note);
+            }
+            
             resetAddNoteFields();
             reloadRFList();
         }
@@ -1183,7 +1188,9 @@ function getUpdateFundSrcNote() {
         fs_note += getFundSrcType("fs_23") + ", ";
     }
     
-    fs_note = fs_note.substring(0, fs_note.length -2) + "\nTo: ";
+    if (fs_note !== "") {
+        fs_note = fs_note.slice(0,-2) + "\nTo: ";
+    }
     
     if (new_fs_1) {
         fs_note += getFundSrcType("fs_1") + ", ";
@@ -1255,7 +1262,11 @@ function getUpdateFundSrcNote() {
         fs_note += getFundSrcType("fs_23") + ", ";
     }
     
-    return fs_note.substring(0, fs_note.length - 2);
+    if (fs_note !== "") {
+        fs_note = fs_note.slice(0,-2);
+    }
+    
+    return fs_note;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1738,9 +1749,17 @@ function getResourceFundSrcLog(ResourceID, req_fs_comments) {
     return fs_comments + req_fs_comments;
 }
 
-function updateResourceFundSrc(ResourceID) {
+function updateResourceFundSrc(ResourceID, moveforward) {
     db_updateResourceFundSrc(ResourceID, new_fs_1, new_fs_2, new_fs_3, new_fs_4, new_fs_5, new_fs_6, new_fs_7, new_fs_8, new_fs_9, new_fs_10,
                             new_fs_11, new_fs_12, new_fs_13, new_fs_14, new_fs_15, new_fs_16, new_fs_17, new_fs_18, new_fs_19, new_fs_20, new_fs_21, new_fs_22, new_fs_23, requestor_fs_comments);
+                     
+    // send BSI instruction email
+    if (new_fs_4 && moveforward) {
+        if (db_getResourceFSBSI(sel_res_id) === null) {
+            db_insertResourceFSBSI(sel_res_id);
+            sendEmailBSIFundingInstructionToCreator();
+        }
+    }
 }
 
 function getFundSrcDescrip(fund_src_col) {
@@ -1776,6 +1795,27 @@ function getApproverName(ApproverID) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+function getMgrComments() {
+    var mgr_comments = db_getCommentsMgr(sel_res_id);
+    if (mgr_comments !== null) {
+        $('#mod_add_note_body').val(mgr_comments).trigger('autosize.resize');
+    }
+    else {
+        db_insertCommentsMgr(sel_res_id, sel_approver_id, "");
+    }
+}
+
+function getVPPComments() {
+    var vpp_comments = db_getCommentsVPP(sel_res_id);
+    if (vpp_comments !== null) {
+        $('#mod_add_note_body').val(vpp_comments).trigger('autosize.resize');
+    }
+    else {
+        db_insertCommentsVPP(sel_res_id, sel_approver_id, "");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function sendCommitteeChangeEmailToCreator(ResourceID) {
     var result = new Array(); 
     result = db_getResource2(ResourceID);
@@ -1802,12 +1842,12 @@ function emailBackToDraft(ResourceID, login_name, status_change, reason) {
     var subject = prop_title + " " + status_change;
     var reason_html = reason.replace("\n", "<br/>");
     
-    var result = new Array(new Array());
+    var result = new Array();
     result = db_getResource2(ResourceID);
     
     if (result.length !== 0) {
-        var creator = result[0][0];
-        var email = result[0][1];
+        var creator = result[0]['CreatorName'];
+        var email = result[0]['CreatorEmail'];
         var msg = "Dear " + creator + ",<br/></br/>";
         msg += "<strong>" + prop_title + "</strong> resource request " + status_change + " from " + login_name + ".<br/><br/>";
         msg += "Reason:<br/>";
@@ -1829,7 +1869,7 @@ function emailToCreatorCompleted(ResourceID, login_name, status, reason) {
     var subject = prop_title + " has been changed to " + status;
     var reason_html = reason.replace("\n", "<br>");
     
-    var result = new Array(new Array());
+    var result = new Array();
     result = db_getResource2(ResourceID);
     
     if (result.length !== 0) {
@@ -1869,4 +1909,39 @@ function emailToCreatorCompleted(ResourceID, login_name, status, reason) {
             }
         }
     }
+}
+
+function sendEmailBSIFundingInstructionToCreator() {
+    var res_title = $('#resource_ptitle_full_' + sel_res_id).html();
+    
+    var result2 = new Array();
+    result2 = db_getResource2(sel_res_id);
+    var creator = result2[0]['CreatorName'];
+    var email = result2[0]['CreatorEmail'];
+    
+    var result3 = new Array(); 
+    result3 = db_getApproverByID(sel_approver_id);
+    var approver = result3[0]['ApproverName'];
+    
+    var result = new Array();
+    result = db_getFundSrcType("fs_4");
+    var fs_admin_name = result[0]['FundSrcAdmin'];
+    var fs_admin_email = result[0]['FundSrcEmail'];
+    var fs_type = result[0]['FundSrcType'];
+    
+    var str_url = location.href;
+    str_url = str_url.replace("Administrator.html", "/doc/BSI_Funding_Request_Form_Fall_2015.pdf");
+    
+    var Subject = "BSI Request Form";
+    var Message = "Dear " + creator + ",<br/><br/>";
+    Message += "Your resource request titled <b>" + res_title + "</b> was selected for  " + fs_type + " as a possible funding source by " + sel_res_stage + ": <b>" + approver + ".</b><br>";
+    Message += "Please complete the PDF form <a href='" + str_url + "'>BSI Funding Request Form Fall 2015</a> send back to " + fs_admin_name + " at " + fs_admin_email + ".<br>";
+    Message += "If you have any questions about completing the form, the funding source can help to answer your question.<br><br>";
+    
+    Message += "Thank you.<br><br>";
+    Message += "IVC Fiscal Services<br>";
+    Message += "IVCFiscal@ivc.edu<br>";
+    Message += "x5326";
+    
+    proc_sendEmailWithCC(email, creator, fs_admin_email, fs_admin_name, Subject, Message);
 }

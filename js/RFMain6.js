@@ -94,6 +94,15 @@ $(document).ready(function() {
     $('#m6_submit').click(function() {
         $("#m6_submit").prop("disabled", true);
         
+        // only current submission year are allow to submit
+        if ($('#m6_fiscal').html() !== getFiscalYear()) {
+            $('#mod_dialog_box_header').html("Submission Year Not Allowed");
+            $('#mod_dialog_box_body').html("Your request submission year are not allow to submit.<br>Only current submission year (" + getFiscalYear() + ") are allow to submit your request");
+            $('#mod_dialog_box').modal('show');
+            $("#m6_submit").prop("disabled", false);
+            return false;
+        }
+        
         var login_name = sessionStorage.getItem('m1_loginName');
 //        var resubmit = sessionStorage.getItem('m1_enable_resubmit');
         var current_date = new Date();
@@ -111,11 +120,13 @@ $(document).ready(function() {
             $('#mod_dialog_box_header').html("Submitting Resource Request Expired");
             $('#mod_dialog_box_body').html("Your request has been saved to DRAFT. Once the next cycle has been opened, you will receive an to complete the submission process.<br><br>Thank you");
             $('#mod_dialog_box').modal('show');
+            $("#m6_submit").prop("disabled", false);
             return false;
         }
   
         var m6_RType = sessionStorage.getItem('m3_radioRType');
         var mFS_fs_3 = sessionStorage.getItem('mFS_fs_3');  // funding src: Basic Aid
+        var mFS_fs_4 = sessionStorage.getItem('mFS_fs_4');  // funding src: Basic Skills Initiative
         
         mod_updateResourceStep("Step5", "Page5");
         submitToDB();
@@ -123,6 +134,12 @@ $(document).ready(function() {
         sendEmailToCC();
         sendEmailToApprover(m6_RType, mFS_fs_3);
         fundingSrcEmailNotification();
+        
+        // email notification for BSI
+        if (mFS_fs_4 === "true") {
+            db_insertResourceFSBSI(sessionStorage.getItem('m1_ResourceID'));
+            sendEmailBSIFundingInstructionToCreator();
+        }
 
         resetDraftLocalData();
         sessionStorage.setItem('m6_submitted', 'yes');
@@ -1368,7 +1385,10 @@ function submitToDB() {
 }
 
 function fundingSrcEmailNotification() {
-    for (var i = 0; i < fs_list.length; i++) {        
+    for (var i = 0; i < fs_list.length; i++) {
+        if (fs_list[i][2] === "Basic Skills Initiative") {
+            continue;
+        }
         sendEmailToFundingAdmin(fs_list[i][0], fs_list[i][1], fs_list[i][2]);
     }
 }
@@ -1380,11 +1400,14 @@ function sendEmailToCreator() {
     var Name = sessionStorage.getItem('m1_creatorName');
     var RFTitle = sessionStorage.getItem('m1_propTitle');
     
+    var str_url = location.href;
+    str_url = str_url.replace("RFMain6.html", "ViewResourceForm.html?resource_id=" + ResourceID + "");
+    
     var Subject = RFTitle + " has been submitted";
     var Message = "Dear " + Name + ",<br/><br/>";
     Message += "The resource request form, titled <strong>" + RFTitle + "</strong> has been successfully submitted.<br/>";    
     Message += "Please use the link below to review the status of your submission at any time.<br/><br/>";
-    Message += "<a href='https://services.ivc.edu/ResourceForm/ViewResourceForm.html?resource_id=" + ResourceID + "'>" + RFTitle + "</a><br/><br/>";
+    Message += "<a href='" + str_url + "'>" + RFTitle + "</a><br/><br/>";
     Message += "Should you have any questions or comments, please contact the office of Fiscal Services.<br/><br/>";
     Message += "Thank you.<br/><br/>";
     Message += "IVC Fiscal Services<br/>";
@@ -1404,13 +1427,16 @@ function sendEmailToCC() {
         for (var i = 0; i < cc_list.length; i++) {
             var cc_name = cc_list[i][0];
             var cc_email = cc_list[i][1];
+            
+            var str_url = location.href;
+            str_url = str_url.replace("RFMain6.html", "ViewResourceForm.html?resource_id=" + ResourceID + "");
 
             var Subject = RFTitle + " has been CC to you";
             var Message = "Dear " + cc_name + ",<br/><br/>";
             Message += "A resource request form for <strong>" + RFTitle + "</strong> has been CC to you.<br/>";
             Message += "Please click on the link below and log in to<br/>";
             Message += "review the resource request at any time.<br/><br/>";
-            Message += "<a href='https://services.ivc.edu/ResourceForm/ViewResourceForm.html?resource_id=" + ResourceID + "'>" + RFTitle + "</a><br/><br/>";
+            Message += "<a href='" + str_url + "'>" + RFTitle + "</a><br/><br/>";
             Message += "Should you have any questions or comments, please contact the office of Fiscal Services.<br/><br/>";
             Message += "Thank you.<br/><br/>";
             Message += "IVC Fiscal Services<br/>";
@@ -1438,12 +1464,12 @@ function sendEmailToApprover(m6_RType, mFS_fs_3) {
         Message += "This email is to alert you of the submission and will undergo a review by Technology Serivces/Facilities before it will appears in your queue of approval.<br/><br/>";
         Message += "Note: After all of the resource request forms have been submitted you will receive a seperate notification to review all of the requests assigned to you in a list form.<br/><br/>";
     }
-//    else {
-//        Message += "Note: After all of the resource request forms have been submitted you will receive a separate notification to review all of the requests assigned to you in a list form.<br/><br/>";
-//    }
+    
+    var str_url = location.href;
+    str_url = str_url.replace("RFMain6.html", "ViewResourceForm.html?resource_id=" + ResourceID + "");
 
     Message += "Description: <strong>" + description.replace(/\n/g, "</br>") + "</strong><br><br>";
-    Message += "<a href='https://services.ivc.edu/ResourceForm/ViewResourceForm.html?resource_id=" + ResourceID + "'>" + RFTitle + "</a><br/>";
+    Message += "<a href='" + str_url + "'>" + RFTitle + "</a><br/>";
     Message += "Costs: <strong>" + total_cost + "</strong><br>";
     
     if (funding_src !== "") {
@@ -1465,7 +1491,6 @@ function sendEmailToApprover(m6_RType, mFS_fs_3) {
         ccName = "Bruce Hagan";
     }
     
-    //proc_sendEmail(appEmail, appName, Subject, Message);
     proc_sendEmailWithCC(appEmail, appName, ccEmail, ccName, Subject, Message);
 }
 
@@ -1476,12 +1501,15 @@ function sendEmailToFundingAdmin(name, email, funding) {
     var RFTitle = sessionStorage.getItem('m1_propTitle');
     var description = sessionStorage.getItem("m1_needFor");
     
+    var str_url = location.href;
+    str_url = str_url.replace("RFMain6.html", "ViewResourceForm.html?resource_id=" + ResourceID + "");
+    
     var Subject = "Resource Form Funding Source Notification";
     var Message = "Dear " + name + ",<br/><br/>";
     Message += "Please be advised that a new resource form, titled <strong>" + RFTitle + "</strong> has been submitted by <strong>" + creator + "</strong>. ";
     Message += "You have been identified as the funding admin for <strong>" + funding + "</strong> funding source(s). ";
     Message += "Please review the information below for details to ensure the funding source can be considered for this resource request.<br><br>";
-    Message += "<a href='https://services.ivc.edu/ResourceForm/ViewResourceForm.html?resource_id=" + ResourceID + "'>" + RFTitle + "</a><br/>";
+    Message += "<a href='" + str_url + "'>" + RFTitle + "</a><br/>";
     Message += "Costs: <strong>" + total_cost + "</strong><br>";
     Message += "Description: <strong>" + description.replace(/\n/g, "</br>") + "</strong><br><br>";
     Message += "Please work with the submitter and their supervisor, <strong>" + approver + "</strong> to validate the resource form can be funded by the <strong>" + funding + "</strong> fund(s) ";
@@ -1493,8 +1521,6 @@ function sendEmailToFundingAdmin(name, email, funding) {
     Message += "IVCFiscal@ivc.edu<br/>";
     Message += "x5326";
     
-    // for testing
-//    email = "vptest@ivc.edu";
     proc_sendEmail(email, name, Subject, Message);
 }
 
@@ -1518,6 +1544,33 @@ function sendEmailToDavitForDuplicateMgrTitle() {
     Message += "Approver Title: " + approver_title + "<br>";
     
     proc_sendEmail(email, name, Subject, Message);
+}
+
+function sendEmailBSIFundingInstructionToCreator() {
+    var Email = sessionStorage.getItem('m1_creatorEmail');
+    var Name = sessionStorage.getItem('m1_creatorName');
+    var RFTitle = sessionStorage.getItem('m1_propTitle');
+    
+    var result = new Array();
+    result = db_getFundSrcType("fs_4");
+    var fs_admin_name = result[0]['FundSrcAdmin'];
+    var fs_admin_email = result[0]['FundSrcEmail'];
+    var fs_type = result[0]['FundSrcType'];
+    var str_url = location.href;
+    str_url = str_url.replace("RFMain6.html", "/doc/BSI_Funding_Request_Form_Fall_2015.pdf");
+    
+    var Subject = "BSI Request Form";
+    var Message = "Dear " + Name + ",<br/><br/>";
+    Message += "Your resource request titled <b>" + RFTitle + "</b> has " + fs_type + " as a possible funding source.<br>";
+    Message += "Please complete the PDF form <a href='" + str_url + "'>BSI Funding Request Form Fall 2015</a> send back to " + fs_admin_name + " at " + fs_admin_email + ".<br>";
+    Message += "If you have any questions about completing the form, the funding source can help to answer your question.<br><br>";
+    
+    Message += "Thank you.<br><br>";
+    Message += "IVC Fiscal Services<br>";
+    Message += "IVCFiscal@ivc.edu<br>";
+    Message += "x5326";
+    
+    proc_sendEmailWithCC(Email, Name, fs_admin_email, fs_admin_name, Subject, Message);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

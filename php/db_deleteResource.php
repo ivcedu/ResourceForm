@@ -33,6 +33,7 @@
         $query27 = "DELETE [IVCRESOURCES].[dbo].[ResourceFundSrcLog] WHERE ResourceID = '".$ResourceID ."'";
         $query28 = "DELETE [IVCRESOURCES].[dbo].[ResourceStage] WHERE ResourceID = '".$ResourceID ."'";
         $query29 = "DELETE [IVCRESOURCES].[dbo].[Priority] WHERE ResourceID = '".$ResourceID ."'";
+        $query30 = "DELETE [IVCRESOURCES].[dbo].[ResourceFSBSI] WHERE ResourceID = '".$ResourceID ."'";
         
         $cmd = $dbConn->prepare($query);
         $result = $cmd->execute();     
@@ -110,6 +111,15 @@
         $result = $cmd->execute();
         
         $cmd = $dbConn->prepare($query27);
+        $result = $cmd->execute();
+        
+        $cmd = $dbConn->prepare($query28);
+        $result = $cmd->execute();
+        
+        $cmd = $dbConn->prepare($query29);
+        $result = $cmd->execute();
+        
+        $cmd = $dbConn->prepare($query30);
         $result = $cmd->execute();
 
         echo json_encode($result);
