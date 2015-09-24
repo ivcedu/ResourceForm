@@ -297,6 +297,16 @@ function selObjective(Id, value) {
         $('#m5_ref_link').html(value);
         $('#m5_ref_link').show();
     }
+    else if (value === "ASG Goals") {
+        $("#" + goalID).children().remove();
+        $("#" + goalID).append(setASGGoals());
+        $("#" + goalID).selectpicker('refresh');
+        $("#" + goalID).selectpicker('show');
+        $('#m5_impact_1').attr('placeholder', '');
+        $('#m5_ref_link').prop('href', 'doc/ASG_Goals_2015_2016.pdf');
+        $('#m5_ref_link').html(value);
+        $('#m5_ref_link').show();
+    }
     else if (value === "Program Review-Strategy") {
         $('#m5_impact_' + objIDIndex).attr('placeholder', 'Please copy and paste the narrative into this box');
         $("#" + goalID).selectpicker('hide');
@@ -383,6 +393,17 @@ function setCollegeTechnologyPlan() {
     result += "<option value='Ops-Professional development support'>Ops-Professional development support</option>";
     result += "<option value='Ops-Technology Services staff expansion'>Ops-Technology Services staff expansion</option>";
     result += "<option value='Ops-Software delivery system'>Ops-Software delivery system</option>";
+    
+    return result;
+}
+
+function setASGGoals() {
+    var result = "";
+    
+    result += "<option value='Goal 1 - Services and Activities'>Goal 1 - Services and Activities</option>";
+    result += "<option value='Goal 2 - Student Leadership'>Goal 2 - Student Leadership</option>";
+    result += "<option value='Goal 3 - Facilities and Technology'>Goal 3 - Facilities and Technology</option>";
+    result += "<option value='Goal 4 - Fiscal Management'>Goal 4 - Fiscal Management</option>";
     
     return result;
 }
