@@ -2492,7 +2492,6 @@ function mod_AddResourceTypeItem(ResourceID) {
     
     var result_ID = "";
     result_ID = db_insertResourceTypeItem(ResourceID, RTID);
-    //result_ID = db_insertResourceTypeItemNew(ResourceID, RTID);
     
     return result_ID;
 }
@@ -3356,7 +3355,6 @@ function mod_updateResourceTypeItem(ResourceID) {
     
     var result = false;
     result = db_updateResourceTypeItem(ResourceID, RTID);
-    result = db_updateResourceTypeItemNew(ResourceID, RTID);
     return result;
 }
 
@@ -3365,20 +3363,6 @@ function db_updateResourceTypeItem(ResourceID, RTID) {
     $.ajax({
         type:"POST",
         url:"php/db_updateResourceTypeItem.php",
-        data:{ResourceID:ResourceID, RTID:RTID},
-        async: false,  
-        success:function(data) {
-            Result = JSON.parse(data);
-        }
-    });
-    return Result;
-}
-
-function db_updateResourceTypeItemNew(ResourceID, RTID) {
-    var Result = false;
-    $.ajax({
-        type:"POST",
-        url:"php/db_updateResourceTypeItemNew.php",
         data:{ResourceID:ResourceID, RTID:RTID},
         async: false,  
         success:function(data) {
