@@ -1486,9 +1486,13 @@ function sendEmailToApprover(m6_RType, mFS_fs_3) {
     
     var ccEmail = "";
     var ccName = "";
-    if (m6_RType === "Technology" && mFS_fs_3 === "true") {
+    if (m6_RType === "Technology") {
         ccEmail = "bhagan@ivc.edu";
         ccName = "Bruce Hagan";
+    }
+    else if (m6_RType === "Facilities") {
+        ccEmail = "jhurlbut@ivc.edu";
+        ccName = "Jeffrey Hurlbut";
     }
     
     proc_sendEmailWithCC(appEmail, appName, ccEmail, ccName, Subject, Message);
