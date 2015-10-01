@@ -1675,7 +1675,7 @@ function sendEmailBSIFundingInstructionToCreator() {
     var fs_type = result[0]['FundSrcType'];
     
     var str_url = location.href;
-    str_url = str_url.replace("committeeWorksheet.html", "/doc/BSI_Funding_Request_Form_2015-2016.pdf");
+    str_url = str_url.replace("committeeWorksheet.html", "/doc/BSI_Funding_Request_Supplemental_Form.pdf");
     
     var Subject = "BSI Request Form";
     var Message = "Dear " + creator + ",<br/><br/>";
