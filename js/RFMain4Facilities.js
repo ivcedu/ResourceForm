@@ -254,10 +254,10 @@ function formValidation2() {
         err += "Location is required\n";
     }
     if ($('#m4_fa_Est_Amt').val().replace(/\s+/g, '') === "") {
-        err += "Est Amount is required\n";
+        err += "Amount is required\n";
     }
     if ($('#m4_fa_Est_Descrip').val().replace(/\s+/g, '') === "") {
-        err += "Est Description is required\n";
+        err += "Description is required\n";
     }
     
     return err;
