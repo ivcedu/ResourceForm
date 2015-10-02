@@ -11,15 +11,9 @@
         $query = "INSERT INTO [IVCRESOURCES].[dbo].[Login] (LoginName, LoginEmail, LoginTitle, LoginDepartment) "
                     ."VALUES ('$LoginName', '$LoginEmail', '$LoginTitle', '$LoginDepart')";
 
-        try {
-            $dbConn->beginTransaction();
-            $cmd = $dbConn->prepare($query);
-            $cmd->execute();
-            $dbConn->commit();
-            $LoginID = $dbConn->lastInsertId();
-        } catch (PDOException $e) {
-            $dbConn->rollBack();
-        }
+        $cmd = $dbConn->prepare($query);
+        $cmd->execute();
+        $LoginID = $dbConn->lastInsertId();
     }            
 
     echo json_encode($LoginID);
