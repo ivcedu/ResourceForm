@@ -559,6 +559,7 @@ function saveLocalData() {
     var one_time = $("#m1_one_time").is(':checked');
     var need_by = $('#resource_needed_by').val();
     
+    db_updateCreator(crtEmail, crtName, crtTitle, crtDivision);
     localData_setPg(crtName, crtEmail, crtTitle, currentDate, fiscal, crtDivision, cc, propTitle, needFor, ProgType, one_time, need_by);
     localData_setPg_Approver(appName, appEmail, appTitle, appDivision);
 

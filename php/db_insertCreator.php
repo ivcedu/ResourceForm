@@ -7,19 +7,13 @@
     $CreatorDepart = filter_input(INPUT_POST, 'CreatorDepart');
 
     $CreatorID = searchCreator($dbConn, $CreatorEmail);
-    if ($CreatorID == 0) {
+    if ($CreatorID === "") {
         $query = "INSERT INTO [IVCRESOURCES].[dbo].[Creator] (CreatorName, CreatorEmail, CreatorTitle, CreatorDepartment) "
                     ."VALUES ('$CreatorName', '$CreatorEmail', '$CreatorTitle', '$CreatorDepart')";
 
-        try {
-            $dbConn->beginTransaction();
-            $cmd = $dbConn->prepare($query);
-            $cmd->execute();
-            $dbConn->commit();
-            $CreatorID = $dbConn->lastInsertId();
-        } catch (PDOException $e) {
-            $dbConn->rollBack();
-        }
+        $cmd = $dbConn->prepare($query);
+        $cmd->execute();
+        $CreatorID = $dbConn->lastInsertId();
     }            
 
     echo json_encode($CreatorID);
@@ -30,10 +24,5 @@
         $cmd->execute();
         $data = $cmd->fetch();
         
-        if(!$data) {
-            return 0;
-        }
-        else {
-            return intval($data["CreatorID"]);
-        }
+        return $data["CreatorID"];
     }

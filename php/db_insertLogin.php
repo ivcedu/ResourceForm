@@ -7,28 +7,22 @@
     $LoginDepart = filter_input(INPUT_POST, 'LoginDepart');
 
     $LoginID = searchLogin($dbConn, $LoginEmail);
-    if ($LoginID == 0) {
-        $query = "INSERT INTO [IVCRESOURCES].[dbo].[Login] (LoginName, LoginEmail, LoginTitle, LoginDepartment) "
+    if ($LoginID === "") {
+        $query2 = "INSERT INTO [IVCRESOURCES].[dbo].[Login] (LoginName, LoginEmail, LoginTitle, LoginDepartment) "
                     ."VALUES ('$LoginName', '$LoginEmail', '$LoginTitle', '$LoginDepart')";
 
-        $cmd = $dbConn->prepare($query);
+        $cmd = $dbConn->prepare($query2);
         $cmd->execute();
         $LoginID = $dbConn->lastInsertId();
-    }            
+    }
 
     echo json_encode($LoginID);
     
-    function searchLogin($dbConn, $LoginEmail)
-    {        
-        $query = "SELECT LoginID FROM [IVCRESOURCES].[dbo].[Login] WHERE LoginEmail = '".$LoginEmail."'";
-        $cmd = $dbConn->prepare($query);
+    function searchLogin($dbConn, $LoginEmail) {        
+        $query1 = "SELECT LoginID FROM [IVCRESOURCES].[dbo].[Login] WHERE LoginEmail = '".$LoginEmail."'";
+        $cmd = $dbConn->prepare($query1);
         $cmd->execute();
         $data = $cmd->fetch();
         
-        if(!$data) {
-            return 0;
-        }
-        else {
-            return intval($data["LoginID"]);
-        }
+        return $data["LoginID"];
     }

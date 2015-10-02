@@ -2359,19 +2359,6 @@ function mod_AddLogin() {
     var loginTitle = sessionStorage.getItem('m1_loginTitle');
     var loginDiv = sessionStorage.getItem('m1_loginDiv');
     
-    if (loginName === null || loginName === "") {
-        return "";
-    }
-    if (loginEmail === null || loginEmail === "") {
-        return "";
-    }
-    if (loginTitle === null || loginTitle === "") {
-        return "";
-    }
-    if (loginDiv === null || loginDiv === "") {
-        return "";
-    }
-    
     return db_insertLogin(loginName, loginEmail, loginTitle, loginDiv);
 }
 
@@ -4640,6 +4627,34 @@ function db_updateEnableCommitteeWorksheet(EnableDate) {
         type:"POST",
         url:"php/db_updateEnableCommitteeWorksheet.php",
         data:{EnableDate:EnableDate},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateLogin(LoginEmail, LoginName, LoginTitle, LoginDepartment) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateLogin.php",
+        data:{LoginEmail:LoginEmail, LoginName:LoginName, LoginTitle:LoginTitle, LoginDepartment:LoginDepartment},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateCreator(CreatorEmail, CreatorName, CreatorTitle, CreatorDepartment) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateCreator.php",
+        data:{CreatorEmail:CreatorEmail, CreatorName:CreatorName, CreatorTitle:CreatorTitle, CreatorDepartment:CreatorDepartment},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);

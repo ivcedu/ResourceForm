@@ -30,5 +30,6 @@
         <!-- application javascript -->
         <script src="js/Login.js"></script>
         <script src="js/localData.js"></script>
+        <script src="js/mod_SaveDraft.js"></script>
     </body>
 </html>
