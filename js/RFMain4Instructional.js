@@ -28,6 +28,23 @@ $(document).ready(function() {
         window.open('Login.html', '_self');
     });
     
+    // navigation pdf manual ///////////////////////////////////////////////////
+    $('#pdf_user_manual').click(function() {
+        window.open('doc/New_Resource_Request_User_Manual_v2.pdf', '_blank');
+    });
+    
+    $('#pdf_mgr_worksheet_manual').click(function() {
+        window.open('doc/Resource_Form_Mgr_Worksheet_Manual.pdf', '_blank');
+    });
+    
+    $('#pdf_budget_timeline').click(function() {
+        window.open('doc/IVC_Budget_Timeline.pdf', '_blank');
+    });
+    
+    $('#pdf_budget_process').click(function() {
+        window.open('doc/IVC_Budget_Process.pdf', '_blank');
+    });
+    
     // progress bar click event ////////////////////////////////////////////////
     $('#pbar_general_info').click(function() {
         $("#pbar_general_info").prop("disabled", true);
