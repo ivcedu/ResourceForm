@@ -665,6 +665,7 @@ function setCreatorInfo() {
     
     $('#fiscal').val(sessionStorage.getItem('m1_fiscal'));
     $('#fiscal').selectpicker('refresh');
+    $('#resource_needed_by').val(sessionStorage.getItem('m1_need_by'));
     
     $('#creatorDiv').val(sessionStorage.getItem('m1_creatorDiv'));
     $('#cc').val(sessionStorage.getItem('m1_cc'));
