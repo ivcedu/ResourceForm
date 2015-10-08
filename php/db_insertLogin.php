@@ -7,7 +7,7 @@
     $LoginDepart = filter_input(INPUT_POST, 'LoginDepart');
 
     $LoginID = searchLogin($dbConn, $LoginEmail);
-    if ($LoginID === "") {
+    if ($LoginID === null) {
         $query2 = "INSERT INTO [IVCRESOURCES].[dbo].[Login] (LoginName, LoginEmail, LoginTitle, LoginDepartment) "
                     ."VALUES ('$LoginName', '$LoginEmail', '$LoginTitle', '$LoginDepart')";
 

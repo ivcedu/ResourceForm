@@ -7,7 +7,7 @@
     $CreatorDepart = filter_input(INPUT_POST, 'CreatorDepart');
 
     $CreatorID = searchCreator($dbConn, $CreatorEmail);
-    if ($CreatorID === "") {
+    if ($CreatorID === null) {
         $query = "INSERT INTO [IVCRESOURCES].[dbo].[Creator] (CreatorName, CreatorEmail, CreatorTitle, CreatorDepartment) "
                     ."VALUES ('$CreatorName', '$CreatorEmail', '$CreatorTitle', '$CreatorDepart')";
 
