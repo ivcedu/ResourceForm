@@ -85,6 +85,7 @@ function loginInfo() {
         
         localData_login(name, email, title, division, appName, appEmail, appTitle, appDivision);
         db_updateLogin(email, name, title, division);
+        db_updateCreator(email, name, title, division);
         return true;
     }
 }
