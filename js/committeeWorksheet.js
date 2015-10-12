@@ -625,10 +625,7 @@ function updateResourceStatus(status) {
             db_deleterateSSAMMO(resource_id);
             
             deleteAllResourceFundAmt();
-            
-            if (!pre_fs_4) {
-                db_deleteResourceFSBSI(resource_id);
-            }
+            db_deleteResourceFSBSI(resource_id);
             db_insertBacktodraft(resource_id, 1);
             db_updateResourcePage(resource_id, "Page1");
             

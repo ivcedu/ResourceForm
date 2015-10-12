@@ -175,6 +175,7 @@ $(document).ready(function() {
                 db_deleterateSSAMMO(sel_res_id);
                 
                 setBackToDraft(sel_res_id);
+                db_deleteResourceFSBSI(sel_res_id);
                 db_updateResourcePage(sel_res_id, "Page1");
                 
                 status_change = "send back to Draft stage";
