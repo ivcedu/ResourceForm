@@ -249,6 +249,7 @@ function btnAddObjective() {
     tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
     tbody += "<option value='District-wide Technology Objective'>District-wide Technology Objective</option>";
     tbody += "<option value='College Technology Plan'>College Technology Plan</option>";
+    tbody += "<option value='ASG Goals'>ASG Goals</option>";
     tbody += "</select>";
     tbody += "</div>";
     tbody += "<div class='row-fluid'>";
