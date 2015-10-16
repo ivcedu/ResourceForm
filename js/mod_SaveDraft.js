@@ -640,7 +640,6 @@ function updateStep3_Other2Items() {
 
 function updateStepFundSrc() {
     var ResourceID = sessionStorage.getItem('m1_ResourceID');
-    
     if (ResourceID === null || ResourceID === "0" || ResourceID === "") {
         err_msg += "Funding Src ResourceID sessionstorage empty or null\n";
         return false;
@@ -648,7 +647,6 @@ function updateStepFundSrc() {
     
     if (sessionStorage.getItem('m1_ResourceFundSrc') === null) {
         var ResourceFundSrcID = stepRF_ResourceFundSrc(ResourceID, true);
-        
         if (ResourceFundSrcID === "") {
             err_msg += "StepFS insert resource funding srouce failed\n";
             return false;

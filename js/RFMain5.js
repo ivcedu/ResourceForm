@@ -258,7 +258,7 @@ function btnAddObjective() {
     tbody += "</div>";
     tbody += "</div>";
     tbody += "<div class='span8'>";
-    tbody += "<textarea class='field span12 normal' style='resize: vertical;' rows='3' id='" + impactID + "'></textarea>";
+    tbody += "<textarea class='field span12 normal' style='resize: vertical; height: 55px;' id='" + impactID + "'></textarea>";
     tbody += "</div>"; 
     tbody += "</div>"; 
 
@@ -472,7 +472,7 @@ function setLocalData(index, objID, goalID, impactID) {
         tbody += "</div>";
         tbody += "</div>";
         tbody += "<div class='span8'>";
-        tbody += "<textarea class='field span12 normal' style='resize: vertical;' id='" + impactID + "'></textarea>";
+        tbody += "<textarea class='field span12 normal' style='resize: vertical; height: 55px;' id='" + impactID + "'></textarea>";
         tbody += "</div>"; 
         tbody += "</div>"; 
 
