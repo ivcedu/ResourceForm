@@ -135,7 +135,7 @@ $(document).ready(function() {
                 && login_name !== "stafftest") {
             
             $('#mod_dialog_box_header').html("Submitting Resource Request Expired");
-            $('#mod_dialog_box_body').html("The current resource submission process has passed. You can save any new resource request as draft.<br><br>Thank you");
+            $('#mod_dialog_box_body').html("The current resource submission process has passed. Your request has been saved as draft.<br><br>Thank you");
             $('#mod_dialog_box').modal('show');
             $("#m6_submit").prop("disabled", false);
             return false;

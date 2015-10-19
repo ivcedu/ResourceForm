@@ -619,6 +619,8 @@ function getFromCB() {
     $('#m4_Personnel_Title').selectpicker('refresh');
     
     $('#m4_personnel_type').val('Classified Bargaining');
+    $('#m4_personnel_type').selectpicker('refresh');
+    
     $('#m4_Month').val(sessionStorage.getItem('m4_rtp_CB_month'));
     $('#m4_hrs').val(sessionStorage.getItem('m4_rtp_CB_hrs'));
     $('#m4_annual_cost').val(sessionStorage.getItem('m4_rtp_CB_annual_cost'));
@@ -667,6 +669,8 @@ function getFromCM() {
     $('#m4_Personnel_Title').selectpicker('refresh');
     
     $('#m4_personnel_type').val('Classified Management');
+    $('#m4_personnel_type').selectpicker('refresh');
+    
     $('#m4_Month').val(sessionStorage.getItem('m4_rtp_CM_month'));
     $('#m4_hrs').val(sessionStorage.getItem('m4_rtp_CM_hrs'));
     $('#m4_annual_cost').val(sessionStorage.getItem('m4_rtp_CM_annual_cost'));
@@ -680,6 +684,7 @@ function getFromST() {
     db_getSalaryRange();
     selectedShortTerm();
     $('#m4_personnel_type').val('Short-Term Hourly');
+    $('#m4_personnel_type').selectpicker('refresh');
 
     $('#m4_New_Position').val(sessionStorage.getItem('m4_rtp_ST_title'));
     $('#m4_Salary_Range option:selected').html(sessionStorage.getItem('m4_rtp_ST_range'));

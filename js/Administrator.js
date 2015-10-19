@@ -218,41 +218,6 @@ $(document).ready(function() {
         }
     });
     
-    // committee admin /////////////////////////////////////////////////////////
-    $('#nav_admin').click(function(e) {
-        e.preventDefault();
-        if (sel_res_id === "") {
-            return false;
-        }
-        
-        $('#mod_comm_body_title').html(sel_res_title);  
-        $('#mod_comm_admin_resource').html(sel_res_title);
-        $('#mod_comm_admin_current_stage').html(sel_res_stage);
-        $('#mod_comm_admin_current_resource').html(sel_resource);
-        
-        $('#mod_comm_admin').modal('show');
-    });
-    
-    $('#mod_comm_admin_update').click(function() {
-        var new_stage = $('#mod_comm_admin_new_stage').val();
-        if (new_stage !== "Select...") {
-            var slid = db_getStageLevelID(new_stage);
-            var rsid = db_getResourceStatusID(new_stage);
-            var new_appid = getCommitteeApproverID(new_stage);
-
-            db_updateRFStatus2(sel_res_id, rsid);
-            db_updateResourceStage(sel_res_id, slid, new_appid, rsid);
-            sendCommitteeChangeEmailToCreator(sel_res_id);
-        }
-            
-        resetCommitteeAdmin();
-        reloadRFList();
-    });
-    
-    $('#mod_comm_admin_close').click(function() {
-        resetCommitteeAdmin();
-    });
-    
     // table selection /////////////////////////////////////////////////////////
     $('table').on('click', 'tr', function (e) { 
         e.preventDefault();
@@ -614,7 +579,6 @@ $(document).ready(function() {
     // comments save button event //////////////////////////////////////////////
     $('#mod_add_note_save').click(function() {       
         if (sel_res_id !== "") {
-//            var note = "";
             var rating_value = "-1";
             
             if ($('input:radio[name=mod_add_rdo_rating]').is(':checked')) {
@@ -670,8 +634,16 @@ $(document).ready(function() {
     });
     
     // filter refresh button click /////////////////////////////////////////////
-    $('#adm_refresh').click(function() {        
+    $('#adm_refresh').click(function() {     
         reloadRFList();
+        if (!m_master) {
+            if ($('#adm_committee').val() === "Me") {
+                $('#nav_back_to_draft').show();
+            }
+            else {
+                $('#nav_back_to_draft').hide();
+            }
+        }
     });
     
     // change approver /////////////////////////////////////////////////////////
@@ -766,9 +738,6 @@ $(document).ready(function() {
     $("#mod_add_note").draggable({
         handle: ".modal-header"
     });
-    $("#mod_comm_admin").draggable({
-        handle: ".modal-header"
-    });
     $("#mod_back_to_draft").draggable({
         handle: ".modal-header"
     });
@@ -781,7 +750,6 @@ $(document).ready(function() {
 function setHideAllModal() {
     $('#mod_add_note').modal('hide');
     $('#mod_back_to_draft').modal('hide');
-    $('#mod_comm_admin').modal('hide');
     $('#mod_approver').modal('hide');
     
     // hide comments body
@@ -792,8 +760,7 @@ function setHideAllModal() {
 }
 
 function setHideAllNavigationButton() {
-    $('#nav_back_to_draft').hide();
-    $('#nav_admin').hide();
+//    $('#nav_back_to_draft').hide();
     $('#nav_change_approver').hide();
     $('#nav_committee_rating').hide();
 }
@@ -803,9 +770,8 @@ function setAdminOption() {
     m_login_name = sessionStorage.getItem('m1_loginName');
     
     if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "dkhachatryan@ivc.edu") {
-        $('#nav_back_to_draft').show();
+//        $('#nav_back_to_draft').show();
         $('#nav_change_approver').show();
-        $('#nav_admin').show();
         $('#nav_committee_rating').show();
         m_master = true;
     }
@@ -1027,16 +993,6 @@ function resetAddNoteFields() {
     $('#mod_add_icon_comments').attr('class', 'icon-chevron-right icon-black');
     $('#mod_add_icon_fund_src').attr('class', 'icon-chevron-right icon-black');
     $('#mod_add_icon_history').attr('class', 'icon-chevron-right icon-black');
-}
-
-function resetCommitteeAdmin() {
-    $('#mod_comm_admin_resource').html("");
-    
-    $('#mod_comm_admin_current_stage').html("");
-    $('#mod_comm_admin_new_stage').val("Select...");
-    
-    $('#mod_comm_admin_current_resource').html("");
-    $('#mod_comm_admin_new_resource').val("Select...");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1372,29 +1328,6 @@ function getUserManagerInfo(searchUserEmail) {
 //        }
 //    }
 //}
-
-////////////////////////////////////////////////////////////////////////////////
-function getCommitteeApproverID(new_stage) {
-    var result = "";
-    switch(new_stage) {
-        case "APTC":
-            result = "3";
-            break;
-        case "SSAMMO":
-            result = "4";
-            break;
-        case "CHPLDTF":
-        case "BDRPC":
-        case "SPAC":
-        case "PEC":
-            result = "6";
-            break;
-        default:
-            break;
-    }
-    
-    return result;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 function setListTotalAmount() {
@@ -1834,27 +1767,6 @@ function getVPPComments() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-function sendCommitteeChangeEmailToCreator(ResourceID) {
-    var result = new Array(); 
-    result = db_getResource2(ResourceID);
-    
-    var prop_title = $('#resource_ptitle_full_' + ResourceID).html();
-    var subject = "Your resource request title, " + prop_title + " has been assigned to new committee";
-    var message = "Committee was changed:<br>";
-    message += "From: " + $('#mod_comm_admin_current_stage').html() + "<br>";
-    message += "To: " + $('#mod_comm_admin_new_stage').val() + "<br><br>";
-    
-    message += "Please click on the link below and log in to review the resource request at any time.<br><br>";
-    message += "<a href='https://services.ivc.edu/ResourceForm/ViewResourceForm.html?resource_id=" + ResourceID + "'>" + prop_title + "</a><br/><br/>";
-    message += "Should you have any questions or comments, please contact the office of Fiscal Services.<br>";
-    message += "Thank you.<br><br>";
-    message += "IVC Fiscal Services<br>";
-    message += "IVCFiscal@ivc.edu<br>";
-    message += "x5326";
-            
-    proc_sendEmail(result[0]['CreatorEmail'], result[0]['CreatorName'], subject, message);
-}
-
 function emailBackToDraft(ResourceID, login_name, status_change, reason) {
     var prop_title = $('#resource_ptitle_full_' + ResourceID).html();
     var subject = prop_title + " " + status_change;
