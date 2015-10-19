@@ -121,7 +121,8 @@ $(document).ready(function() {
         }
         
         var login_name = sessionStorage.getItem('m1_loginName');
-//        var resubmit = sessionStorage.getItem('m1_enable_resubmit');
+        var ResourceID = sessionStorage.getItem('m1_ResourceID');
+        var resubmit = db_getBacktodraft(ResourceID);
         var current_date = new Date();
         var db_date = db_getEnableSubmitBtn();
         var a = db_date.split(" ");
@@ -129,7 +130,7 @@ $(document).ready(function() {
         var t = a[1].split(":");
         var enable_date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
         
-        if (current_date > enable_date //&& resubmit === "No" disable all sent back to draft stage
+        if (current_date > enable_date && resubmit === "0" //disable all sent back to draft stage
                 && login_name !== "Rich Kim" 
                 && login_name !== "Bruce Hagan" 
                 && login_name !== "stafftest") {
@@ -146,7 +147,7 @@ $(document).ready(function() {
         var mFS_fs_4 = sessionStorage.getItem('mFS_fs_4');  // funding src: Basic Skills Initiative
         
         mod_updateResourceStep("Step5", "Page5");
-        submitToDB();
+        submitToDB(resubmit);
         sendEmailToCreator();
         sendEmailToCC();
         sendEmailToApprover(m6_RType, mFS_fs_3);
@@ -1311,7 +1312,7 @@ function getPlanning_append(index, obj, goal, impact) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-function submitToDB() {  
+function submitToDB(resubmit) {  
     var ResourceID = sessionStorage.getItem('m1_ResourceID');
     var LoginName = sessionStorage.getItem('m1_loginName');
     var RType = sessionStorage.getItem('m3_radioRType');
@@ -1367,8 +1368,8 @@ function submitToDB() {
         ReviewID = ApproverID;
     }
     
-    var resubmit = sessionStorage.getItem('m1_enable_resubmit');
-    if (resubmit === "Yes") {
+//    var resubmit = sessionStorage.getItem('m1_enable_resubmit');
+    if (resubmit === "1") {
         db_deleteBacktodraft(ResourceID);
     }
    
