@@ -130,7 +130,7 @@ $(document).ready(function() {
         var t = a[1].split(":");
         var enable_date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
         
-        if (current_date > enable_date && resubmit === "0" //disable all sent back to draft stage
+        if (current_date > enable_date && resubmit === null //disable all sent back to draft stage
                 && login_name !== "Rich Kim" 
                 && login_name !== "Bruce Hagan" 
                 && login_name !== "stafftest") {
