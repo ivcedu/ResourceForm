@@ -712,7 +712,7 @@ $(document).ready(function() {
                                         2=Can wait until next year or subsequent years; delay will not have an immediate adverse impact on the program<br>\n\
                                         3=Highly desirable this year; doing without may diminish program effectiveness<br>\n\
                                         4=Essential need for a program; doing without for more than a year may do serious harm<br>\n\
-                                        5=Absolutely essential; if funding is not provided it this year; the college will be at risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
+                                        5=Absolutely essential; if funding is not provided it this year; the college will be at immediate risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
                               placement:"bottom"});
     $('#header_vpp').popover({content:"Vice President or President<br>\n\
                                         0=Not needed at this time or in the near future<br>\n\
@@ -720,7 +720,7 @@ $(document).ready(function() {
                                         2=Can wait until next year or subsequent years; delay will not have an immediate adverse impact on the program<br>\n\
                                         3=Highly desirable this year; doing without may diminish program effectiveness<br>\n\
                                         4=Essential need for a program; doing without for more than a year may do serious harm<br>\n\
-                                        5=Absolutely essential; if funding is not provided it this year; the college will be at risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
+                                        5=Absolutely essential; if funding is not provided it this year; the college will be at immediate risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
                               placement:"bottom"});
     
     // auto size
