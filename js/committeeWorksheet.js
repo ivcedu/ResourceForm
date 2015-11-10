@@ -629,8 +629,8 @@ function updateResourceStatus(status) {
             db_insertBacktodraft(resource_id, 1);
             db_updateResourcePage(resource_id, "Page1");
             
-            emailBackToDraft(resource_id, login_email, status, comments);
-            note = login_email + " send back to Draft stage\n" + comments;
+            emailBackToDraft(resource_id, login_email, "sent " + status, comments);
+            note = login_email + " sent back to Draft stage\n" + comments;
             break;
         case "Closed":
             var RSID = db_getResourceStatusID(status);
@@ -1616,7 +1616,7 @@ function emailBackToDraft(ResourceID, login_name, status_change, reason) {
         var creator = result[0][0];
         var email = result[0][1];
         var msg = "Dear " + creator + ",<br/></br/>";
-        msg += "<strong>" + prop_title + "</strong> resource request " + status_change + " from " + login_name + ".<br/><br/>";
+        msg += "<strong>" + prop_title + "</strong> resource request " + status_change + " by " + login_name + ".<br/><br/>";
         msg += "Reason:<br/>";
         msg += reason_html + "<br/><br/>";
         msg += "Please use the link below to review the status of your submission at any time.<br/><br/>";

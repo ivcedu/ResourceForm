@@ -178,8 +178,8 @@ $(document).ready(function() {
                 db_deleteResourceFSBSI(sel_res_id);
                 db_updateResourcePage(sel_res_id, "Page1");
                 
-                status_change = "send back to Draft stage";
-                note = m_login_name + " send back to Draft stage";
+                status_change = "sent back to Draft stage";
+                note = m_login_name + " sent back to Draft stage";
                 note += "\n" + reason;
                 db_insertTransactions(sel_res_id, m_login_name, note);
                 emailBackToDraft(sel_res_id, m_login_name, status_change, reason);
@@ -1779,7 +1779,7 @@ function emailBackToDraft(ResourceID, login_name, status_change, reason) {
         var creator = result[0]['CreatorName'];
         var email = result[0]['CreatorEmail'];
         var msg = "Dear " + creator + ",<br/></br/>";
-        msg += "<strong>" + prop_title + "</strong> resource request " + status_change + " from " + login_name + ".<br/><br/>";
+        msg += "<strong>" + prop_title + "</strong> resource request " + status_change + " by " + login_name + ".<br/><br/>";
         msg += "Reason:<br/>";
         msg += reason_html + "<br/><br/>";
         msg += "Please use the link below to review the status of your submission at any time.<br/><br/>";
