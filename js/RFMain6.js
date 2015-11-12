@@ -1451,9 +1451,8 @@ function sendEmailToCC() {
 
             var Subject = RFTitle + " has been CC to you";
             var Message = "Dear " + cc_name + ",<br/><br/>";
-            Message += "A resource request form for <strong>" + RFTitle + "</strong> has been CC to you.<br/>";
-            Message += "Please click on the link below and log in to<br/>";
-            Message += "review the resource request at any time.<br/><br/>";
+            Message += "Resource request <strong>" + RFTitle + "</strong> has been submitted with you listed to receive a <strong>copy</strong>. ";
+            Message += "In order to review the submission, please click on the link below and log in.<br/><br/>";
             Message += "<a href='" + str_url + "'>" + RFTitle + "</a><br/><br/>";
             Message += "Should you have any questions or comments, please contact the office of Fiscal Services.<br/><br/>";
             Message += "Thank you.<br/><br/>";
