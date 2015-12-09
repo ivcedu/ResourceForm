@@ -646,6 +646,12 @@ $(document).ready(function() {
         }
     });
     
+    // export excel button click ///////////////////////////////////////////////
+    $('#export_excel').click(function() {        
+        var url_html = expoftToExcelURLParameters();        
+        location.href = "php/csv_saveAdminRFListToCSV.php?" + url_html;
+    });
+    
     // change approver /////////////////////////////////////////////////////////
     $('#nav_change_approver').click(function(e) {
         e.preventDefault();
@@ -843,6 +849,20 @@ function refreshAdminRFList() {
 
     getAdminRFList(status, stage_level, stage_app_email, resource_type, program, funding, one_time);
     initializeTable();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function expoftToExcelURLParameters() {
+    var fiscal_yrs = $('#all_fiscal_yrs').val();
+    var status = $('#adm_status').val();
+    var stage_level = $('#adm_committee').val();
+    var stage_app_email = sessionStorage.getItem("m1_loginEmail");
+    var resource_type = $('#adm_resource_type').val();
+    var program = $('#adm_program').val();
+    var funding = $('#adm_fund_src').val();
+    var one_time = $('#adm_one_time').val();
+    
+    return "FiscalYear=" + fiscal_yrs + "&Status=" + status + "&StageLevel=" + stage_level + "&StageAppEmail=" + stage_app_email + "&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&OneTime=" + one_time; 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
