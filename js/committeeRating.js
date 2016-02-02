@@ -619,35 +619,30 @@ $(document).ready(function() {
         if (!master_admin) {
             switch(committee) {
                 case "CHPLDTF":
-                    $('#adm_export_excel').hide();
                     if (column_chpldtf === "") {
                         alert("You are not a member of CHPLDTF committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "SSAMMO":
-                    $('#adm_export_excel').hide();
                     if (column_ssammo === "") {
                         alert("You are not a member of SSAMMO committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "APTC":
-                    $('#adm_export_excel').hide();
                     if (column_aptc === "") {
                         alert("You are not a member of APTC committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "BDRPC":
-                    $('#adm_export_excel').hide();
                     if (column_bdrpc === "") {
                         alert("You are not a member of BDRPC committee");
                         $(this).val(cur_committee);
                     }
                     break;
                 case "IEC":
-                    $('#adm_export_excel').hide();
                     if (column_iec === "") {
                         alert("You are not a member of IEC committee");
                         $(this).val(cur_committee);
@@ -658,20 +653,9 @@ $(document).ready(function() {
                         alert("You are not a member of SPAC committee");
                         $(this).val(cur_committee);
                     }
-                    else {
-                        $('#adm_export_excel').show();
-                    }
                     break;
                 default:
                     break;
-            }
-        }
-        else {
-            if (committee === "SPAC") {
-                $('#adm_export_excel').show();
-            }
-            else {
-                $('#adm_export_excel').hide();
             }
         }
     });
@@ -1268,8 +1252,6 @@ function getAllResourceFiscalYear() {
 function setHideAllModal() {
     // navigation option
     $('#nav_committee_admin').hide();
-    // export excel button
-    $('#adm_export_excel').hide();
     
     // modal rating
     $('#mod_rating').modal('hide');

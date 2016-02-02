@@ -178,41 +178,42 @@
     }
     
     $query = "SELECT resr.ResourceID, "
-                ."resr.ProposalTitle, "
-                ."CASE WHEN rsty.RTID = 1 OR rsty.RTID = 2 OR rsty.RTID = 3 "
-                ."THEN (SELECT TOP(1) AnnualTotal FROM [IVCRESOURCES].[dbo].[Personnel] WHERE ResourceID = resr.ResourceID ORDER BY PersonnelID DESC) "
-                ."WHEN rsty.RTID = 9 "
-                ."THEN (SELECT TOP(1) Total FROM [IVCRESOURCES].[dbo].[Instructional] WHERE ResourceID = resr.ResourceID ORDER BY InstructionalID DESC) "
-                ."WHEN rsty.RTID = 4 "
-                ."THEN (SELECT TOP(1) CASE WHEN ProjAmt = 0.0 THEN EstAmt ELSE ProjAmt END FROM [IVCRESOURCES].[dbo].[Facilities] WHERE ResourceID = resr.ResourceID ORDER BY FacilitiesID DESC) "
-                ."WHEN rsty.RTID = 5 "
-                ."THEN (SELECT TOP(1) GrandTotal FROM [IVCRESOURCES].[dbo].[Technology] WHERE ResourceID = resr.ResourceID ORDER BY TechnologyID DESC) "
-                ."WHEN rsty.RTID = 7 "
-                ."THEN (SELECT TOP(1) TotalAmount FROM [IVCRESOURCES].[dbo].[Other2] WHERE ResourceID = resr.ResourceID ORDER BY Other2ID DESC) "
-                ."ELSE 0.0 END TotalAmount, "
-                ."rsty.ResourceType, "
-                ."prio.DepartMgr, "
-                ."prio.VPP, "
-                ."appr.ApproverName, "
-                ."(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
-                ."rall.Median AS ALL_Median, "
-                ."rall.Mean AS ALL_Mean, "
-                .$SqlSelect
-                ."resr.NeedBy, "
-                ."crtr.CreatorName "
-                ."FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceTypeItem] AS rtim ON rtim.ResourceID = resr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Priority] AS prio ON resr.ResourceID = prio.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON crtr.CreatorID = resr.CreatorID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Approver] AS appr ON appr.ApproverID = resr.ApprovalID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceProg] AS rspr ON resr.ResourceID = rspr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[rateALL] AS rall ON rall.ResourceID = resr.ResourceID "
-                .$SqlFrom
-                .$sql_where;
+                . "resr.FiscalYear, "
+                . "resr.ProposalTitle, "
+                . "CASE WHEN rsty.RTID = 1 OR rsty.RTID = 2 OR rsty.RTID = 3 "
+                . "THEN (SELECT TOP(1) AnnualTotal FROM [IVCRESOURCES].[dbo].[Personnel] WHERE ResourceID = resr.ResourceID ORDER BY PersonnelID DESC) "
+                . "WHEN rsty.RTID = 9 "
+                . "THEN (SELECT TOP(1) Total FROM [IVCRESOURCES].[dbo].[Instructional] WHERE ResourceID = resr.ResourceID ORDER BY InstructionalID DESC) "
+                . "WHEN rsty.RTID = 4 "
+                . "THEN (SELECT TOP(1) CASE WHEN ProjAmt = 0.0 THEN EstAmt ELSE ProjAmt END FROM [IVCRESOURCES].[dbo].[Facilities] WHERE ResourceID = resr.ResourceID ORDER BY FacilitiesID DESC) "
+                . "WHEN rsty.RTID = 5 "
+                . "THEN (SELECT TOP(1) GrandTotal FROM [IVCRESOURCES].[dbo].[Technology] WHERE ResourceID = resr.ResourceID ORDER BY TechnologyID DESC) "
+                . "WHEN rsty.RTID = 7 "
+                . "THEN (SELECT TOP(1) TotalAmount FROM [IVCRESOURCES].[dbo].[Other2] WHERE ResourceID = resr.ResourceID ORDER BY Other2ID DESC) "
+                . "ELSE 0.0 END TotalAmount, "
+                . "rsty.ResourceType, "
+                . "prio.DepartMgr, "
+                . "prio.VPP, "
+                . "appr.ApproverName, "
+                . "(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
+                . "rall.Median AS ALL_Median, "
+                . "rall.Mean AS ALL_Mean, "
+                . $SqlSelect
+                . "resr.NeedBy, "
+                . "crtr.CreatorName "
+                . "FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceTypeItem] AS rtim ON rtim.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[Priority] AS prio ON resr.ResourceID = prio.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON crtr.CreatorID = resr.CreatorID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[Approver] AS appr ON appr.ApproverID = resr.ApprovalID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceProg] AS rspr ON resr.ResourceID = rspr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[rateALL] AS rall ON rall.ResourceID = resr.ResourceID "
+                . $SqlFrom
+                . $sql_where;
 
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 
@@ -227,7 +228,8 @@
     // Write the spreadsheet column titles / labels
     fputcsv($out, array('ID', 'ProposalTitle', 'CHPLDTFFinal', 'SSAMMOFinal', 'APTCFinal', 'BDRPCFinal', 'IECFinal', 'SPACFinal',
                         'Requested', 'Recommend', 'Balance', 'General', 'ASIVC', 'BasicAid', 'BasicSkillsInitiative', 'BEAP', 'CalWORKs/TANF', 'CapitalOutlay', 'CDC', 'CollegeWorkStudy', 'CommunityEducation',
-                        'DSPS', 'EOPS/CARE', 'EWD', 'Foundation', 'Grants', 'Health', 'Lottery', 'Parking', 'Perkins', 'PPIS', 'SSSP', 'StudentEquity', 'StudentMaterial', 'NeedBy', 'Creator', 'ResourceType'));
+                        'DSPS', 'EOPS/CARE', 'EWD', 'Foundation', 'Grants', 'Health', 'Lottery', 'Parking', 'Perkins', 'PPIS', 'SSSP', 'StudentEquity', 'StudentMaterial', 
+                        'MgrRating', 'VPPRating', 'NeedBy', 'Creator', 'ResourceType'));
     // Write all the user records to the spreadsheet
     foreach($data as $row) {
         fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['CHPLDTF_FinalRating'], $row['SSAMMO_FinalRating'], $row['APTC_FinalRating'], 
@@ -236,7 +238,7 @@
                             $row['fs_1_amt'], $row['fs_2_amt'], $row['fs_3_amt'], $row['fs_4_amt'], $row['fs_5_amt'], $row['fs_6_amt'], $row['fs_7_amt'], $row['fs_8_amt'], $row['fs_9_amt'], $row['fs_10_amt'],
                             $row['fs_11_amt'], $row['fs_12_amt'], $row['fs_13_amt'], $row['fs_14_amt'], $row['fs_15_amt'], $row['fs_16_amt'], $row['fs_17_amt'], $row['fs_18_amt'], $row['fs_19_amt'], $row['fs_20_amt'],
                             $row['fs_21_amt'], $row['fs_22_amt'], $row['fs_23_amt'],
-                            $row['NeedBy'], $row['CreatorName'], $row['ResourceType']));
+                            $row['DepartMgr'], $row['VPP'], $row['NeedBy'], $row['CreatorName'], $row['ResourceType']));
     }
     
     fclose($out);
