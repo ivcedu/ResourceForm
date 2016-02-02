@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {   
-    $('#logn_error').hide();
+    $('#login_error').hide();
     var curBrowser = bowser.name;
     var curVersion = Number(bowser.version);
     
@@ -53,7 +53,7 @@ $(document).ready(function() {
             }
         }
         else {
-            $('#logn_error').show();
+            $('#login_error').show();
             this.blur();
         }
     });
