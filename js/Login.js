@@ -70,7 +70,6 @@ function loginInfo() {
     
     result = getLoginUserInfo("php/login.php", username, password);
     if (result.length === 0) {
-        alert("Login error: Your manager is not set up in Active Direcy, please contact 949.451.5254 or email to ivctech@ivc.edu");
         return false;
     }
     else {
