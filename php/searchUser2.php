@@ -3,6 +3,8 @@
     $baseDN = "dc=ivc,dc=edu";
     
     $searchUser = filter_input(INPUT_POST, 'searchUser');
+    $result = array(array());
+    
     $ldapconn = ldap_connect($server);
     if($ldapconn) {
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -15,7 +17,6 @@
             $data = ldap_get_entries($ldapconn, $ladp_result);
 
             $rstCount = $data["count"];
-            $rows = array(array());
             if ($rstCount > 0) {                    
                 for ($i = 0; $i < $rstCount; $i++) {
                     $name = $data[$i]["displayname"][0];
@@ -23,11 +24,10 @@
                     $title = $data[$i]["title"][0];
                     $division = $data[$i]["division"][0];
 
-                    $rows[$i] = array($name, $email, $title, $division);
+                    $result[$i] = array($name, $email, $title, $division);
                 }
             }
-
-            echo json_encode($rows);
         }
         ldap_close($ldapconn);
     }
+    echo json_encode($result);

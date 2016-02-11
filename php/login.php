@@ -1,11 +1,11 @@
 <?php
     $server = "idc1.ivc.edu idc2.ivc.edu idc3.ivc.edu";
     $baseDN = "dc=ivc,dc=edu";
-    $result = array();
    
     $username = filter_input(INPUT_POST, 'username');
     $password = filter_input(INPUT_POST, 'password');
     $login = "IVCSTAFF\\".$username;
+    $result = array();
 
     $ldapconn = ldap_connect($server);
     if($ldapconn) {
@@ -30,14 +30,13 @@
             }
             
             if ($title === "President" || $title === "IT Test President") {
-                $row = array($name, $email, $title, $division, $name, $email, $title, $division);
-                echo json_encode($row);
+                $result = array($name, $email, $title, $division, $name, $email, $title, $division);
             }
             else {
                 if (!empty($manager)) {
                     $filter2 = "(&(objectClass=user)(objectCategory=person)(cn=".setApproverUserName($manager)."))";
-                    $result2 = ldap_search($ldapconn, $baseDN, $filter2);
-                    $data2 = ldap_get_entries($ldapconn, $result2);
+                    $ladp_result2 = ldap_search($ldapconn, $baseDN, $filter2);
+                    $data2 = ldap_get_entries($ldapconn, $ladp_result2);
                     
                     $name2 = $data2[0]["displayname"][0];
                     $email2 = $data2[0]["mail"][0];
@@ -47,13 +46,13 @@
                         $division2 = $data2[0]["division"][0];
                     }
                     
-                    $row = array($name, $email, $title, $division, $name2, $email2, $title2, $division2);
-                    echo json_encode($row);
+                    $result = array($name, $email, $title, $division, $name2, $email2, $title2, $division2);
                 }
             }
         }
         ldap_close($ldapconn);
     }
+    echo json_encode($result);
     
     function setApproverUserName($manager) {
         $pos = strpos($manager, ',');

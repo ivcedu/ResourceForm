@@ -3,6 +3,8 @@
     $baseDN = "dc=ivc,dc=edu";
     
     $searchUserEmail = filter_input(INPUT_POST, 'searchUserEmail');
+    $result = array();
+    
     $ldapconn = ldap_connect($server);
     if($ldapconn) {
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -10,8 +12,8 @@
         $ldapbind = ldap_bind($ldapconn, "IVCSTAFF\\stafftest", "staff");
         if($ldapbind) {
             $filter = "(mail=".$searchUserEmail.")";
-            $result = ldap_search($ldapconn, $baseDN, $filter);
-            $data = ldap_get_entries($ldapconn, $result);
+            $ladp_result = ldap_search($ldapconn, $baseDN, $filter);
+            $data = ldap_get_entries($ldapconn, $ladp_result);
             
             $name = $data[0]["displayname"][0];
             $email = $data[0]["mail"][0];
@@ -25,14 +27,13 @@
             }
                 
             if ($title === "President") {
-                $row = array($name, $email, $title, $division, $name, $email, $title, $division);
-                echo json_encode($row);
+                $result = array($name, $email, $title, $division, $name, $email, $title, $division);
             }
             else {
                 if (!empty($manager)) {
                     $filter2 = "(CN=".setApproverUserName($manager).")";
-                    $result2 = ldap_search($ldapconn, $baseDN, $filter2);
-                    $data2 = ldap_get_entries($ldapconn, $result2);
+                    $ladp_result2 = ldap_search($ldapconn, $baseDN, $filter2);
+                    $data2 = ldap_get_entries($ldapconn, $ladp_result2);
 
                     $name2 = $data2[0]["displayname"][0];
                     $email2 = $data2[0]["mail"][0];
@@ -42,13 +43,13 @@
                         $division2 = $data2[0]["division"][0];
                     }
 
-                    $row = array($name, $email, $title, $division, $name2, $email2, $title2, $division2);
-                    echo json_encode($row);
+                    $result = array($name, $email, $title, $division, $name2, $email2, $title2, $division2);
                 }
             }
         }
         ldap_close($ldapconn);
     }
+    echo json_encode($result);
     
     function setApproverUserName($manager)
     {
