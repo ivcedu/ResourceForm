@@ -893,6 +893,7 @@ function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalA
     //var brief_description = textTruncate(15, description);
         
     var tbl_html = "<tr class='row_tr' id='res_tr_" + ResourceID + "'>";
+    tbl_html += "<td class='span1'>" + ResourceID + "</td>";
     tbl_html += "<td class='span3'><a href=# id='resource_ptitle_brief_" + ResourceID +  "'>" + brief_ptitle + "</a></td>";
     tbl_html += "<td class='span1'>" + Link + "</td>";
     tbl_html += "<td class='span2' id='resource_stage_" + ResourceID + "'>" + Stage + "</td>"; 
