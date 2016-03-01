@@ -89,7 +89,7 @@ window.onload = function() {
 function initializeTable() {
     $("#admin_rf_list").tablesorter({ 
         headers: { 
-            7: {sorter:'currency'}
+            8: {sorter:'currency'}
         },
         widgets: ['stickyHeaders']
     });
