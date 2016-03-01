@@ -2494,7 +2494,9 @@ function setMasterSQLScript(sel_committee) {
     }
 
     sql_where = sql_where.substring(0, sql_where.length-1);
-    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
+    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 ";
+    sql_where += "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 ";
+    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
 }
 
 function setSQLScript(sel_committee) {
@@ -2607,7 +2609,9 @@ function setSQLScript(sel_committee) {
         sql_where = sql_where.substring(3, sql_where.length);
     }
     sql_where = sql_where.substring(0, sql_where.length-1);
-    sql_where = "(" + sql_where + ") AND resr.RSID <> 18AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
+    sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 ";
+    sql_where += "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 ";
+    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
 }
 
 ////////////////////////////////////////////////////////////////////////////////

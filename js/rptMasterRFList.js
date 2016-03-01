@@ -2,7 +2,7 @@
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         getAllResourceFiscalYear();
-        getAllRFList();
+        getMasterRFList();
         initializeTable();
     }
     else {
@@ -12,9 +12,9 @@ window.onload = function() {
 
 ////////////////////////////////////////////////////////////////////////////////
 function initializeTable() {
-    $("#tbl_RFList").tablesorter({ 
+    $("#tbl_master_RFList").tablesorter({ 
         headers: { 
-            5: {sorter:'currency'}
+            6: {sorter:'currency'}
         },
         widgets: ['stickyHeaders']
     });
@@ -32,7 +32,7 @@ $(document).ready(function() {
     });
     
     $('#all_fiscal_yrs').change(function() {
-        getAllRFList();
+        getMasterRFList();
     });
     
     // table row contract click //////////////////////////////////////////////
@@ -65,16 +65,16 @@ function getAllResourceFiscalYear() {
     $('#all_fiscal_yrs').selectpicker('refresh');
 }
 
-function getAllRFList() {
+function getMasterRFList() {
     var result = new Array(); 
-    result = db_getAllRFList(true, $('#all_fiscal_yrs').val());
+    result = db_getAllRFList(false, $('#all_fiscal_yrs').val());
     
     $("#body_tr").empty();
     var html = "";
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) { 
             var str_amount = formatDollar(Number(result[i]['TotalAmount']));
-            html += setAllRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['CreatorName'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], str_amount);
+            html += setMasterRFListHTML(result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['CreatorName'], result[i]['ResourceLink'], result[i]['ResourceType'], result[i]['ResourceStatus'], str_amount);
         }
     }
     
@@ -83,7 +83,7 @@ function getAllRFList() {
     $('#tbl_RFList').trigger("appendCache");
 }
 
-function setAllRFListHTML(resource_id, proposal_title, creator_name, resource_link, resource_type, resource_status, str_amount) {   
+function setMasterRFListHTML(resource_id, proposal_title, creator_name, resource_link, resource_type, resource_status, str_amount) {   
     var tbl_html = "<tr>";
     tbl_html += "<td class='span1'>" + resource_id + "</td>";
     tbl_html += "<td class='span2'><a href=# id='resource_id_" + resource_id +  "'>" + proposal_title + "</a></td>";

@@ -12,6 +12,7 @@ window.onload = function() {
         $('#mod_popup_restart').modal('hide');
         
         // administrator button
+        $('#rpt_master').hide(); 
         $('#show_admin').hide();
         $('#show_committee_rating').hide();
         $('#show_master').hide();        
@@ -71,6 +72,10 @@ $(document).ready(function() {
     
     $('#rpt_all_rf_list').click(function() {
         window.open('rptAllRFList.html', '_self');
+    });
+    
+    $('#rpt_master_rf_list').click(function() {
+        window.open('rptMasterRFList.html', '_self');
     });
     
     // navigation pdf manual ///////////////////////////////////////////////////
@@ -208,7 +213,10 @@ function setAdminOption() {
     if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu") {
         $('#show_admin').show();
         if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu" || LoginEmail === "dkhachatryan@ivc.edu") {
-            $('#show_master').show();
+            $('#rpt_master').show();
+            if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu") {
+                $('#show_master').show();
+            }
         }
     }
     
