@@ -210,7 +210,7 @@ function setAdminOption() {
     var LoginEmail = sessionStorage.getItem("m1_loginEmail");
     var ApproverID = db_getApproverID(LoginEmail);
     
-    if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu") {
+    if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
         $('#show_admin').show();
         if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu" || LoginEmail === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             $('#rpt_master').show();
