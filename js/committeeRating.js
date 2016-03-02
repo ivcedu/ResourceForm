@@ -3650,31 +3650,13 @@ function updateMasterRatingValue(new_rating, mbr_email) {
         sqlSPACUpdateMean();
         getUserSPACMedianMean();
     }
-    
-    var chpldtf_active = db_getrateCHPLDTFActive(resource_id);
-    if (chpldtf_active === "1") { 
-        getCHPLDTFMedianMean();
-    }
-    var ssammo_active = db_getrateSSAMMOActive(resource_id);
-    if (ssammo_active === "1") {
-        getSSAMMOMedianMean();
-    }
-    var aptc_active = db_getrateAPTCActive(resource_id);
-    if (aptc_active === "1") { 
-        getAPTCMedianMean();
-    }
-    var bdrpc_active = db_getrateBDRPCActive(resource_id);
-    if (bdrpc_active === "1") { 
-        getBDRPCMedianMean();
-    }
-    var iec_active = db_getrateIECActive(resource_id);
-    if (iec_active === "1") { 
-        getIECMedianMean();
-    }
-    var spac_active = db_getrateSPACActive(resource_id);
-    if (spac_active === "1") {
-        getSPACMedianMean();
-    }
+
+    getCHPLDTFMedianMean();
+    getSSAMMOMedianMean();
+    getAPTCMedianMean();
+    getBDRPCMedianMean();
+    getIECMedianMean();
+    getSPACMedianMean();
     
     updateAllMedianMean();
 }
@@ -3724,30 +3706,12 @@ function updateUserRatingValue(new_rating) {
         getUserSPACMedianMean();
     }
     
-    var chpldtf_active = db_getrateCHPLDTFActive(resource_id);
-    if (chpldtf_active === "1") { 
-        getCHPLDTFMedianMean();
-    }
-    var ssammo_active = db_getrateSSAMMOActive(resource_id);
-    if (ssammo_active === "1") {
-        getSSAMMOMedianMean();
-    }
-    var aptc_active = db_getrateAPTCActive(resource_id);
-    if (aptc_active === "1") { 
-        getAPTCMedianMean();
-    }
-    var bdrpc_active = db_getrateBDRPCActive(resource_id);
-    if (bdrpc_active === "1") { 
-        getBDRPCMedianMean();
-    }
-    var iec_active = db_getrateIECActive(resource_id);
-    if (iec_active === "1") { 
-        getIECMedianMean();
-    }
-    var spac_active = db_getrateSPACActive(resource_id);
-    if (spac_active === "1") {
-        getSPACMedianMean();
-    }
+    getCHPLDTFMedianMean();
+    getSSAMMOMedianMean();
+    getAPTCMedianMean();
+    getBDRPCMedianMean();
+    getIECMedianMean();
+    getSPACMedianMean();
 
     updateAllMedianMean();
 }

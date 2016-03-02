@@ -1909,31 +1909,13 @@ function copyMgrVPPRatingToCommittee(vpp_id, vpp_rating) {
         sqlSPACUpdateMedian();
         sqlSPACUpdateMean();
     }
-    
-    var chpldtf_active = db_getrateCHPLDTFActive(sel_res_id);
-    if (chpldtf_active === "1") { 
-        getCHPLDTFMedianMean();
-    }
-    var ssammo_active = db_getrateSSAMMOActive(sel_res_id);
-    if (ssammo_active === "1") {
-        getSSAMMOMedianMean();
-    }
-    var aptc_active = db_getrateAPTCActive(sel_res_id);
-    if (aptc_active === "1") { 
-        getAPTCMedianMean();
-    }
-    var bdrpc_active = db_getrateBDRPCActive(sel_res_id);
-    if (bdrpc_active === "1") { 
-        getBDRPCMedianMean();
-    }
-    var iec_active = db_getrateIECActive(sel_res_id);
-    if (iec_active === "1") { 
-        getIECMedianMean();
-    }
-    var spac_active = db_getrateSPACActive(sel_res_id);
-    if (spac_active === "1") {
-        getSPACMedianMean();
-    }
+     
+    getCHPLDTFMedianMean();
+    getSSAMMOMedianMean();
+    getAPTCMedianMean();
+    getBDRPCMedianMean();
+    getIECMedianMean();
+    getSPACMedianMean();
     
     updateAllMedianMean();
 }
