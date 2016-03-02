@@ -63,6 +63,15 @@ var new_fs_21 = false;
 var new_fs_22 = false;
 var new_fs_23 = false;
 
+var ar_all_median = [];
+var ar_all_mean = [];
+var ar_db_chpldtf_column = [];
+var ar_db_ssammo_column = [];
+var ar_db_aptc_column = [];
+var ar_db_bdrpc_column = [];
+var ar_db_iec_column = [];
+var ar_db_spac_column = [];
+
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {        
@@ -650,7 +659,7 @@ $(document).ready(function() {
     });
     
     // export excel button click ///////////////////////////////////////////////
-    $('#export_excel').click(function() { 
+    $('#export_excel').click(function() {        
         var url_html = expoftToExcelURLParameters();        
         location.href = "php/csv_saveAdminRFListToCSV.php?" + url_html;
     });
@@ -1816,87 +1825,117 @@ function copyMgrVPPRatingToCommittee(vpp_id, vpp_rating) {
         vpp_email = vpp_info[0]['ApproverEmail'];
     }
     
+    getCHPLDTFColumnArray();
+    getSSAMMOColumnArray();
+    getAPTCColumnArray();
+    getBDRPCColumnArray();
+    getIECColumnArray();
+    getSPACColumnArray();
+           
+    var col_chp_mgr = db_getmbrCHPLDTFColumnName(mgr_email);
+    if (col_chp_mgr !== null) {
+        db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_mgr, mgr_rating);
+    }
+    var col_chp_vpp = db_getmbrCHPLDTFColumnName(vpp_email);
+    if (col_chp_vpp !== null) {
+        db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_vpp, vpp_rating);
+    }
+    if (col_chp_mgr !== null || col_chp_vpp !== null) {
+        sqlCHPLDTFUpdateMedian();
+        sqlCHPLDTFUpdateMean();
+    }
+           
+    var col_ssa_mgr = db_getmbrSSAMMOColumnName(mgr_email);
+    if (col_ssa_mgr !== null) {
+        db_updaterateUserSSAMMORating(sel_res_id, col_ssa_mgr, mgr_rating);
+    }
+    var col_ssa_vpp = db_getmbrSSAMMOColumnName(vpp_email);
+    if (col_ssa_vpp !== null) {
+        db_updaterateUserSSAMMORating(sel_res_id, col_ssa_vpp, vpp_rating);
+    }
+    if (col_ssa_mgr !== null || col_ssa_vpp !== null) {
+        sqlSSAMMOUpdateMedian();
+        sqlSSAMMOUpdateMean();
+    }
+          
+    var col_apt_mgr = db_getmbrAPTCColumnName(mgr_email);
+    if (col_apt_mgr !== null) {
+        db_updaterateUserAPTCRating(sel_res_id, col_apt_mgr, mgr_rating);
+    }
+    var col_apt_vpp = db_getmbrAPTCColumnName(vpp_email);
+    if (col_apt_vpp !== null) {
+        db_updaterateUserAPTCRating(sel_res_id, col_apt_vpp, vpp_rating);
+    }
+    if (col_apt_mgr !== null || col_apt_vpp !== null) {
+        sqlAPTCUpdateMedian();
+        sqlAPTCUpdateMean();
+    }
+          
+    var col_bdr_mgr = db_getmbrBDRPCColumnName(mgr_email);
+    if (col_bdr_mgr !== null) {
+        db_updaterateUserBDRPCRating(sel_res_id, col_bdr_mgr, mgr_rating);
+    }
+    var col_bdr_vpp = db_getmbrBDRPCColumnName(vpp_email);
+    if (col_bdr_vpp !== null) {
+        db_updaterateUserBDRPCRating(sel_res_id, col_bdr_vpp, vpp_rating);
+    }
+    if (col_bdr_mgr !== null || col_bdr_vpp !== null) {
+        sqlBDRPCUpdateMedian();
+        sqlBDRPCUpdateMean();
+    }
+            
+    var col_iec_mgr = db_getmbrIECColumnName(mgr_email);
+    if (col_iec_mgr !== null) {
+        db_updaterateUserIECRating(sel_res_id, col_iec_mgr, mgr_rating);
+    }
+    var col_iec_vpp = db_getmbrIECColumnName(vpp_email);
+    if (col_iec_vpp !== null) {
+        db_updaterateUserIECRating(sel_res_id, col_iec_vpp, vpp_rating);
+    }
+    if (col_iec_mgr !== null || col_iec_vpp !== null) {
+        sqlIECUpdateMedian();
+        sqlIECUpdateMean();
+    }
+          
+    var col_spa_mgr = db_getmbrSPACColumnName(mgr_email);
+    if (col_spa_mgr !== null) {
+        db_updaterateUserSPACRating(sel_res_id, col_spa_mgr, mgr_rating);
+    }
+    var col_spa_vpp = db_getmbrSPACColumnName(vpp_email);
+    if (col_spa_vpp !== null) {
+        db_updaterateUserSPACRating(sel_res_id, col_spa_vpp, vpp_rating);
+    }
+    if (col_spa_mgr !== null || col_spa_vpp !== null) {
+        sqlSPACUpdateMedian();
+        sqlSPACUpdateMean();
+    }
+    
     var chpldtf_active = db_getrateCHPLDTFActive(sel_res_id);
-    if (chpldtf_active === "1") {        
-        var col_chp_mgr = db_getmbrCHPLDTFColumnName(mgr_email);
-        if (col_chp_mgr !== null) {
-            db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_mgr, mgr_rating);
-        }
-        
-        var col_chp_vpp = db_getmbrCHPLDTFColumnName(vpp_email);
-        if (col_chp_vpp !== null) {
-            db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_vpp, vpp_rating);
-        }
+    if (chpldtf_active === "1") { 
+        getCHPLDTFMedianMean();
     }
-    
     var ssammo_active = db_getrateSSAMMOActive(sel_res_id);
-    if (ssammo_active === "1") {        
-        var col_ssa_mgr = db_getmbrSSAMMOColumnName(mgr_email);
-        if (col_ssa_mgr !== null) {
-            db_updaterateUserSSAMMORating(sel_res_id, col_ssa_mgr, mgr_rating);
-        }
-        
-        var col_ssa_vpp = db_getmbrSSAMMOColumnName(vpp_email);
-        if (col_ssa_vpp !== null) {
-            db_updaterateUserSSAMMORating(sel_res_id, col_ssa_vpp, vpp_rating);
-        }
+    if (ssammo_active === "1") {
+        getSSAMMOMedianMean();
     }
-    
     var aptc_active = db_getrateAPTCActive(sel_res_id);
-    if (aptc_active === "1") {        
-        var col_apt_mgr = db_getmbrAPTCColumnName(mgr_email);
-        if (col_apt_mgr !== null) {
-            db_updaterateUserAPTCRating(sel_res_id, col_apt_mgr, mgr_rating);
-        }
-        
-        var col_apt_vpp = db_getmbrAPTCColumnName(vpp_email);
-        if (col_apt_vpp !== null) {
-            db_updaterateUserAPTCRating(sel_res_id, col_apt_vpp, vpp_rating);
-        }
+    if (aptc_active === "1") { 
+        getAPTCMedianMean();
     }
-    
     var bdrpc_active = db_getrateBDRPCActive(sel_res_id);
-    if (bdrpc_active === "1") {        
-        var col_bdr_mgr = db_getmbrBDRPCColumnName(mgr_email);
-        if (col_bdr_mgr !== null) {
-            db_updaterateUserBDRPCRating(sel_res_id, col_bdr_mgr, mgr_rating);
-        }
-        
-        var col_bdr_vpp = db_getmbrBDRPCColumnName(vpp_email);
-        if (col_bdr_vpp !== null) {
-            db_updaterateUserBDRPCRating(sel_res_id, col_bdr_vpp, vpp_rating);
-        }
+    if (bdrpc_active === "1") { 
+        getBDRPCMedianMean();
     }
-    
     var iec_active = db_getrateIECActive(sel_res_id);
-    if (iec_active === "1") {        
-        var col_iec_mgr = db_getmbrIECColumnName(mgr_email);
-        if (col_iec_mgr !== null) {
-            db_updaterateUserIECRating(sel_res_id, col_iec_mgr, mgr_rating);
-        }
-        
-        var col_iec_vpp = db_getmbrIECColumnName(vpp_email);
-        if (col_iec_vpp !== null) {
-            db_updaterateUserIECRating(sel_res_id, col_iec_vpp, vpp_rating);
-        }
+    if (iec_active === "1") { 
+        getIECMedianMean();
     }
-    
     var spac_active = db_getrateSPACActive(sel_res_id);
     if (spac_active === "1") {
-        var ar_spa = new Array();
-        ar_spa = db_getrateSPACUser(sel_res_id);
-        var rate_spac_id = ar_ssa[0]['rateSPAC_ID'];
-        
-        var col_spa_mgr = db_getmbrSPACColumnName(mgr_email);
-        if (col_spa_mgr !== null) {
-            db_updaterateUserSPACRating(sel_res_id, col_spa_mgr, mgr_rating);
-        }
-        
-        var col_spa_vpp = db_getmbrSPACColumnName(vpp_email);
-        if (col_spa_vpp !== null) {
-            db_updaterateUserSPACRating(sel_res_id, col_spa_vpp, vpp_rating);
-        }
+        getSPACMedianMean();
     }
+    
+    updateAllMedianMean();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2007,4 +2046,437 @@ function sendEmailBSIFundingInstructionToCreator() {
     Message += "x5326";
     
     proc_sendEmailWithCC(email, creator, fs_admin_email, fs_admin_name, Subject, Message);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getCHPLDTFColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrCHPLDTF(m_login_email, true);
+
+    ar_db_chpldtf_column.length = 0;              
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['chpColumnName'];        
+        num_column = num_column.replace("chp_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_chpldtf_column.push(ar_column);
+    }
+}
+
+function getSSAMMOColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrSSAMMO(m_login_email, true);
+
+    ar_db_ssammo_column.length = 0;             
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['ssaColumnName'];        
+        num_column = num_column.replace("ssa_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_ssammo_column.push(ar_column);
+    }
+}
+
+function getAPTCColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrAPTC(m_login_email, true);
+
+    ar_db_aptc_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['aptColumnName'];        
+        num_column = num_column.replace("apt_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_aptc_column.push(ar_column);
+    }
+}
+
+function getBDRPCColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrBDRPC(m_login_email, true);
+
+    ar_db_bdrpc_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['bdrColumnName'];        
+        num_column = num_column.replace("bdr_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_bdrpc_column.push(ar_column);
+    }
+}
+
+function getIECColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrIEC(m_login_email, true);
+
+    ar_db_iec_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['iecColumnName'];        
+        num_column = num_column.replace("iec_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_iec_column.push(ar_column);
+    }
+}
+
+function getSPACColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrSPAC(m_login_email, true);
+
+    ar_db_spac_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['spaColumnName'];        
+        num_column = num_column.replace("spa_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_spac_column.push(ar_column);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function sqlCHPLDTFUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateCHPLDTF] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_chpldtf_column.length; i++) {
+        var num_column = ar_db_chpldtf_column[i][0];
+        sql_variable += "chp_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateCHPLDTF] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateCHPLDTF] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+function sqlSSAMMOUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateSSAMMO] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_ssammo_column.length; i++) {
+        var num_column = ar_db_ssammo_column[i][0];
+        sql_variable += "ssa_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateSSAMMO] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateSSAMMO] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+function sqlAPTCUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateAPTC] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_aptc_column.length; i++) {
+        var num_column = ar_db_aptc_column[i][0];
+        sql_variable += "apt_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateAPTC] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateAPTC] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+function sqlBDRPCUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateBDRPC] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_bdrpc_column.length; i++) {
+        var num_column = ar_db_bdrpc_column[i][0];
+        sql_variable += "bdr_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateBDRPC] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateBDRPC] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+function sqlIECUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateIEC] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_iec_column.length; i++) {
+        var num_column = ar_db_iec_column[i][0];
+        sql_variable += "iec_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateIEC] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateIEC] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+function sqlSPACUpdateMedian() {
+    var sql_query = "CREATE TABLE #MEDIAN_TABLE(ResourceID int, value numeric(3, 2)) INSERT INTO #MEDIAN_TABLE SELECT ResourceID, CONVERT(numeric(3, 2), Value) ";
+    sql_query += "FROM (SELECT * FROM [IVCRESOURCES].[dbo].[rateSPAC] WHERE ResourceID = " + sel_res_id + ") pivotedDate UNPIVOT (Value FOR AgeRAnge IN (";
+    var sql_variable = "";
+    for (var i = 0; i < ar_db_spac_column.length; i++) {
+        var num_column = ar_db_spac_column[i][0];
+        sql_variable += "spa_mbr_" + num_column + ", ";
+    }
+    sql_variable = sql_variable.substring(0, sql_variable.length - 2);
+    sql_query += sql_variable + ")) AS Result ";
+    sql_query += "CREATE TABLE #MEDIAN_RESULT (ResourceID int, column_median numeric(3, 2)) ";
+    sql_query += ";WITH Counts AS(SELECT ResourceID, c = COUNT(*) FROM #MEDIAN_TABLE GROUP BY ResourceID) ";
+    sql_query += "INSERT INTO #MEDIAN_RESULT SELECT a.ResourceID, Median = AVG(0. + value) FROM Counts a ";
+    sql_query += "CROSS APPLY(SELECT TOP (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) b.value, r = ROW_NUMBER() OVER (ORDER BY b.value) FROM #MEDIAN_TABLE b WHERE a.ResourceID = b.ResourceID ORDER BY b.value ) p ";
+    sql_query += "WHERE r BETWEEN ((a.c - 1) / 2) + 1 AND (((a.c - 1) / 2) + (1 + (1 - a.c % 2))) GROUP BY a.ResourceID; ";
+    sql_query += "UPDATE [IVCRESOURCES].[dbo].[rateSPAC] SET Median = rst.column_median ";
+    sql_query += "FROM #MEDIAN_RESULT AS rst INNER JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS org ON rst.ResourceID = org.ResourceID ";
+    sql_query += "DROP TABLE #MEDIAN_TABLE DROP TABLE #MEDIAN_RESULT";
+    db_script_update_rate(sql_query);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function sqlCHPLDTFUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateCHPLDTF] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_chpldtf_column.length; i++) {
+        var num_column = ar_db_chpldtf_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), chp_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN chp_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), chp_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN chp_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateCHPLDTF] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+function sqlSSAMMOUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateSSAMMO] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_ssammo_column.length; i++) {
+        var num_column = ar_db_ssammo_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), ssa_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN ssa_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), ssa_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN ssa_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateSSAMMO] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+function sqlAPTCUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateAPTC] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_aptc_column.length; i++) {
+        var num_column = ar_db_aptc_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), apt_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN apt_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), apt_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN apt_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateAPTC] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+function sqlBDRPCUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateBDRPC] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_bdrpc_column.length; i++) {
+        var num_column = ar_db_bdrpc_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), bdr_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN bdr_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), bdr_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN bdr_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateBDRPC] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+function sqlIECUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateIEC] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_iec_column.length; i++) {
+        var num_column = ar_db_iec_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), iec_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN iec_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), iec_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN iec_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateIEC] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+function sqlSPACUpdateMean() {
+    var sql_query = "";
+    var sql_query_1 = "UPDATE [IVCRESOURCES].[dbo].[rateSPAC] SET Mean = CONVERT(numeric(3, 2), ";
+    var sql_query_2 = "NULLIF((";
+    for (var i = 0; i < ar_db_spac_column.length; i++) {
+        var num_column = ar_db_spac_column[i][0];
+        if (i > 0) {
+            sql_query_1 += "+ ISNULL(CONVERT(numeric(3, 2), spa_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "+ CASE WHEN spa_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+        else {
+            sql_query_1 += "(ISNULL(CONVERT(numeric(3, 2), spa_mbr_" + num_column + "), 0) ";
+            sql_query_2 += "CASE WHEN spa_mbr_" + num_column + " IS NULL THEN 0 ELSE 1 END ";
+        }
+    }
+    sql_query_1 = sql_query_1.trim();
+    sql_query_2 = sql_query_2.trim();
+    sql_query += sql_query_1 + ") / " + sql_query_2 + "), 0)) ";
+    sql_query += "FROM [IVCRESOURCES].[dbo].[rateSPAC] ";
+    sql_query += "WHERE ResourceID = " + sel_res_id;
+    db_script_update_rate(sql_query);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getCHPLDTFMedianMean() {
+    var result = new Array();
+    result = db_getrateCHPLDTFUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getSSAMMOMedianMean() {
+    var result = new Array();
+    result = db_getrateSSAMMOUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getAPTCMedianMean() {
+    var result = new Array();
+    result = db_getrateAPTCUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getBDRPCMedianMean() {
+    var result = new Array();
+    result = db_getrateBDRPCUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getIECMedianMean() {
+    var result = new Array();
+    result = db_getrateIECUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getSPACMedianMean() {
+    var result = new Array();
+    result = db_getrateSPACUser(sel_res_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function updateAllMedianMean() {
+    var all_median = calculateMedian(ar_all_median);
+    var all_mean = calculateMean(ar_all_mean);
+    
+    db_updaterateAllMedianMean(resource_id, all_median, all_mean);
 }

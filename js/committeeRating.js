@@ -702,7 +702,9 @@ $(document).ready(function() {
         }
         
         resource_id = str_tr_id.replace("res_tr_", "");
-        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        if ($('#adm_committee').val() === "SPAC") {
+            fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        }
         
         $("[id^='res_tr_']").css('background-color', '');
         $("#res_tr_" + resource_id).css('background-color', '#CCCCFF');
@@ -901,7 +903,7 @@ $(document).ready(function() {
             
             updateMasterRatingValue(new_rating, mbr_email);
             $('#usr_rating_' + resource_id).html(new_rating);
-        }
+        }   
     });
     
     // modal rating close button click /////////////////////////////////////////
@@ -1329,7 +1331,7 @@ function setAdminOption() {
     if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
         $('#nav_committee_admin').show();
     }
-    if (login_email === "ykim160@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || login_email === "jcalderin@ivc.edu") {
         master_admin = true;
     }
 }
@@ -3647,12 +3649,30 @@ function updateMasterRatingValue(new_rating, mbr_email) {
         getUserSPACMedianMean();
     }
     
-    getCHPLDTFMedianMean();
-    getSSAMMOMedianMean();
-    getAPTCMedianMean();
-    getBDRPCMedianMean();
-    getIECMedianMean();
-    getSPACMedianMean();
+    var chpldtf_active = db_getrateCHPLDTFActive(resource_id);
+    if (chpldtf_active === "1") { 
+        getCHPLDTFMedianMean();
+    }
+    var ssammo_active = db_getrateSSAMMOActive(resource_id);
+    if (ssammo_active === "1") {
+        getSSAMMOMedianMean();
+    }
+    var aptc_active = db_getrateAPTCActive(resource_id);
+    if (aptc_active === "1") { 
+        getAPTCMedianMean();
+    }
+    var bdrpc_active = db_getrateBDRPCActive(resource_id);
+    if (bdrpc_active === "1") { 
+        getBDRPCMedianMean();
+    }
+    var iec_active = db_getrateIECActive(resource_id);
+    if (iec_active === "1") { 
+        getIECMedianMean();
+    }
+    var spac_active = db_getrateSPACActive(resource_id);
+    if (spac_active === "1") {
+        getSPACMedianMean();
+    }
     
     updateAllMedianMean();
 }
@@ -3702,13 +3722,31 @@ function updateUserRatingValue(new_rating) {
         getUserSPACMedianMean();
     }
     
-    getCHPLDTFMedianMean();
-    getSSAMMOMedianMean();
-    getAPTCMedianMean();
-    getBDRPCMedianMean();
-    getIECMedianMean();
-    getSPACMedianMean();
-    
+    var chpldtf_active = db_getrateCHPLDTFActive(resource_id);
+    if (chpldtf_active === "1") { 
+        getCHPLDTFMedianMean();
+    }
+    var ssammo_active = db_getrateSSAMMOActive(resource_id);
+    if (ssammo_active === "1") {
+        getSSAMMOMedianMean();
+    }
+    var aptc_active = db_getrateAPTCActive(resource_id);
+    if (aptc_active === "1") { 
+        getAPTCMedianMean();
+    }
+    var bdrpc_active = db_getrateBDRPCActive(resource_id);
+    if (bdrpc_active === "1") { 
+        getBDRPCMedianMean();
+    }
+    var iec_active = db_getrateIECActive(resource_id);
+    if (iec_active === "1") { 
+        getIECMedianMean();
+    }
+    var spac_active = db_getrateSPACActive(resource_id);
+    if (spac_active === "1") {
+        getSPACMedianMean();
+    }
+
     updateAllMedianMean();
 }
 
@@ -5145,6 +5183,10 @@ function getEnableCommitteeRating() {
 function getMasterCommitteeMemberList() {
     var committee = $('#adm_committee').val();
     switch(committee) {
+        case "CHPLDTF":
+            $('#mod_master_committee_name').html("CHPLDTF:");
+            getMasterCHPLDTFMemberList();
+            break;
         case "SSAMMO":
             $('#mod_master_committee_name').html("SSAMMO:");
             getMasterSSAMMOMemberList();
@@ -5168,6 +5210,21 @@ function getMasterCommitteeMemberList() {
         default:
             break;
     }
+}
+
+function getMasterCHPLDTFMemberList() {
+    var result = new Array(); 
+    result = db_getmbrCHPLDTF(login_email, true);
+    
+    $('#mod_master_committee_list').empty();
+    var html = "<option value=''>Select...</option>";
+    if (result.length !== 0) {
+        for(var i = 0; i < result.length; i++) {
+            html += "<option value='" + result[i]['chpColumnName'] + "'>" + result[i]['chpUserName'] + "</option>";
+        }
+    }
+    $("#mod_master_committee_list").append(html);
+    $("#mod_master_committee_list").selectpicker('refresh');
 }
 
 function getMasterSSAMMOMemberList() {
@@ -5275,6 +5332,16 @@ function getMasterCommitteeMemberEmail(column) {
     var result = "";
     var committee = $('#adm_committee').val();
     switch(committee) {
+        case "CHPLDTF":
+            var result_6 = new Array(); 
+            result_6 = db_getmbrCHPLDTF(login_email, true);
+            for(var i = 0; i < result_6.length; i++) {
+                if (result_6[i]['chpColumnName'] === column) {
+                    result = result_6[i]['chpUserEmail'];
+                    break;
+                }
+            }
+            break;
         case "SSAMMO":
             var result_1 = new Array(); 
             result_1 = db_getmbrSSAMMO(login_email, true);
