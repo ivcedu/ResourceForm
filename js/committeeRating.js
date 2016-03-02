@@ -930,7 +930,9 @@ $(document).ready(function() {
         str_resource_id = str_resource_id.replace("iec_", "");
         str_resource_id = str_resource_id.replace("spa_", "");
         resource_id = str_resource_id;
-        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        if ($('#adm_committee').val() === "SPAC") {
+            fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        }
 
         resetModalFinalDialog();
         var title = $('#resource_title_full_' + resource_id).html();
