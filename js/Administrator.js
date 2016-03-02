@@ -561,6 +561,9 @@ $(document).ready(function() {
                 db_updaterateSPACActive(sel_res_id, true);
                 commt_update += m_login_name + ": Move forward to SPAC";
                 
+                // copy mgr/vpp rating to committee rating
+                copyMgrVPPRatingToCommittee(sel_approver_id, rating_value);
+                
                 db_updateCommentsVPP(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
             
@@ -647,7 +650,7 @@ $(document).ready(function() {
     });
     
     // export excel button click ///////////////////////////////////////////////
-    $('#export_excel').click(function() {        
+    $('#export_excel').click(function() { 
         var url_html = expoftToExcelURLParameters();        
         location.href = "php/csv_saveAdminRFListToCSV.php?" + url_html;
     });
@@ -775,7 +778,7 @@ function setAdminOption() {
     m_login_email = sessionStorage.getItem('m1_loginEmail');
     m_login_name = sessionStorage.getItem('m1_loginName');
     
-    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "dkhachatryan@ivc.edu") {
+    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
 //        $('#nav_back_to_draft').show();
         $('#nav_change_approver').show();
         $('#nav_committee_rating').show();
@@ -1784,6 +1787,115 @@ function getVPPComments() {
     }
     else {
         db_insertCommentsVPP(sel_res_id, sel_approver_id, "");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function copyMgrVPPRatingToCommittee(vpp_id, vpp_rating) {
+    // manager rating value
+    var mgr_email = "";
+    var mgr_rating = "";
+    var mgr_info = new Array();
+    mgr_info = db_getrateMgr(sel_res_id);
+    
+    if (mgr_info.length === 0) {
+        return false;
+    }
+    else {
+        mgr_email = mgr_info[0]['ApproverEmail'];
+        mgr_rating = mgr_info[0]['mgr_Rating'];
+    }
+    
+    var vpp_email = "";
+    var vpp_info = new Array();
+    vpp_info = db_getApproverByID(vpp_id);
+    if (vpp_info.length === 0) {
+        return false;
+    }
+    else {
+        vpp_email = vpp_info[0]['ApproverEmail'];
+    }
+    
+    var chpldtf_active = db_getrateCHPLDTFActive(sel_res_id);
+    if (chpldtf_active === "1") {        
+        var col_chp_mgr = db_getmbrCHPLDTFColumnName(mgr_email);
+        if (col_chp_mgr !== null) {
+            db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_mgr, mgr_rating);
+        }
+        
+        var col_chp_vpp = db_getmbrCHPLDTFColumnName(vpp_email);
+        if (col_chp_vpp !== null) {
+            db_updaterateUserCHPLDTFRating(sel_res_id, col_chp_vpp, vpp_rating);
+        }
+    }
+    
+    var ssammo_active = db_getrateSSAMMOActive(sel_res_id);
+    if (ssammo_active === "1") {        
+        var col_ssa_mgr = db_getmbrSSAMMOColumnName(mgr_email);
+        if (col_ssa_mgr !== null) {
+            db_updaterateUserSSAMMORating(sel_res_id, col_ssa_mgr, mgr_rating);
+        }
+        
+        var col_ssa_vpp = db_getmbrSSAMMOColumnName(vpp_email);
+        if (col_ssa_vpp !== null) {
+            db_updaterateUserSSAMMORating(sel_res_id, col_ssa_vpp, vpp_rating);
+        }
+    }
+    
+    var aptc_active = db_getrateAPTCActive(sel_res_id);
+    if (aptc_active === "1") {        
+        var col_apt_mgr = db_getmbrAPTCColumnName(mgr_email);
+        if (col_apt_mgr !== null) {
+            db_updaterateUserAPTCRating(sel_res_id, col_apt_mgr, mgr_rating);
+        }
+        
+        var col_apt_vpp = db_getmbrAPTCColumnName(vpp_email);
+        if (col_apt_vpp !== null) {
+            db_updaterateUserAPTCRating(sel_res_id, col_apt_vpp, vpp_rating);
+        }
+    }
+    
+    var bdrpc_active = db_getrateBDRPCActive(sel_res_id);
+    if (bdrpc_active === "1") {        
+        var col_bdr_mgr = db_getmbrBDRPCColumnName(mgr_email);
+        if (col_bdr_mgr !== null) {
+            db_updaterateUserBDRPCRating(sel_res_id, col_bdr_mgr, mgr_rating);
+        }
+        
+        var col_bdr_vpp = db_getmbrBDRPCColumnName(vpp_email);
+        if (col_bdr_vpp !== null) {
+            db_updaterateUserBDRPCRating(sel_res_id, col_bdr_vpp, vpp_rating);
+        }
+    }
+    
+    var iec_active = db_getrateIECActive(sel_res_id);
+    if (iec_active === "1") {        
+        var col_iec_mgr = db_getmbrIECColumnName(mgr_email);
+        if (col_iec_mgr !== null) {
+            db_updaterateUserIECRating(sel_res_id, col_iec_mgr, mgr_rating);
+        }
+        
+        var col_iec_vpp = db_getmbrIECColumnName(vpp_email);
+        if (col_iec_vpp !== null) {
+            db_updaterateUserIECRating(sel_res_id, col_iec_vpp, vpp_rating);
+        }
+    }
+    
+    var spac_active = db_getrateSPACActive(sel_res_id);
+    if (spac_active === "1") {
+        var ar_spa = new Array();
+        ar_spa = db_getrateSPACUser(sel_res_id);
+        var rate_spac_id = ar_ssa[0]['rateSPAC_ID'];
+        
+        var col_spa_mgr = db_getmbrSPACColumnName(mgr_email);
+        if (col_spa_mgr !== null) {
+            db_updaterateUserSPACRating(sel_res_id, col_spa_mgr, mgr_rating);
+        }
+        
+        var col_spa_vpp = db_getmbrSPACColumnName(vpp_email);
+        if (col_spa_vpp !== null) {
+            db_updaterateUserSPACRating(sel_res_id, col_spa_vpp, vpp_rating);
+        }
     }
 }
 

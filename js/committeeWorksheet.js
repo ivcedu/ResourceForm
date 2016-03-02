@@ -124,7 +124,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrCHPLDTF(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateCHPLDTF.html', '_self');
         }
         else {
@@ -143,7 +143,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrSSAMMO(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateSSAMMO.html', '_self');
         }
         else {
@@ -162,7 +162,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrAPTC(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateAPTC.html', '_self');
         }
         else {
@@ -181,7 +181,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrBDRPC(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateBDRPC.html', '_self');
         }
         else {
@@ -200,7 +200,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrIEC(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateIEC.html', '_self');
         }
         else {
@@ -219,7 +219,7 @@ $(document).ready(function() {
         var result = new Array(); 
         result = db_getmbrSPAC(login_email, false);
         
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             window.open('rateSPAC.html', '_self');
         }
         else {
@@ -581,7 +581,7 @@ function setAdminOption() {
     login_name = sessionStorage.getItem('m1_loginName');
     login_email = sessionStorage.getItem('m1_loginEmail');
     
-    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
         admin = true;
         $('.container').css('width', '1200px');
         
@@ -594,7 +594,7 @@ function setAdminOption() {
 }
 
 function setAdminCommitteeRating() {
-    if (login_email === "ykim160@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
         $('#admin_committee_rating').show();
     }
 }

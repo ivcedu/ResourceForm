@@ -212,9 +212,9 @@ function setAdminOption() {
     
     if (ApproverID !== null || LoginEmail === "ykim160@ivc.edu") {
         $('#show_admin').show();
-        if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu" || LoginEmail === "dkhachatryan@ivc.edu") {
+        if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu" || LoginEmail === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
             $('#rpt_master').show();
-            if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu") {
+            if (LoginEmail === "ykim160@ivc.edu" || LoginEmail === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
                 $('#show_master').show();
             }
         }
@@ -1001,7 +1001,7 @@ function deadlinePastNotification() {
 ////////////////////////////////////////////////////////////////////////////////
 function isMemberOfCommittee() {
     var login_email = sessionStorage.getItem('m1_loginEmail');
-    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
         return true;
     }
     

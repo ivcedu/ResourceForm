@@ -2350,6 +2350,20 @@ function db_getEnableCommitteeRating() {
     return result;
 }
 
+function db_getrateMgr(ResourceID) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getrateMgr.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 // insert DB ///////////////////////////////////////////////////////////////////
 function mod_AddLogin() {
     var loginName = sessionStorage.getItem('m1_loginName');
