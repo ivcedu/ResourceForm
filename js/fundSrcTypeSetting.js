@@ -27,7 +27,8 @@ $(document).ready(function() {
     });
     
     // budget amount change event //////////////////////////////////////////////
-    $(document).on('change', 'input[id^="budget_amt_"]', function() {
+    $(document).on('change', 'input[id^="budget_amt_"]', function(e) {
+        e.preventDefault();
         $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
         var amount = Number($(this).val());
          
@@ -40,7 +41,8 @@ $(document).ready(function() {
     });
     
     // update fund src type button click ///////////////////////////////////////
-    $(document).on('click', '[id^="btn_update_id_"]', function() {
+    $(document).on('click', '[id^="btn_update_id_"]', function(e) {
+        e.preventDefault();
         var fund_src_type_id = $(this).attr('id').replace("btn_update_id_", "");
         var err = formValidation(fund_src_type_id);
         if (err !== "") {
@@ -55,7 +57,8 @@ $(document).ready(function() {
     });
     
     // update fund src budget button click /////////////////////////////////////
-    $(document).on('click', '[id^="btn_fsb_add_id_"]', function() {
+    $(document).on('click', '[id^="btn_fsb_add_id_"]', function(e) {
+        e.preventDefault();
         var fund_src_type_id = $(this).attr('id').replace("btn_fsb_add_id_", "");
         var fund_src_col = $('#fund_src_col_' + fund_src_type_id).html();
         var budget_amt = revertDollar($('#budget_amt_' + fund_src_type_id).val());
@@ -66,12 +69,10 @@ $(document).ready(function() {
     });
     
     // add fund src budget button click ////////////////////////////////////////
-    $(document).on('click', '[id^="btn_fsb_update_id_"]', function() {
+    $(document).on('click', '[id^="btn_fsb_update_id_"]', function(e) {
+        e.preventDefault();
         var fund_src_type_id = $(this).attr('id').replace("btn_fsb_update_id_", "");
-        var fund_src_col = $('#fund_src_col_' + fund_src_type_id).html();
-//        var pre_bugdet_amt = revertDollar($('#pre_budget_amt_' + fund_src_type_id).html());
-//        var pre_balance_amt = revertDollar($('#pre_balance_amt_' + fund_src_type_id).html());
-//        var new_balance_amt = budget_amt - pre_bugdet_amt + pre_balance_amt;      
+        var fund_src_col = $('#fund_src_col_' + fund_src_type_id).html();     
 
         var budget_amt = revertDollar($('#budget_amt_' + fund_src_type_id).val());
         var fund_src_sum = Number(db_getResourceFundAmtTotalSrc(fund_src_col + "_amt"));
