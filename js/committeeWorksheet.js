@@ -56,6 +56,15 @@ var new_fs_20 = false;
 var new_fs_21 = false;
 var new_fs_22 = false;
 var new_fs_23 = false;
+
+var ar_all_median = [];
+var ar_all_mean = [];
+var ar_db_chpldtf_column = [];
+var ar_db_ssammo_column = [];
+var ar_db_aptc_column = [];
+var ar_db_bdrpc_column = [];
+var ar_db_iec_column = [];
+var ar_db_spac_column = [];
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
@@ -867,6 +876,8 @@ function updateSelectedCommitteeSetting() {
     note += (iec_active === true ? "IEC " : "");
     note += (spac_active === true ? "SPAC " : "");
     db_insertTransactions(resource_id, login_name, note);
+    
+    updateCommitteeMedianMean();
     
     return true;
 }
@@ -1686,4 +1697,208 @@ function sendEmailBSIFundingInstructionToCreator() {
     Message += "x5326";
     
     proc_sendEmailWithCC(email, creator, fs_admin_email, fs_admin_name, Subject, Message);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function updateCommitteeMedianMean() {
+    getCHPLDTFColumnArray();
+    getSSAMMOColumnArray();
+    getAPTCColumnArray();
+    getBDRPCColumnArray();
+    getIECColumnArray();
+    getSPACColumnArray();
+    
+    var chpldtf_active = db_getrateCHPLDTFActive(resource_id);
+    if (chpldtf_active === "1") { 
+        getCHPLDTFMedianMean();
+    }
+    var ssammo_active = db_getrateSSAMMOActive(resource_id);
+    if (ssammo_active === "1") {
+        getSSAMMOMedianMean();
+    }
+    var aptc_active = db_getrateAPTCActive(resource_id);
+    if (aptc_active === "1") { 
+        getAPTCMedianMean();
+    }
+    var bdrpc_active = db_getrateBDRPCActive(resource_id);
+    if (bdrpc_active === "1") { 
+        getBDRPCMedianMean();
+    }
+    var iec_active = db_getrateIECActive(resource_id);
+    if (iec_active === "1") { 
+        getIECMedianMean();
+    }
+    var spac_active = db_getrateSPACActive(resource_id);
+    if (spac_active === "1") {
+        getSPACMedianMean();
+    }
+
+    updateAllMedianMean();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getCHPLDTFColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrCHPLDTF(login_email, true);
+
+    ar_db_chpldtf_column.length = 0;              
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['chpColumnName'];        
+        num_column = num_column.replace("chp_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_chpldtf_column.push(ar_column);
+    }
+}
+
+function getSSAMMOColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrSSAMMO(login_email, true);
+
+    ar_db_ssammo_column.length = 0;             
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['ssaColumnName'];        
+        num_column = num_column.replace("ssa_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_ssammo_column.push(ar_column);
+    }
+}
+
+function getAPTCColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrAPTC(login_email, true);
+
+    ar_db_aptc_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['aptColumnName'];        
+        num_column = num_column.replace("apt_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_aptc_column.push(ar_column);
+    }
+}
+
+function getBDRPCColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrBDRPC(login_email, true);
+
+    ar_db_bdrpc_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['bdrColumnName'];        
+        num_column = num_column.replace("bdr_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_bdrpc_column.push(ar_column);
+    }
+}
+
+function getIECColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrIEC(login_email, true);
+
+    ar_db_iec_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['iecColumnName'];        
+        num_column = num_column.replace("iec_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_iec_column.push(ar_column);
+    }
+}
+
+function getSPACColumnArray() {
+    var result = new Array(); 
+    result = db_getmbrSPAC(login_email, true);
+
+    ar_db_spac_column.length = 0;           
+    for(var i = 0; i < result.length; i++) {
+        var num_column = result[i]['spaColumnName'];        
+        num_column = num_column.replace("spa_mbr_", "");
+        var ar_column = new Array();
+        ar_column.push(num_column);
+        ar_db_spac_column.push(ar_column);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getCHPLDTFMedianMean() {
+    var result = new Array();
+    result = db_getrateCHPLDTFUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getSSAMMOMedianMean() {
+    var result = new Array();
+    result = db_getrateSSAMMOUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getAPTCMedianMean() {
+    var result = new Array();
+    result = db_getrateAPTCUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getBDRPCMedianMean() {
+    var result = new Array();
+    result = db_getrateBDRPCUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getIECMedianMean() {
+    var result = new Array();
+    result = db_getrateIECUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+function getSPACMedianMean() {
+    var result = new Array();
+    result = db_getrateSPACUser(resource_id);
+    
+    if (result[0]['Median'] !== null) {
+        ar_all_median.push(Number(result[0]['Median']));
+    }
+    if (result[0]['Mean'] !== null) {
+        ar_all_mean.push(Number(result[0]['Mean']));
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function updateAllMedianMean() {
+    var all_median = calculateMedian(ar_all_median);
+    var all_mean = calculateMean(ar_all_mean);
+    
+    db_updaterateAllMedianMean(resource_id, all_median, all_mean);
 }
