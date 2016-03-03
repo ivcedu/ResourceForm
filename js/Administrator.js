@@ -1807,10 +1807,7 @@ function copyMgrVPPRatingToCommittee(vpp_id, vpp_rating) {
     var mgr_info = new Array();
     mgr_info = db_getrateMgr(sel_res_id);
     
-    if (mgr_info.length === 0) {
-        return false;
-    }
-    else {
+    if (mgr_info.length !== 0) {
         mgr_email = mgr_info[0]['ApproverEmail'];
         mgr_rating = mgr_info[0]['mgr_Rating'];
     }
@@ -1818,10 +1815,7 @@ function copyMgrVPPRatingToCommittee(vpp_id, vpp_rating) {
     var vpp_email = "";
     var vpp_info = new Array();
     vpp_info = db_getApproverByID(vpp_id);
-    if (vpp_info.length === 0) {
-        return false;
-    }
-    else {
+    if (vpp_info.length !== 0) {
         vpp_email = vpp_info[0]['ApproverEmail'];
     }
     
