@@ -877,7 +877,7 @@ function updateSelectedCommitteeSetting() {
     note += (spac_active === true ? "SPAC " : "");
     db_insertTransactions(resource_id, login_name, note);
     
-    updateCommitteeMedianMean();
+//    updateCommitteeMedianMean();
     
     return true;
 }
