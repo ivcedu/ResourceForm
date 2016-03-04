@@ -423,24 +423,37 @@ function navigateStepPage(step) {
 ////////////////////////////////////////////////////////////////////////////////
 function calculateMedian(arr_values) {
     var median = 0.00;
-    arr_values.sort( function(a,b) {return a - b;} );
-    var half = Math.floor(arr_values.length/2);
-
-    if(arr_values.length % 2) {
-        median = arr_values[half];
+    
+    if (arr_values.length === 0) {
+        return median.toFixed(2);
     }
     else {
-        median = (arr_values[half-1] + arr_values[half]) / 2.0;
+        arr_values.sort( function(a,b) {return a - b;} );
+        var half = Math.floor(arr_values.length/2);
+
+        if(arr_values.length % 2) {
+            median = arr_values[half];
+        }
+        else {
+            median = (arr_values[half-1] + arr_values[half]) / 2.0;
+        }
+
+        return median.toFixed(2);
     }
-    
-    return median.toFixed(2);
 }
 
 function calculateMean(arr_value) {
-    var sum = arr_value.reduce(function(a, b) { return a + b; });
-    var avg = sum / arr_value.length;
+    var avg = 0.00;
     
-    return avg.toFixed(2);
+    if (arr_value.length === 0) {
+        return avg.toFixed(2);
+    }
+    else {
+        var sum = arr_value.reduce(function(a, b) { return a + b; });
+        var avg = sum / arr_value.length;
+
+        return avg.toFixed(2);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

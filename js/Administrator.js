@@ -447,7 +447,7 @@ $(document).ready(function() {
     });
     
     // comments move forward button event //////////////////////////////////////
-    $('#mod_add_move_forward').click(function() {
+    $('#mod_add_move_forward').click(function() {        
         if (sel_res_id !== "") {
             var rating_value = "-1";
             var commt_update = "";
@@ -497,7 +497,7 @@ $(document).ready(function() {
             else if (sel_res_stage === "Dean/Director") {
                 var err_comments = addCommentsValidation();
                 var rdo_rating = $('input:radio[name=mod_add_rdo_rating]').is(':checked');
-                if (!rdo_rating|| err_comments !== "") {
+                if (!rdo_rating || err_comments !== "") {
                     var err = err_comments;
                     if (!rdo_rating) {
                         err += "\n" + "Rating value (0 - 5) is a required";
@@ -536,7 +536,7 @@ $(document).ready(function() {
             else {
                 var err_comments = addCommentsValidation();
                 var rdo_rating = $('input:radio[name=mod_add_rdo_rating]').is(':checked');
-                if (!rdo_rating|| err_comments !== "") {
+                if (!rdo_rating || err_comments !== "") {
                     var err = err_comments;
                     if (!rdo_rating) {
                         err += "\n" + "Rating value (0 - 5) is a required";
@@ -2454,5 +2454,5 @@ function updateAllMedianMean() {
     var all_median = calculateMedian(ar_all_median);
     var all_mean = calculateMean(ar_all_mean);
     
-    db_updaterateAllMedianMean(resource_id, all_median, all_mean);
+    db_updaterateAllMedianMean(sel_res_id, all_median, all_mean);
 }
