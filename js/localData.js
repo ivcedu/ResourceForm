@@ -425,7 +425,7 @@ function calculateMedian(arr_values) {
     var median = 0.00;
     
     if (arr_values.length === 0) {
-        return median.toFixed(2);
+        return null;
     }
     else {
         arr_values.sort( function(a,b) {return a - b;} );
@@ -446,7 +446,7 @@ function calculateMean(arr_value) {
     var avg = 0.00;
     
     if (arr_value.length === 0) {
-        return avg.toFixed(2);
+        return null;
     }
     else {
         var sum = arr_value.reduce(function(a, b) { return a + b; });
