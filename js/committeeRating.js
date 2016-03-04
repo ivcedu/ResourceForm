@@ -3630,7 +3630,7 @@ function updateMasterRatingValue(new_rating, mbr_email) {
         db_updaterateUserAPTCRating(resource_id, master_aptc, new_rating);
         sqlAPTCUpdateMedian();
         sqlAPTCUpdateMean();
-        getAPTCMedianMean();
+        getUserAPTCMedianMean();
     }
     if (master_bdrpc !== null) {
         db_updaterateUserBDRPCRating(resource_id, master_bdrpc, new_rating);
@@ -3685,7 +3685,7 @@ function updateUserRatingValue(new_rating) {
         db_updaterateUserAPTCRating(resource_id, column_aptc, new_rating);
         sqlAPTCUpdateMedian();
         sqlAPTCUpdateMean();
-        getAPTCMedianMean();
+        getUserAPTCMedianMean();
     }
     if (column_bdrpc !== "") {
         db_updaterateUserBDRPCRating(resource_id, column_bdrpc, new_rating);
