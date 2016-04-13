@@ -1238,8 +1238,6 @@ function stopSpin() {
 
 ////////////////////////////////////////////////////////////////////////////////
 function getAllResourceFiscalYear() {
-    $('#all_fiscal_yrs').html("");
-    
     var result = new Array();
     result = db_getAllResourceFiscalYear();
     var html = "";
@@ -1415,8 +1413,10 @@ function exportExcelCommitteeRatingList() {
     else {
         setSQLScript(committee);
     }
-    
-    return "SqlSelect=" + sql_select + "&SqlFrom=" + sql_from + "&SqlWhere=" + sql_where + "&RatedByID=0&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&OneTime=" + one_time;    
+
+    var str_html = "SqlSelect=" + sql_select + "&SqlFrom=" + sql_from + "&SqlWhere=" + sql_where;
+    str_html += "&Committee=" + committee + "&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&OneTime=" + one_time;;
+    return str_html;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

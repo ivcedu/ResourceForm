@@ -5,36 +5,19 @@
     $SqlFrom = filter_input(INPUT_GET, 'SqlFrom');
     $SqlWhere = filter_input(INPUT_GET, 'SqlWhere');
     
-    $RatedByID = filter_input(INPUT_GET, 'RatedByID');
+    $Committee = filter_input(INPUT_GET, 'Committee');
     $ResourceType = filter_input(INPUT_GET, 'ResourceType');
     $Program = filter_input(INPUT_GET, 'Program');
     $FundingSrc = filter_input(INPUT_GET, 'FundingSrc');
     $OneTime = filter_input(INPUT_GET, 'OneTime');
     
     $sql_where = "WHERE ".$SqlWhere;
-    $sql_reated_by_id = "";
+    $sql_committee = "";
     $sql_resource_type = "";
     $sql_program = "";
     $sql_fund_src = "";
     $sql_fund_src_col = "";
     $sql_one_time = "";
-    
-    if ($RatedByID !== "0") {
-        switch ($RatedByID) {
-            case "3":   // Craig Justice (VPI)
-                $sql_reated_by_id = "resr.ApprovalID = 3";
-                break;
-            case "6":   // Davit Khachatryan (VPA)
-                $sql_reated_by_id = "resr.ApprovalID = 6";
-                break;
-            case "4":   // Linda Fontanilla (VPS)
-                $sql_reated_by_id = "resr.ApprovalID = 4";
-                break;
-            case "5":   // Glenn Roquemore (President)
-                $sql_reated_by_id = "resr.ApprovalID = 5";
-                break;
-        }
-    }
     
     if ($ResourceType !== "All Resource") {
         switch ($ResourceType) {
@@ -160,10 +143,7 @@
         } 
     }
     
-    ////////////////////////////////////////////////////////////////////////////            
-    if ($sql_reated_by_id !== "") {   
-        $sql_where = $sql_where." AND ".$sql_reated_by_id;
-    }        
+    ////////////////////////////////////////////////////////////////////////////                   
     if ($sql_resource_type !== "") {   
         $sql_where = $sql_where." AND ".$sql_resource_type;
     }
@@ -224,21 +204,204 @@
     header("Content-Disposition: attachment; filename=\"$filename\"");
     header("Content-Type: text/csv;");
     $out = fopen("php://output", 'w+');
+    
+    if ($Committee === "All") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating', 'ResourceType', 'Committee', 'Funding Src'));
 
-    // Write the spreadsheet column titles / labels
-    fputcsv($out, array('ID', 'ProposalTitle', 'CHPLDTFFinal', 'SSAMMOFinal', 'APTCFinal', 'BDRPCFinal', 'IECFinal', 'SPACFinal',
-                        'Requested', 'Recommend', 'Balance', 'General', 'ASIVC', 'BasicAid', 'BasicSkillsInitiative', 'BEAP', 'CalWORKs/TANF', 'CapitalOutlay', 'CDC', 'CollegeWorkStudy', 'CommunityEducation',
-                        'DSPS', 'EOPS/CARE', 'EWD', 'Foundation', 'Grants', 'Health', 'Lottery', 'Parking', 'Perkins', 'PPIS', 'SSSP', 'StudentEquity', 'StudentMaterial', 
-                        'MgrRating', 'VPPRating', 'NeedBy', 'Creator', 'ResourceType'));
-    // Write all the user records to the spreadsheet
-    foreach($data as $row) {
-        fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['CHPLDTF_FinalRating'], $row['SSAMMO_FinalRating'], $row['APTC_FinalRating'], 
-                            $row['BDRPC_FinalRating'], $row['IEC_FinalRating'], $row['SPAC_FinalRating'],
-                            $row['TotalAmount'], $row['funded_total'], $row['TotalAmount'] - $row['funded_total'],
-                            $row['fs_1_amt'], $row['fs_2_amt'], $row['fs_3_amt'], $row['fs_4_amt'], $row['fs_5_amt'], $row['fs_6_amt'], $row['fs_7_amt'], $row['fs_8_amt'], $row['fs_9_amt'], $row['fs_10_amt'],
-                            $row['fs_11_amt'], $row['fs_12_amt'], $row['fs_13_amt'], $row['fs_14_amt'], $row['fs_15_amt'], $row['fs_16_amt'], $row['fs_17_amt'], $row['fs_18_amt'], $row['fs_19_amt'], $row['fs_20_amt'],
-                            $row['fs_21_amt'], $row['fs_22_amt'], $row['fs_23_amt'],
-                            $row['DepartMgr'], $row['VPP'], $row['NeedBy'], $row['CreatorName'], $row['ResourceType']));
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['CHPLDTF_Rating'] !== null) {
+                $your_rating = $row['CHPLDTF_Rating'];
+            }
+            else if ($row['SSAMMO_Rating'] !== null) {
+                $your_rating = $row['SSAMMO_Rating'];
+            }
+            else if ($row['APTC_Rating'] !== null) {
+                $your_rating = $row['APTC_Rating'];
+            }
+            else if ($row['BDRPC_Rating'] !== null) {
+                $your_rating = $row['BDRPC_Rating'];
+            }
+            else if ($row['IEC_Rating'] !== null) {
+                $your_rating = $row['IEC_Rating'];
+            }
+            else if ($row['SPAC_Rating'] !== null) {
+                $your_rating = $row['SPAC_Rating'];
+            }
+            
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'],
+                                $your_rating, $mgr_rating, $vp_rating, $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "CHPLDTF") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+                            'CHPLDTF Median', 'CHPLDTF Mean', 'CHPLDTF Final', 'ResourceType', 'Committee', 'Funding Src'));
+
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['CHPLDTF_Rating'] !== null) {
+                $your_rating = $row['CHPLDTF_Rating'];
+            }
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+                                $row['CHPLDTF_Median'], $row['CHPLDTF_Mean'], $row['CHPLDTF_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "SSAMMO") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+                            'SSAMMO Median', 'SSAMMO Mean', 'SSAMMO Final', 'ResourceType', 'Committee', 'Funding Src'));
+
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['SSAMMO_Rating'] !== null) {
+                $your_rating = $row['SSAMMO_Rating'];
+            }
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+                                $row['SSAMMO_Median'], $row['SSAMMO_Mean'], $row['SSAMMO_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "APTC") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+                            'APTC Median', 'APTC Mean', 'APTC Final', 'ResourceType', 'Committee', 'Funding Src'));
+
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['APTC_Rating'] !== null) {
+                $your_rating = $row['APTC_Rating'];
+            }
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+                                $row['APTC_Median'], $row['APTC_Mean'], $row['APTC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "BDRPC") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+                            'BDRPC Median', 'BDRPC Mean', 'BDRPC Final', 'ResourceType', 'Committee', 'Funding Src'));
+
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['BDRPC_Rating'] !== null) {
+                $your_rating = $row['BDRPC_Rating'];
+            }
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+                                $row['BDRPC_Median'], $row['BDRPC_Mean'], $row['BDRPC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "IEC") {
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+                            'IEC Median', 'IEC Mean', 'IEC Final', 'ResourceType', 'Committee', 'Funding Src'));
+
+        foreach($data as $row) {
+            $your_rating = "";
+            if ($row['IEC_Rating'] !== null) {
+                $your_rating = $row['IEC_Rating'];
+            }
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            $funding_src = "All";
+            if ($row['Funding'] !== null) {
+                $funding_src = $row['Funding'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+                                $row['IEC_Median'], $row['IEC_Mean'], $row['IEC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
+        }
+    }
+    else if ($Committee === "SPAC") {
+        // Write the spreadsheet column titles / labels
+        fputcsv($out, array('ID', 'ProposalTitle', 'CHPLDTFFinal', 'SSAMMOFinal', 'APTCFinal', 'BDRPCFinal', 'IECFinal', 'SPACFinal',
+                            'Requested', 'Recommend', 'Balance', 'General', 'ASIVC', 'BasicAid', 'BasicSkillsInitiative', 'BEAP', 'CalWORKs/TANF', 'CapitalOutlay', 'CDC', 'CollegeWorkStudy', 'CommunityEducation',
+                            'DSPS', 'EOPS/CARE', 'EWD', 'Foundation', 'Grants', 'Health', 'Lottery', 'Parking', 'Perkins', 'PPIS', 'SSSP', 'StudentEquity', 'StudentMaterial', 
+                            'MgrRating', 'VPPRating', 'NeedBy', 'Creator', 'ResourceType'));
+        // Write all the user records to the spreadsheet
+        foreach($data as $row) {
+            $mgr_rating = "";
+            if ($row['DepartMgr'] >= 0) {
+                $mgr_rating = $row['DepartMgr'];
+            }
+            $vp_rating = "";
+            if ($row['VPP'] >= 0) {
+                $vp_rating = $row['VPP'];
+            }
+            
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['CHPLDTF_FinalRating'], $row['SSAMMO_FinalRating'], $row['APTC_FinalRating'], 
+                                $row['BDRPC_FinalRating'], $row['IEC_FinalRating'], $row['SPAC_FinalRating'],
+                                $row['TotalAmount'], $row['funded_total'], $row['TotalAmount'] - $row['funded_total'],
+                                $row['fs_1_amt'], $row['fs_2_amt'], $row['fs_3_amt'], $row['fs_4_amt'], $row['fs_5_amt'], $row['fs_6_amt'], $row['fs_7_amt'], $row['fs_8_amt'], $row['fs_9_amt'], $row['fs_10_amt'],
+                                $row['fs_11_amt'], $row['fs_12_amt'], $row['fs_13_amt'], $row['fs_14_amt'], $row['fs_15_amt'], $row['fs_16_amt'], $row['fs_17_amt'], $row['fs_18_amt'], $row['fs_19_amt'], $row['fs_20_amt'],
+                                $row['fs_21_amt'], $row['fs_22_amt'], $row['fs_23_amt'],
+                                $mgr_rating, $vp_rating, $row['NeedBy'], $row['CreatorName'], $row['ResourceType']));
+        }
     }
     
     fclose($out);

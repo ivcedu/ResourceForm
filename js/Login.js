@@ -82,6 +82,10 @@ function loginInfo() {
         var appTitle = result[6];
         var appDivision = result[7];
         
+        // testing login
+//        name = "Davit Khachatryan";
+//        email = "dkhachatryan@ivc.edu";
+        
         localData_login(name, email, title, division, appName, appEmail, appTitle, appDivision);
         db_updateLogin(email, name, title, division);
         db_updateCreator(email, name, title, division);
