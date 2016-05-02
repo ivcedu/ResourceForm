@@ -7,7 +7,7 @@ window.onload = function() {
         getAllResourceFiscalYear();
         getFundingSrcTypeList();   
         setTableHeader();
-        getCommitteeRatingList("All", "All", "All Resource", "All Program", 0, "All Request");
+        getCommitteeRatingList("All", "0", "All Resource", "All Program", 0, "All Request");
         initializeTable();
         setListTotalCountAmount();
     }

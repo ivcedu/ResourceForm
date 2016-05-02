@@ -2491,7 +2491,8 @@ function setMasterSQLScript(sel_committee) {
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON riec.ResourceID = resr.ResourceID ";
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID ";
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundAmt] AS rsfa ON resr.ResourceID = rsfa.ResourceID ";
-            sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
+//            sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
+            sql_where += "rspa.Active = 1 ";
             break;
         default:
             break;
@@ -2601,7 +2602,8 @@ function setSQLScript(sel_committee) {
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON riec.ResourceID = resr.ResourceID ";
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID ";
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundAmt] AS rsfa ON resr.ResourceID = rsfa.ResourceID ";
-                sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
+//                sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
+                sql_where += "rspa.Active = 1 ";
             }
             break;
         default:

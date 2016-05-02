@@ -2259,11 +2259,12 @@ function db_getmbrSPACColumnName(spaUserEmail) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-function db_getrateCHPLDTFList() {
+function db_getrateCHPLDTFList(FiscalYear) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getrateCHPLDTFList.php",
+        data:{FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

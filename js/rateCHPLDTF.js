@@ -21,6 +21,7 @@ window.onload = function() {
         $('#mod_admin_add_body_new').hide();
         $('#nav_admin_setting').hide();
         
+        getAllResourceFiscalYear();
         setAdminOption();        
         setTableHeader();
         getrateCHPLDTFList();
@@ -111,6 +112,12 @@ $(document).ready(function() {
     $('#nav_logout').click(function() {
         sessionStorage.clear();
         window.open('Login.html', '_self');
+    });
+    
+    // fiscal year refresh button click ////////////////////////////////////////
+    $('#all_fiscal_yrs').change(function() {
+        getrateCHPLDTFList();
+        $('#rf_list').trigger("updateAll");
     });
     
     // table mouseover event ///////////////////////////////////////////////////
@@ -205,6 +212,22 @@ $(document).ready(function() {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+function getAllResourceFiscalYear() {
+    $('#all_fiscal_yrs').html("");
+    
+    var result = new Array();
+    result = db_getAllResourceFiscalYear();
+    var html = "";
+    for(var i = 0; i < result.length; i++) { 
+        html += "<option value='" + result[i]['FiscalYear'] + "'>" + result[i]['FiscalYear'] + "</option>";
+    }
+    
+    $('#all_fiscal_yrs').append(html);
+    $('#all_fiscal_yrs').val(getFiscalYear());
+    $('#all_fiscal_yrs').selectpicker('refresh');
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function setAdminOption() {
     login_email = sessionStorage.getItem('m1_loginEmail');
     var result = new Array(); 
@@ -297,8 +320,9 @@ function setTableHeader() {
 }
 
 function getrateCHPLDTFList() {
+    var fiscal_year = $('#all_fiscal_yrs').val();
     var result = new Array();
-    result = db_getrateCHPLDTFList();
+    result = db_getrateCHPLDTFList(fiscal_year);
 
     $('#body_tr').empty();
     if (result.length !== 0) {
