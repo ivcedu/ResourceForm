@@ -1151,50 +1151,6 @@ $(document).ready(function() {
         getSPACFundSrcList2();
     });
     
-    // modal final funding src add button click ////////////////////////////////
-//    $('#mod_final_body_btn_new_fund_src').click(function() {
-//        var fund_src_column = $('#mod_final_body_new_fund_src_list').val();
-//        var fund_src_name = $("#mod_final_body_new_fund_src_list option:selected").text();
-//        if (fund_src_column === "Select...") {
-//            return false;
-//        }
-//        
-//        // if not exist, insert resource fund amt table
-//        var result = new Array();
-//        result = db_getResourceFundAmt(resource_id);
-//        if (result.length === 0) {
-//            db_insertResourceFundAmt(resource_id);
-//        }
-//        
-//        db_updateResourceFundSrcColumn(resource_id, fund_src_column, true);
-//        var note = login_name + " added funding source: " + fund_src_name;
-//        db_insertTransactions(resource_id, login_name, note);
-//        getSPACFundSrcList();
-//        
-//        alert("Funding source has been added");
-//    });
-    
-    // modal final funding src delete button click /////////////////////////////
-//    $('#mod_final_funding_section').on('click', '[id^="mod_final_body_selected_btn_delete_column_"]', function() {
-//        var fund_src_column = $(this).attr('id').replace("mod_final_body_selected_btn_delete_column_", "");        
-//        var fund_src_name = $('#mod_final_body_selected_fund_src_' + fund_src_column).html();
-//        
-//        // if not exist, insert resource fund amt table
-//        var result = new Array();
-//        result = db_getResourceFundAmt(resource_id);
-//        if (result.length === 0) {
-//            db_insertResourceFundAmt(resource_id);
-//        }
-//        
-//        db_updateResourceFundSrcColumn(resource_id, fund_src_column, false);
-//        deleteResourceFundAmt(fund_src_column);
-//        var note = login_name + " removed funding source: " + fund_src_name;
-//        db_insertTransactions(resource_id, login_name, note);
-//        getSPACFundSrcList();
-//        
-//        alert("Funding source has been deleted");
-//    });
-    
     // modal rating close button click /////////////////////////////////////////
     $('#mod_final_btn_rating_close').click(function() {
         startSpin();        
@@ -1555,9 +1511,6 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
-//        for(var i = 0; i < result.length; i++) {
-//            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + (i+1) + "'>" + formatDollar(Number(result[i]['BudgetAmt'])) + "</th>";
-//        }
         // hard code for funding src /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         var fs_budget_1 = "";
         var fs_budget_2 = "";
@@ -1749,10 +1702,6 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
-        
-//        for(var i = 0; i < result.length; i++) {
-//            header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + (i+1) + "'>" + formatDollar(Number(result[i]['BalanceAmt'])) + "</th>";
-//        }
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_1'>" + fs_balance_1 + "</th>";
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_2'>" + fs_balance_2 + "</th>";
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_3'>" + fs_balance_3 + "</th>";
@@ -1832,8 +1781,9 @@ function setSPACHeaderRow() {
     }
     else {
         var fund_src_col = getFundSrcColumn(fund_src);
+        var fund_src_num = fund_src_col.replace("fs_", "");
         var result = new Array();
-        result = db_getFundSrcBudget("2015-2016", fund_src_col);
+        result = db_getFundSrcBudget($('#all_fiscal_yrs').val(), fund_src_col);
         
         header_html += "<tr id='tbl_header'>";
         header_html += "<th class='col_50'></th>";
@@ -1850,7 +1800,7 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
-        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + result[0]['FundSrcBudgetID'] + "'>" + formatDollar(Number(result[0]['BudgetAmt'])) + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + fund_src_num + "'>" + formatDollar(Number(result[0]['BudgetAmt'])) + "</th>";
         header_html += "<th class='col_100'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "<th class='col_150'></th>";
@@ -1871,7 +1821,7 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
-        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + result[0]['FundSrcBudgetID']  + "'>" + formatDollar(Number(result[0]['BalanceAmt'])) + "</th>";
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + fund_src_num  + "'>" + formatDollar(Number(result[0]['BalanceAmt'])) + "</th>";
         header_html += "<th class='col_100'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "<th class='col_150'></th>";
@@ -1894,8 +1844,8 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         
         var column = fund_src_col + "_amt_total";
-        var fund_src_sum = db_getResourceFundAmtTotalSrc(fund_src_col + "_amt");
-        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_" + result[0]['FundSrcBudgetID'] + "'>" + formatDollar(Number(fund_src_sum)) + "</th>";
+        var fund_src_sum = db_getResourceFundAmtTotalSrc(fund_src_col + "_amt", $('#all_fiscal_yrs').val());
+        header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_" + fund_src_num + "'>" + formatDollar(Number(fund_src_sum)) + "</th>";
         
         header_html += "<th class='col_100'></th>";
         header_html += "<th class='col_150'></th>";
@@ -1971,24 +1921,6 @@ function setCommitteeFinalColumn(sel_committee) {
                 css_add += 150;
             }
             break;
-//        case "SPAC":
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>SPAC Median</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>SPAC Mean</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>Final Avg</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>CHPLDTF Final</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>SSAMMO Final</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>APTC Final</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>BDRPC Final</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>IEC Final</a></th>";
-//            header_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>SPAC Final</a></th>";
-//            if (spac_admin || master_admin) {
-//                header_html += "<th class='col_30'></th>";
-//                css_add += 330;
-//            }
-//            else {
-//                css_add += 300;
-//            }
-//            break;
         default:
             break;
     }
@@ -2413,10 +2345,6 @@ function setCommitteeHTML(committee, resource_id) {
             body_html += "<td class='col_50' style='text-align: center;' id='iec_median_" + resource_id + "'></td>";
             body_html += "<td class='col_50' style='text-align: center;' id='iec_mean_" + resource_id + "'></td>";
             break;
-//        case "SPAC":
-//            body_html += "<td class='col_50' style='text-align: center;' id='spa_median_" + resource_id + "'></td>";
-//            body_html += "<td class='col_50' style='text-align: center;' id='spa_mean_" + resource_id + "'></td>";
-//            break;
         default:
             break;
     }
@@ -2491,7 +2419,6 @@ function setMasterSQLScript(sel_committee) {
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON riec.ResourceID = resr.ResourceID ";
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID ";
             sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundAmt] AS rsfa ON resr.ResourceID = rsfa.ResourceID ";
-//            sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
             sql_where += "rspa.Active = 1 ";
             break;
         default:
@@ -2602,7 +2529,6 @@ function setSQLScript(sel_committee) {
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateIEC] AS riec ON riec.ResourceID = resr.ResourceID ";
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID ";
                 sql_from += "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundAmt] AS rsfa ON resr.ResourceID = rsfa.ResourceID ";
-//                sql_where += "rchp.Active = 1 OR rssa.Active = 1 OR rapt.Active = 1 OR rbdr.Active = 1 OR riec.Active = 1 OR rspa.Active = 1 ";
                 sql_where += "rspa.Active = 1 ";
             }
             break;
@@ -3520,13 +3446,9 @@ function setCommitteeFinalValue (committee, resource_id, i, result) {
                 $('#final_rating_iec_' + resource_id).html(final_rating);
             }
             var final_rating = result[i]['SPAC_FinalRating'];
-//            var final_avg = result[i]['SPAC_FinalAvg'];
             if (final_rating !== null) {
                 $('#final_rating_spa_' + resource_id).html(final_rating);
             }
-//            if (final_avg !== null) {
-//                $('#final_avg_spa' + resource_id).html(final_avg);
-//            }
             break;
         default:
             break;
@@ -3585,16 +3507,6 @@ function setCommitteeValue(committee, resource_id, i, result) {
                 $('#iec_mean_' + resource_id).html(mean);
             }
             break;
-//        case "SPAC":
-//            var median = result[i]['SPAC_Median'];
-//            var mean = result[i]['SPAC_Mean'];
-//            if (median !== null) {
-//                $('#spa_median_' + resource_id).html(median);
-//            }
-//            if (mean !== null) {
-//                $('#spa_mean_' + resource_id).html(mean);
-//            }
-//            break;
         default:
             break;
     }
@@ -5530,29 +5442,6 @@ function getSPACOneTimeRequest() {
     }
 }
 
-// selected resource request funding source list ///////////////////////////////
-//function getSPACFundSrcList() {
-//    var result = new Array();
-//    result = db_getResourceFundSrc(resource_id);
-//    
-//    setArraySPACFundSrcList(result);
-//    setSPACFundSrcListHTML();
-//}
-//
-//function setSPACFundSrcListHTML() {
-//    $('#mod_final_body_selected_fund_src_list').empty();
-//    
-//    var tbl_html = "";
-//    for (var i = 0; i < ar_fund_src.length; i++) {
-//        tbl_html += "<div class='row-fluid' style='padding-top: 5px;'>";
-//        tbl_html += "<div class='span6' id='mod_final_body_selected_fund_src_" + ar_fund_src[i][0] + "'>" + ar_fund_src[i][1] + "</div>";
-//        tbl_html += "<div class='span1 form-horizontal'><button class='btn btn-mini span12' id='mod_final_body_selected_btn_delete_column_" + ar_fund_src[i][0] + "'><i class='icon-trash icon-black'></i></button></div>";
-//        tbl_html += "</div>";
-//    }
-//    
-//    $("#mod_final_body_selected_fund_src_list").append(tbl_html);
-//}
-
 // New selected resource request funding source list ///////////////////////////
 function getSPACFundSrcList2() {
     getResourceFundSrc(resource_id);
@@ -6027,127 +5916,6 @@ function getUpdateFundSrcNote() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-//function setArraySPACFundSrcList(result) {
-//    ar_fund_src.length = 0;
-//    
-//    if (result[0]['fs_1'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_1', 'General');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_2'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_2', 'ASIVC');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_3'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_3', 'Basic Aid');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_4'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_4', 'Basic Skills Initiative');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_5'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_5', 'BFAP');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_6'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_6', 'CalWORKs/TANF');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_7'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_7', 'Capital Outlay');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_8'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_8', 'CDC');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_9'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_9', 'College Work Study');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_10'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_10', 'Community Education');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_11'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_11', 'DSPS');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_12'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_12', 'EOPS/CARE');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_13'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_13', 'EWD');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_14'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_14', 'Foundation');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_15'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_15', 'Grants');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_16'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_16', 'Health');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_17'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_17', 'Lottery');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_18'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_18', 'Parking');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_19'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_19', 'Perkins');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_20'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_20', 'PPIS');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_21'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_21', 'SSSP');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_22'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_22', 'Student Equity');
-//        ar_fund_src.push(ar_fund);
-//    }
-//    if (result[0]['fs_23'] === "1") {
-//        var ar_fund = new Array();
-//        ar_fund.push('fs_23', 'Student Material Fees');
-//        ar_fund_src.push(ar_fund);
-//    }
-//}
-
 function updateResourceFundAmt(fs_col_amt, value) {
     var fs_col = fs_col_amt.replace("_amt", "");
     
@@ -6163,13 +5931,13 @@ function updateResourceFundAmt(fs_col_amt, value) {
 
     // update fund src budget, balance and funded total
     var result = new Array();
-    result = db_getFundSrcBudget(fiscal_year, fs_col);
+    result = db_getFundSrcBudget($('#all_fiscal_yrs').val(), fs_col);
     if (result.length === 1) {
         var budget_amt = Number(result[0]['BudgetAmt']);
-        var fund_src_sum = db_getResourceFundAmtTotalSrc(fs_col_amt);
+        var fund_src_sum = db_getResourceFundAmtTotalSrc(fs_col_amt, $('#all_fiscal_yrs').val());
         var new_balance_amt = budget_amt - Number(fund_src_sum);
 
-        db_updateFundSrcBudget(fiscal_year, fs_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget($('#all_fiscal_yrs').val(), fs_col, budget_amt, new_balance_amt);
         var fund_src_index = fs_col.replace("fs_", "");
 
         $('#fs_balance_' + fund_src_index).html(formatDollar(new_balance_amt));
@@ -6190,13 +5958,13 @@ function deleteResourceFundAmt(fund_src_col) {
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", new_total_amount);
     
     var result2 = new Array();
-    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    result2 = db_getFundSrcBudget($('#all_fiscal_yrs').val(), fund_src_col);
     if (result2.length === 1) {
         var budget_amt = Number(result2[0]['BudgetAmt']);
         var balance_amt = Number(result2[0]['BalanceAmt']);
 
         var new_balance_amt = balance_amt + fund_amount;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget($('#all_fiscal_yrs').val(), fund_src_col, budget_amt, new_balance_amt);
     }
 }
 
@@ -6212,13 +5980,13 @@ function deleteResourceFundAmtByFS(fund_src_col) {
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", total_amount - pre_fund_amt);
     
     var result2 = new Array();
-    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    result2 = db_getFundSrcBudget($('#all_fiscal_yrs').val(), fund_src_col);
     if (result2.length === 1) {
         var budget_amt = Number(result2[0]['BudgetAmt']);
         var balance_amt = Number(result2[0]['BalanceAmt']);
 
         var new_balance_amt = balance_amt + pre_fund_amt;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget($('#all_fiscal_yrs').val(), fund_src_col, budget_amt, new_balance_amt);
     }
 }
 

@@ -75,7 +75,7 @@ $(document).ready(function() {
         var fund_src_col = $('#fund_src_col_' + fund_src_type_id).html();     
 
         var budget_amt = revertDollar($('#budget_amt_' + fund_src_type_id).val());
-        var fund_src_sum = Number(db_getResourceFundAmtTotalSrc(fund_src_col + "_amt"));
+        var fund_src_sum = Number(db_getResourceFundAmtTotalSrc(fund_src_col + "_amt", fiscal_year));
         var new_balance_amt = budget_amt - fund_src_sum;
            
         db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);

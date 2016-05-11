@@ -2,7 +2,7 @@ var admin = false;
 var login_name = "";
 var login_email = "";
 
-var fiscal_year = "";
+var m_fiscal_year = "";
 var resource_id = "";
 
 var ar_fund_src = [];
@@ -273,7 +273,7 @@ $(document).ready(function() {
     $('table').on('click', '[id^="resource_id_"]', function(e) {
         e.preventDefault();
         resource_id = $(this).attr('id').replace("resource_id_", "");
-        fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
+        m_fiscal_year = $('#resource_fiscal_year_' + resource_id).html().replace("resource_fiscal_year_", "");
         var title = $('#resource_title_full_' + resource_id).html();
         $('#mod_add_header_title').html(title);
         
@@ -1367,7 +1367,7 @@ function setFundSrcListHTML() {
     for (var i = 0; i < ar_fund_src.length; i++) {
         var fund_sr_col = ar_fund_src[i];
         var result = new Array();
-        result = db_getResourceFundSrcBudget(fiscal_year, fund_sr_col);
+        result = db_getResourceFundSrcBudget(m_fiscal_year, fund_sr_col);
         if (result.length === 1) {
             tbl_html = "<div class='row-fluid'>";
             tbl_html += "<div class='span5' style='padding-top: 5px;' id='mod_body_update_fund_src_name_" + result[0]['FundSrcCol'] + "'>" + result[0]['FundSrcType'] + "</div>";
@@ -1487,13 +1487,13 @@ function updateResourceFundAmtByFS(fund_src_col, fund_amt) {
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", new_total_amount);
     
     var result2 = new Array();
-    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    result2 = db_getFundSrcBudget(m_fiscal_year, fund_src_col);
     if (result2.length === 1) {
         var budget_amt = Number(result2[0]['BudgetAmt']);
         var balance_amt = Number(result2[0]['BalanceAmt']);
 
         var new_balance_amt = balance_amt - diff_fund_amt;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget(m_fiscal_year, fund_src_col, budget_amt, new_balance_amt);
     }
 }
 
@@ -1508,13 +1508,13 @@ function deleteResourceFundAmt(fund_src_col, fund_amt) {
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", new_total_amount);
     
     var result2 = new Array();
-    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    result2 = db_getFundSrcBudget(m_fiscal_year, fund_src_col);
     if (result2.length === 1) {
         var budget_amt = Number(result2[0]['BudgetAmt']);
         var balance_amt = Number(result2[0]['BalanceAmt']);
 
         var new_balance_amt = balance_amt + fund_amt;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget(m_fiscal_year, fund_src_col, budget_amt, new_balance_amt);
     }
 }
 
@@ -1530,13 +1530,13 @@ function deleteResourceFundAmtByFS(fund_src_col) {
     db_updateResourceFundAmtColumn(resource_id, "TotalAmount", total_amount - pre_fund_amt);
     
     var result2 = new Array();
-    result2 = db_getFundSrcBudget(fiscal_year, fund_src_col);
+    result2 = db_getFundSrcBudget(m_fiscal_year, fund_src_col);
     if (result2.length === 1) {
         var budget_amt = Number(result2[0]['BudgetAmt']);
         var balance_amt = Number(result2[0]['BalanceAmt']);
 
         var new_balance_amt = balance_amt + pre_fund_amt;
-        db_updateFundSrcBudget(fiscal_year, fund_src_col, budget_amt, new_balance_amt);
+        db_updateFundSrcBudget(m_fiscal_year, fund_src_col, budget_amt, new_balance_amt);
     }
 }
 
@@ -1603,10 +1603,10 @@ function deleteAllResourceFundAmt() {
             if (Number(result[0]['fs_' + i + '_amt']) > 0) {
                 var fund_amt = Number(result[0]['fs_' + i + '_amt']);
                 var result_amt = new Array();
-                result_amt = db_getFundSrcBudget(fiscal_year, "fs_" + i);
+                result_amt = db_getFundSrcBudget(m_fiscal_year, "fs_" + i);
                 var budget_amt = Number(result_amt[0]['BudgetAmt']);
                 var balance_amt = Number(result_amt[0]['BalanceAmt']);
-                db_updateFundSrcBudget(fiscal_year, "fs_" + i, budget_amt, balance_amt + fund_amt);
+                db_updateFundSrcBudget(m_fiscal_year, "fs_" + i, budget_amt, balance_amt + fund_amt);
             }
         }
     }

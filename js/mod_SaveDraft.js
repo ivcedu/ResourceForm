@@ -1641,12 +1641,12 @@ function db_getResourceFundAmtTotalList(FiscalYear) {
     return result;
 }
 
-function db_getResourceFundAmtTotalSrc(Column) {
+function db_getResourceFundAmtTotalSrc(Column, FiscalYear) {
     var result = "";
     $.ajax({
         type:"POST",
         url:"php/db_getResourceFundAmtTotalSrc.php",
-        data:{Column:Column},
+        data:{Column:Column, FiscalYear:FiscalYear},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
