@@ -564,9 +564,9 @@ function getApprovedAmount(ResourceID) {
     result = db_getApprovedAmount(ResourceID);
     
     $('#vrf_approved_request_amt').html(sel_t_amt);
-    if (result.length === 1) {
-        $('#vrf_approved_approved_amt').html(htmlAmount(Number(result[0]['TotalAmount'])));
-    }
+//    if (result.length === 1) {
+//        $('#vrf_approved_approved_amt').html(htmlAmount(Number(result[0]['TotalAmount'])));
+//    }
 }
 
 function getResourceFundSrc(ResourceID) {
