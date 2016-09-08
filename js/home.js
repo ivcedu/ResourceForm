@@ -268,7 +268,8 @@ function setResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, Lin
     var ptitle_brief = textTruncate(35, PTile);
     
     var tbody = "<div class='row' style='padding-bottom: 5px;'>";
-    tbody += "<div class='span4'><a data-toggle='modal' href=# id='ptitle_brief_" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
+    tbody += "<div class='span1 text-left'>" + ResourceID + "</div>";
+    tbody += "<div class='span3'><a data-toggle='modal' href=# id='ptitle_brief_" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
     tbody += "<div class='span1 text-left'>" + LinkNum + "</div>"; 
     tbody += "<div class='span2'>" + RType + "</div>";  
     tbody += "<div class='span2' id='" + ResourceID + "_status'>" + RStatus + "</div>";
@@ -316,7 +317,8 @@ function setCCResourceFormList(ResourceID, PTile, RType, RStatus, TotalAmount, C
     var ptitle_brief = textTruncate(35, PTile);
     
     var tbody = "<div class='row' style='padding-bottom: 5px;'>";
-    tbody += "<div class='span4'><a data-toggle='modal' href=# id='" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
+    tbody += "<div class='span1 text-left'>" + ResourceID + "</div>";
+    tbody += "<div class='span3'><a data-toggle='modal' href=# id='" + ResourceID +  "'>" + ptitle_brief + "</a></div>"; 
     tbody += "<div class='span2'>" + RType + "</div>";  
     tbody += "<div class='span2' id='" + ResourceID + "_status'>" + RStatus + "</div>";
     tbody += "<div class='span2 text-right'>" + TotalAmount + "</div>";
