@@ -67,21 +67,9 @@ var ar_db_iec_column = [];
 var ar_db_spac_column = [];
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) {
-        // testing .....
-//        var current = new Date();
-//        var yr = current.getFullYear();
-//        var mon = current.getMonth()+1;
-//        var day = current.getDate();
-//        var hr = current.getHours();
-//        var min = current.getMinutes();
-//        
-//        var db_enable_date = yr + "-" + mon + "-" + day + " " + hr + ":" + min;
-//        var update = db_updateEnableMgrWorksheet(db_enable_date);
-        
-        ////////////////////////////////////////////////////////////////////////
-        
+    if (sessionStorage.key(0) !== null) {        
         getAllResourceFiscalYear();
+        getAllReviewPeriodList();
         setFundingSrcList();
         setHideAllModal();
         setAdminOption();
@@ -122,8 +110,14 @@ $(document).ready(function() {
         window.open('Login.html', '_self');
     });
     
-    // fiscal year refresh button click ////////////////////////////////////////
+    // fiscal year event ///////////////////////////////////////////////////////
     $('#all_fiscal_yrs').change(function() {
+        getCommitteeWorksheetList();
+        $('#rf_list').trigger("updateAll");
+    });
+    
+    // review period event /////////////////////////////////////////////////////
+    $('#all_review_period').change(function() {
         getCommitteeWorksheetList();
         $('#rf_list').trigger("updateAll");
     });
@@ -282,6 +276,9 @@ $(document).ready(function() {
         getSelectedCommitteeSetting();
         getResourceFundSrc();
         getFundSrcList();
+        // review period
+        getSelectResourceRP();
+        getNewReviewPeriodList();
         
         $('#mod_admin_option').modal('show');
     });
@@ -342,6 +339,20 @@ $(document).ready(function() {
         }
     });
     
+    // admin body review period seting button click ////////////////////////////
+    $('#mod_body_btn_rp_setting').click(function() {
+        var icon = $('#mod_body_icon_rp_setting').attr('class');
+        var index = icon.indexOf("icon-chevron-right");
+        if (index === 0) {
+            $('#mod_body_icon_rp_setting').attr('class', 'icon-chevron-down icon-black');
+            $('#mod_body_rp_setting').show();
+        }
+        else {
+            $('#mod_body_icon_rp_setting').attr('class', 'icon-chevron-right icon-black');
+            $('#mod_body_rp_setting').hide();
+        }
+    });
+    
 ////////////////////////////////////////////////////////////////////////////////
     // modal funded amount change event ////////////////////////////////////////
     $(document).on('change', 'input[id^="mod_body_funded_amt_"]', function() {
@@ -365,6 +376,34 @@ $(document).ready(function() {
         else {
             alert("Please contact Rich Kim at 5596 or ykim160@ivc.edu");
         }
+    });
+    
+    // admin body review period setting update button click ////////////////////
+    $('#mod_body_btn_rp_setting_update').click(function() {
+        if (resource_id !== "") {
+            var rp_id = $('#mod_new_rp_name').val();
+            var rp_name = $('#mod_new_rp_name option:selected').text();
+                
+            var result = new Array();
+            result = db_getResourceRP(resource_id);
+            if(result.length === 0) {
+                db_insertResourceRP(resource_id, rp_id);
+            }
+            else {
+                db_updateResourceRPByResourceID(resource_id, rp_id);
+            }
+            
+            var note = m_login_name + " changed review period to " + rp_name;
+            db_insertTransactions(sel_res_id, m_login_name, note);
+            alert("Review Period has been updated successfully");
+            getCommitteeWorksheetList();
+        }
+    });
+    
+    // admin body update review period event ///////////////////////////////////
+    $('#mod_new_rp_name').change(function() {
+        var rp_id = $(this).val();
+        udpateModalNewReviewPeriod(rp_id);
     });
     
     // admin body status update button click ///////////////////////////////////
@@ -490,6 +529,54 @@ $(document).ready(function() {
         $('#mod_due_start_date').modal('show');
     });
     
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // review period click event ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#nav_review_period').click(function() {
+        getReviewPeriodList();
+        $('#mod_review_period').modal('show');
+    });
+    
+    // mod start month click event /////////////////////////////////////////////
+    $('#mod_review_period_list').on('click', '[id^="mod_rp_start_mon_id_"]', function() {
+        var mod_id = $(this).attr('id').replace("mod_rp_start_mon_id_", "");
+        var mod_rp_start_mon = Number($(this).val());
+        $('#mod_rp_start_day_id_' + mod_id).empty();
+        $('#mod_rp_start_day_id_' + mod_id).append(getRPDays(mod_rp_start_mon));
+    });
+    
+    // mod end month click event ///////////////////////////////////////////////
+    $('#mod_review_period_list').on('click', '[id^="mod_rp_end_mon_id_"]', function() {
+        var mod_id = $(this).attr('id').replace("mod_rp_end_mon_id_", "");
+        var mod_rp_end_mon = Number($(this).val());
+        $('#mod_rp_end_day_id_' + mod_id).empty();
+        $('#mod_rp_end_day_id_' + mod_id).append(getRPDays(mod_rp_end_mon));
+    });
+    
+    // mod review period new button click //////////////////////////////////////
+    $('#mod_review_period_btn_new').click(function() {
+        db_insertReviewPeriod(1, "", "", "");
+        getReviewPeriodList();
+    });
+    
+    // mod review period update button click ///////////////////////////////////
+    $('#mod_review_period_btn_update').click(function() {
+        $('#mod_review_period_body_tr').children().each(function () {
+            var rp_id = $(this).attr('id').replace("mod_tr_review_period_id_", "");
+            var review_period = $('#mod_review_period_id_' + rp_id).val();
+            var rp_start_mon = $('#mod_rp_start_mon_id_' + rp_id).val();
+            var rp_start_day = $('#mod_rp_start_day_id_' + rp_id).val();
+            var rp_end_mon = $('#mod_rp_end_mon_id_' + rp_id).val();
+            var rp_end_day = $('#mod_rp_end_day_id_' + rp_id).val();
+            var rp_start_date = "1900-" + rp_start_mon + "-" + rp_start_day;
+            var rp_end_date = "1900-" + rp_end_mon + "-" + rp_end_day;
+            db_updateReviewPeriod(rp_id, 1, review_period, rp_start_date, rp_end_date);
+        });
+        
+        alert("Review Period has been updated successfully");
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     // enable submit date update button click //////////////////////////////////
     $('#mod_due_start_date_list').on('click', '[id^="mod_table_update_enable_submit"]', function() {
         var db_enable_submit_date = convertStringDateToDBDateFormat($('#mod_table_enable_submit').val());
@@ -583,6 +670,7 @@ function setHideAllModal() {
     
     $('#mod_comm_rate_date').modal('hide');
     $('#mod_due_start_date').modal('hide');
+    $('#mod_review_period').modal('hide');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -638,7 +726,7 @@ function updateResourceStatus(status) {
             db_insertBacktodraft(resource_id, 1);
             db_updateResourcePage(resource_id, "Page1");
             
-            emailBackToDraft(resource_id, login_email, "sent " + status, comments);
+//            emailBackToDraft(resource_id, login_email, "sent " + status, comments);
             note = login_email + " sent back to Draft stage\n" + comments;
             break;
         case "Closed":
@@ -657,7 +745,7 @@ function updateResourceStatus(status) {
             db_updaterateSPACComplete(resource_id, true);
             db_updaterateSSAMMOComplete(resource_id, true);
             
-            emailToCreatorCompleted(resource_id, status, comments);
+//            emailToCreatorCompleted(resource_id, status, comments);
             note = login_name + " change status to Closed\n" + comments;
             break;
         case "Partially Funded":
@@ -678,7 +766,7 @@ function updateResourceStatus(status) {
             db_updaterateSPACComplete(resource_id, true);
             db_updaterateSSAMMOComplete(resource_id, true);
             
-            emailToCreatorCompleted(resource_id, status, comments);
+//            emailToCreatorCompleted(resource_id, status, comments);
             note = login_name + " change status to " + status + "\n" + comments;
             break;
         default:
@@ -691,7 +779,7 @@ function updateResourceStatus(status) {
 ////////////////////////////////////////////////////////////////////////////////
 function getCommitteeWorksheetList() {
     var result = new Array(); 
-    result = db_getCommitteeWorksheetList($('#all_fiscal_yrs').val());
+    result = db_getCommitteeWorksheetList($('#all_fiscal_yrs').val(), $('#all_review_period').val());
     
     $('#body_tr').empty();
     var html = "";
@@ -794,12 +882,16 @@ function clearModalAdminSetting() {
     $("#mod_body_new_fund_src").selectpicker('refresh');
     
     // hide section body
+    $('#mod_body_section_committee_setting').hide();
+    $('#mod_body_icon_committee_setting').attr('class', 'icon-chevron-right icon-black');
     $('#mod_body_section_status').hide();
     $('#mod_body_icon_status').attr('class', 'icon-chevron-right icon-black');
     $('#mod_body_section_fund_src').hide();
     $('#mod_body_icon_fund_src').attr('class', 'icon-chevron-right icon-black');
     $('#mod_body_section_fund_amt').hide();
     $('#mod_body_icon_fund_amt').attr('class', 'icon-chevron-right icon-black');
+    $('#mod_body_rp_setting').hide();
+    $('#mod_body_icon_rp_setting').attr('class', 'icon-chevron-right icon-black');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1594,6 +1686,40 @@ function getSystemDueStartDateList() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+function getReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#mod_review_period_body_tr').empty();
+    for(var i = 0; i < result.length; i++) {
+        var tbl_html = "<tr id='mod_tr_review_period_id_" + result[i]['ReviewPeriodID'] + "'>";
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_review_period_id_" + result[i]['ReviewPeriodID'] + "'></td>";
+        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_start_mon_id_" + result[i]['ReviewPeriodID']  + "'>" + getRPMonth() + "</select></td>";
+        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_start_day_id_" + result[i]['ReviewPeriodID']  + "'></select></td>";
+        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_end_mon_id_" + result[i]['ReviewPeriodID']  + "'>" + getRPMonth() + "</select></td>";
+        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_end_day_id_" + result[i]['ReviewPeriodID']  + "'></select></td>";
+        tbl_html += "</tr>";
+        $("#mod_review_period_body_tr").append(tbl_html);
+        
+        $('#mod_review_period_id_' + result[i]['ReviewPeriodID']).val(result[i]['ReviewPeriod']);
+        
+        var ar_start = result[i]['RPStartDate'].replace("1900-", "").split("-");
+        var mon_start = Number(ar_start[0]);
+        var day_start = Number(ar_start[1]);
+        $('#mod_rp_start_mon_id_' + result[i]['ReviewPeriodID']).val(mon_start);
+        $('#mod_rp_start_day_id_' + result[i]['ReviewPeriodID']).append(getRPDays(mon_start));
+        $('#mod_rp_start_day_id_' + result[i]['ReviewPeriodID']).val(day_start);
+        
+        var ar_end = result[i]['RPEndDate'].replace("1900-", "").split("-");
+        var mon_end = Number(ar_end[0]);
+        var day_end = Number(ar_end[1]);
+        $('#mod_rp_end_mon_id_' + result[i]['ReviewPeriodID']).val(mon_end);
+        $('#mod_rp_end_day_id_' + result[i]['ReviewPeriodID']).append(getRPDays(mon_end));
+        $('#mod_rp_end_day_id_' + result[i]['ReviewPeriodID']).val(day_end); 
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function deleteAllResourceFundAmt() {
     var result = new Array();
     result = db_getResourceFundAmt(resource_id);
@@ -1883,4 +2009,67 @@ function updateAllMedianMean() {
     var all_mean = calculateMean(ar_all_mean);
     
     db_updaterateAllMedianMean(resource_id, all_median, all_mean);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getAllReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#all_review_period').empty();
+    var str_option = "<option value='0'>All</option>>";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    str_option += "<option value='-1'>Blank</option>>";
+    $("#all_review_period").append(str_option);
+    
+    var cur_rp_id = getCurrentDateReviewPeriod();
+    if (cur_rp_id !== "") {
+        $('#all_review_period').val(result[0]['ReviewPeriodID']);
+        $('#all_review_period').selectpicker('refresh');
+    }
+}
+
+function udpateModalNewReviewPeriod(review_period_id) {
+    var result = new Array();
+    result = db_getReviewPeriodByID(review_period_id);
+    $('#mod_new_rp_start').html(result[0]['RPStartDate'].replace("1900-", ""));
+    $('#mod_new_rp_end').html(result[0]['RPEndDate'].replace("1900-", ""));
+}
+
+function getSelectResourceRP() {
+    var result = new Array();
+    result = db_getResourceRP(resource_id);
+    
+    if (result.length === 1) {
+        var result2 = new Array();
+        result2 = db_getReviewPeriodByID(result[0]['ReviewPeriodID']);
+        
+        $('#mod_cur_rp_name').html(result2[0]['ReviewPeriod']);
+        $('#mod_cur_rp_start').html(result2[0]['RPStartDate'].replace("1900-", ""));
+        $('#mod_cur_rp_end').html(result2[0]['RPEndDate'].replace("1900-", ""));
+    }
+    else {
+        $('#mod_cur_rp_name').html("");
+        $('#mod_cur_rp_start').html("");
+        $('#mod_cur_rp_end').html("");
+    }
+}
+
+function getNewReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#mod_new_rp_name').empty();
+    var str_option = "";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    $("#mod_new_rp_name").append(str_option);
+    
+    $('#mod_new_rp_name').val(result[0]['ReviewPeriodID']);
+    $('#mod_new_rp_name').selectpicker('refresh');
+    udpateModalNewReviewPeriod(result[0]['ReviewPeriodID']);
 }

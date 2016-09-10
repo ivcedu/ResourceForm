@@ -916,12 +916,12 @@ function db_getTechReviewRFList(login_email) {
     return result;
 }
 
-function db_getAdminRFList(FiscalYear, Status, StageLevel, StageAppEmail, ResourceType, Program, FundingSrc, OneTime) {
+function db_getAdminRFList(FiscalYear, ReviewPeriodID, Status, StageLevel, StageAppEmail, ResourceType, Program, FundingSrc, OneTime) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getAdminRFList.php",
-        data:{FiscalYear:FiscalYear, Status:Status, StageLevel:StageLevel, StageAppEmail:StageAppEmail, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, OneTime:OneTime},
+        data:{FiscalYear:FiscalYear, ReviewPeriodID:ReviewPeriodID, Status:Status, StageLevel:StageLevel, StageAppEmail:StageAppEmail, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, OneTime:OneTime},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -930,12 +930,12 @@ function db_getAdminRFList(FiscalYear, Status, StageLevel, StageAppEmail, Resour
     return result;
 }
 
-function db_getCommitteeWorksheetList(FiscalYear) {
+function db_getCommitteeWorksheetList(FiscalYear, ReviewPeriodID) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getCommitteeWorksheetList.php",
-        data:{FiscalYear:FiscalYear},
+        data:{FiscalYear:FiscalYear, ReviewPeriodID:ReviewPeriodID},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -2365,6 +2365,62 @@ function db_getrateMgr(ResourceID) {
     return result;
 }
 
+// review period ///////////////////////////////////////////////////////////////
+function db_getReviewPeriodList() {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getReviewPeriodList.php",
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getReviewPeriodID(SubmitDate) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getReviewPeriodID.php",
+        data:{SubmitDate:SubmitDate},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getReviewPeriodByID(ReviewPeriodID) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getReviewPeriodByID.php",
+        data:{ReviewPeriodID:ReviewPeriodID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getResourceRP(ResourceID) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getResourceRP.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 // insert DB ///////////////////////////////////////////////////////////////////
 function mod_AddLogin() {
     var loginName = sessionStorage.getItem('m1_loginName');
@@ -3284,6 +3340,35 @@ function db_insertCommentsVPP(ResourceID, ApproverID, Comments) {
         type:"POST",
         url:"php/db_insertCommentsVPP.php",
         data:{ResourceID:ResourceID, ApproverID:ApproverID, Comments:Comments},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
+// review period ///////////////////////////////////////////////////////////////
+function db_insertReviewPeriod(Active, ReviewPeriod, RPStartDate, RPEndDate) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertReviewPeriod.php",
+        data:{Active:Active, ReviewPeriod:ReviewPeriod, RPStartDate:RPStartDate, RPEndDate:RPEndDate},
+        async: false,  
+        success:function(data) {
+            ResultID = JSON.parse(data);
+        }
+    });
+    return ResultID;
+}
+
+function db_insertResourceRP(ResourceID, ReviewPeriodID) {
+    var ResultID = "";    
+    $.ajax({
+        type:"POST",
+        url:"php/db_insertResourceRP.php",
+        data:{ResourceID:ResourceID, ReviewPeriodID:ReviewPeriodID},
         async: false,  
         success:function(data) {
             ResultID = JSON.parse(data);
@@ -4612,7 +4697,7 @@ function db_updateEnableSubmitBtn(EnableDate) {
     var Result = false;
     $.ajax({
         type:"POST",
-        url:"php/db_updateEnableCommitteeRating.php",
+        url:"php/db_updateEnableSubmitBtn.php",
         data:{EnableDate:EnableDate},
         async: false,  
         success:function(data) {
@@ -4685,6 +4770,35 @@ function db_script_update_rate(query) {
         type:"POST",
         url:"php/db_script_update_rate.php",
         data:{query:query},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+// review period ///////////////////////////////////////////////////////////////
+function db_updateReviewPeriod(ReviewPeriodID, Active, ReviewPeriod, RPStartDate, RPEndDate) {
+    var Result = false;   
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateReviewPeriod.php",
+        data:{ReviewPeriodID:ReviewPeriodID, Active:Active, ReviewPeriod:ReviewPeriod, RPStartDate:RPStartDate, RPEndDate:RPEndDate},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updateResourceRPByResourceID(ResourceID, ReviewPeriodID) {
+    var Result = false;   
+    $.ajax({
+        type:"POST",
+        url:"php/db_updateResourceRPByResourceID.php",
+        data:{ResourceID:ResourceID, ReviewPeriodID:ReviewPeriodID},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);
@@ -5264,6 +5378,21 @@ function db_deleterateSSAMMO(ResourceID) {
     $.ajax({
         type:"POST",
         url:"php/db_deleterateSSAMMO.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+// review period ///////////////////////////////////////////////////////////////
+function db_deleteResourceRP(ResourceID) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_deleteResourceRP.php",
         data:{ResourceID:ResourceID},
         async: false,  
         success:function(data) {

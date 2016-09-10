@@ -471,6 +471,57 @@ function getFiscalYear() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+function getRPMonth() {
+    var html_mon = "<option value='0'>...</option>";
+    html_mon += "<option value='1'>Jan</option>";
+    html_mon += "<option value='2'>Feb</option>";
+    html_mon += "<option value='3'>Mar</option>";
+    html_mon += "<option value='4'>Apr</option>";
+    html_mon += "<option value='5'>May</option>";
+    html_mon += "<option value='6'>Jun</option>";
+    html_mon += "<option value='7'>Jul</option>";
+    html_mon += "<option value='8'>Aug</option>";
+    html_mon += "<option value='9'>Sep</option>";
+    html_mon += "<option value='10'>Oct</option>";
+    html_mon += "<option value='11'>Nov</option>";
+    html_mon += "<option value='12'>Dec</option>";
+    return html_mon;
+}
+
+function getRPDays(month) {
+    var index = 0;
+    if (month === 4 || month === 6 || month === 9 || month === 11) {
+        index = 30;
+    }
+    else if (month === 2) {
+        index = 28;
+    }
+    else {
+        index = 31;
+    }
+
+    var html_days = "<option value='0'>...</option>";
+    for(var i = 1; i <= index; i++) { 
+        html_days += "<option value='" + i + "'>" + i + "</option>";
+    }
+    
+    return html_days;
+}
+
+function getCurrentDateReviewPeriod() {
+    var cur_date = new Date();
+    var cur_mon = cur_date.getMonth() + 1;
+    var cur_day = cur_date.getDate();
+    var result = db_getReviewPeriodID("1900-" + cur_mon + "-" + cur_day);
+    
+    if (result.length !== 0) {
+        return result[0]['ReviewPeriodID'];
+    }
+    else {
+        return "";
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
 //var BASE64_MARKER = ';base64,';
 // 
 //function convertDataURIToBinary(dataURI) {
