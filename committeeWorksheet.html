@@ -29,6 +29,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href=# id="nav_committee_setting">Committee Rating Date</a></li>
                                 <li><a href=# id="nav_due_start_date">Due/Start Date</a></li>
+                                <li><a href=# id="nav_review_period">Review Period</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -57,6 +58,8 @@
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span2" style="padding-top: 5px;"><b>Submission Year:</b></div>
                 <div class="span2 form-horizontal"><select class="selectpicker form-control" data-container="body" id="all_fiscal_yrs"></select></div>
+                <div class="span2" style="padding-top: 5px;"><b>Review Period:</b></div>
+                <div class="span2 form-horizontal"><select class="selectpicker form-control" data-container="body" id="all_review_period"></select></div>
             </div>
             <!-- RF List section  -->
             <div class="row-fluid">
@@ -197,13 +200,44 @@
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <div class="row-fluid">
+                        <div class="row-fluid" style="padding-bottom: 10px;">
                             <button class="btn span12" style="text-align: left;" id="mod_body_btn_fund_amt"><i class="icon-chevron-right icon-black" id="mod_body_icon_fund_amt"></i> Funded Amount Setting</button>
                         </div>
                         <div class="row-fluid" id="mod_body_section_fund_amt">
                             <div id="mod_body_fund_src_list" style="padding-top: 10px;"></div>
                         </div>
-                    </div>   
+                    </div>
+                    <div class="row-fluid">
+                        <div class="row-fluid">
+                            <button class="btn span12" style="text-align: left;" id="mod_body_btn_rp_setting"><i class="icon-chevron-right icon-black" id="mod_body_icon_rp_setting"></i> Review Period Setting</button>
+                        </div>
+                        <div class="row-fluid" id="mod_body_rp_setting">
+                            <div class="row-fluid" style="border-bottom: solid; font-weight: bold;">
+                                <div class="span3 offset3 text-left" style="padding-top: 5px;">Review</div>
+                                <div class="span3 text-left" style="padding-top: 5px;">Start Date</div>
+                                <div class="span3 text-left" style="padding-top: 5px;">End Date</div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span3 text-left" style="padding-top: 5px;">Current:</div>
+                                <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_name"></div>
+                                <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_start"></div>
+                                <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_end"></div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span3 text-left" style="padding-top: 5px;">New:</div>
+                                <div class="span3">
+                                    <select class="selectpicker span12" data-container="body" id="mod_new_rp_name"></select>
+                                </div>
+                                <div class="span3 text-left" style="padding-top: 5px;" id="mod_new_rp_start"></div>
+                                <div class="span3 text-left" style="padding-top: 5px;" id="mod_new_rp_end"></div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span3 offset9" style="padding-bottom: 10px;">
+                                    <button class="btn btn-primary span12" id="mod_body_btn_rp_setting_update"><i class='icon-circle-arrow-up icon-white'></i> Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="row-fluid">
@@ -271,6 +305,39 @@
                 </div>
             </div>
             <!-- end of Modal committee rating date setting -->
+            
+            <!-- Modal review period setting -->
+            <div class="modal hide fade" id="mod_review_period">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h4>Review Period Setting</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+                        <table class="table table-condensed table-bordered" id="mod_review_period_list">
+                            <thead style="font-size: 90%; background-color: grey; color: white;" id="mod_head_tr">
+                                <tr>
+                                    <th class="span4">Review Period</th>
+                                    <th class="span2" style="text-align: center;">Start Mon</th>
+                                    <th class="span2" style="text-align: center;">Start Day</th>
+                                    <th class="span2" style="text-align: center;">End Mon</th>
+                                    <th class="span2" style="text-align: center;">End Day</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 90%;" id="mod_review_period_body_tr">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row-fluid">
+                        <div class="span2"><button class="btn btn-primary span12" id="mod_review_period_btn_new">New</button></div>
+                        <div class="span2"><button class="btn btn-success span12" data-dismiss="modal" id="mod_review_period_btn_update">Update</button></div>
+                        <div class="span2 offset6"><button class="btn btn-inverse span12" data-dismiss="modal">Close</button></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of Modal review period setting -->
         </div>
 
         <!-- include javascript -->
