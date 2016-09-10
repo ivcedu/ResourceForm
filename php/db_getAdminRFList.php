@@ -2,6 +2,7 @@
     require("config.php");
     
     $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
+    $ReviewPeriodID = filter_input(INPUT_POST, 'ReviewPeriodID');
     $Status = filter_input(INPUT_POST, 'Status');
     $StageLevel = filter_input(INPUT_POST, 'StageLevel');
     $StageAppEmail = filter_input(INPUT_POST, 'StageAppEmail');
@@ -11,6 +12,7 @@
     $OneTime = filter_input(INPUT_POST, 'OneTime');
     
     $sql_where = "WHERE resr.FiscalYear = '".$FiscalYear."' AND ";
+    $sql_review_period = "";
     $sql_status = "";
     $sql_stage_level = "";
     $sql_resource_type = "";
@@ -18,6 +20,13 @@
     $sql_fund_src = "";
     $sql_fund_src_col = "";
     $sql_one_time = "";
+    
+    if ($ReviewPeriodID === "-1") {
+        $sql_review_period = "rsrp.ReviewPeriodID IS NULL";
+    }
+    else if ($ReviewPeriodID !== "0") {
+        $sql_review_period = "rsrp.ReviewPeriodID = '".$ReviewPeriodID."'";
+    }
     
     if ($Status === "Active") {
         $sql_status = "(resr.RSID = '7' OR resr.RSID = '8' OR resr.RSID = '9' OR resr.RSID = '10' OR resr.RSID = '11')";
@@ -194,6 +203,9 @@
     ////////////////////////////////////////////////////////////////////////////
     $sql_where = $sql_where.$sql_status;
     
+    if ($sql_review_period !== "") {
+        $sql_where = $sql_where." AND ".$sql_review_period;
+    }
     if ($sql_stage_level !== "") {
         $sql_where = $sql_where." AND ".$sql_stage_level;
     }
@@ -211,41 +223,42 @@
     }
         
     $query = "SELECT resr.ResourceID, "
-                ."resr.ProposalTitle, "
-                ."resr.NeedFor, "
-                ."stlv.StageLevel, "
-                ."crtr.CreatorName, "
-                ."CASE WHEN rsty.RTID = 1 OR rsty.RTID = 2 OR rsty.RTID = 3 "
-                ."THEN (SELECT TOP(1) AnnualTotal FROM [IVCRESOURCES].[dbo].[Personnel] WHERE ResourceID = resr.ResourceID ORDER BY PersonnelID DESC) "
-                ."WHEN rsty.RTID = 9 "
-                ."THEN (SELECT TOP(1) Total FROM [IVCRESOURCES].[dbo].[Instructional] WHERE ResourceID = resr.ResourceID ORDER BY InstructionalID DESC) "
-                ."WHEN rsty.RTID = 4 "
-                ."THEN (SELECT TOP(1) CASE WHEN ProjAmt = 0.0 THEN EstAmt ELSE ProjAmt END FROM [IVCRESOURCES].[dbo].[Facilities] WHERE ResourceID = resr.ResourceID ORDER BY FacilitiesID DESC) "
-                ."WHEN rsty.RTID = 5 "
-                ."THEN (SELECT TOP(1) GrandTotal FROM [IVCRESOURCES].[dbo].[Technology] WHERE ResourceID = resr.ResourceID ORDER BY TechnologyID DESC) "
-                ."WHEN rsty.RTID = 7 "
-                ."THEN (SELECT TOP(1) TotalAmount FROM [IVCRESOURCES].[dbo].[Other2] WHERE ResourceID = resr.ResourceID ORDER BY Other2ID DESC) "
-                ."ELSE 0.0 END TotalAmount, "
-                ."rsty.ResourceType, "
-                ."CASE WHEN rslk.ResourceLinkNum IS NULL THEN '' ELSE rslk.ResourceLinkNum END ResourceLink, "
-                ."appr.ApproverEmail, "
-                ."prio.DepartMgr, "
-                ."prio.VPP, "
-                ."(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
-                ."resr.NeedBy, "
-                ."resr.ApprovalID "
-                ."FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceTypeItem] AS rtim ON rtim.ResourceID = resr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceLink] AS rslk ON resr.ResourceID = rslk.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Approver] AS appr ON rcst.ApproverID = appr.ApproverID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Priority] AS prio ON resr.ResourceID = prio.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceProg] AS rspr ON resr.ResourceID = rspr.ResourceID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON crtr.CreatorID = resr.CreatorID "
-                ."LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
-                .$sql_where;
+            . "resr.ProposalTitle, "
+            . "resr.NeedFor, "
+            . "stlv.StageLevel, "
+            . "crtr.CreatorName, "
+            . "CASE WHEN rsty.RTID = 1 OR rsty.RTID = 2 OR rsty.RTID = 3 "
+            . "THEN (SELECT TOP(1) AnnualTotal FROM [IVCRESOURCES].[dbo].[Personnel] WHERE ResourceID = resr.ResourceID ORDER BY PersonnelID DESC) "
+            . "WHEN rsty.RTID = 9 "
+            . "THEN (SELECT TOP(1) Total FROM [IVCRESOURCES].[dbo].[Instructional] WHERE ResourceID = resr.ResourceID ORDER BY InstructionalID DESC) "
+            . "WHEN rsty.RTID = 4 "
+            . "THEN (SELECT TOP(1) CASE WHEN ProjAmt = 0.0 THEN EstAmt ELSE ProjAmt END FROM [IVCRESOURCES].[dbo].[Facilities] WHERE ResourceID = resr.ResourceID ORDER BY FacilitiesID DESC) "
+            . "WHEN rsty.RTID = 5 "
+            . "THEN (SELECT TOP(1) GrandTotal FROM [IVCRESOURCES].[dbo].[Technology] WHERE ResourceID = resr.ResourceID ORDER BY TechnologyID DESC) "
+            . "WHEN rsty.RTID = 7 "
+            . "THEN (SELECT TOP(1) TotalAmount FROM [IVCRESOURCES].[dbo].[Other2] WHERE ResourceID = resr.ResourceID ORDER BY Other2ID DESC) "
+            . "ELSE 0.0 END TotalAmount, "
+            . "rsty.ResourceType, "
+            . "CASE WHEN rslk.ResourceLinkNum IS NULL THEN '' ELSE rslk.ResourceLinkNum END ResourceLink, "
+            . "appr.ApproverEmail, "
+            . "prio.DepartMgr, "
+            . "prio.VPP, "
+            . "(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
+            . "resr.NeedBy, "
+            . "resr.ApprovalID "
+            . "FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceTypeItem] AS rtim ON rtim.ResourceID = resr.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceType] AS rsty ON rsty.RTID = rtim.RTID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceLink] AS rslk ON resr.ResourceID = rslk.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[Approver] AS appr ON rcst.ApproverID = appr.ApproverID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[Priority] AS prio ON resr.ResourceID = prio.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceProg] AS rspr ON resr.ResourceID = rspr.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON crtr.CreatorID = resr.CreatorID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
+            . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceRP] AS rsrp ON rsrp.ResourceID = resr.ResourceID "
+            .$sql_where;
 
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 

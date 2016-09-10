@@ -2,6 +2,15 @@
     require("config.php");
     
     $FiscalYear = filter_input(INPUT_POST, 'FiscalYear');
+    $ReviewPeriodID = filter_input(INPUT_POST, 'ReviewPeriodID');
+    
+    $sql_review_period = "";
+    if ($ReviewPeriodID === "-1") {
+        $sql_review_period = " AND rsrp.ReviewPeriodID IS NULL";
+    }
+    else if ($ReviewPeriodID !== "0") {
+        $sql_review_period = " AND rsrp.ReviewPeriodID = '".$ReviewPeriodID."'";
+    }
     
     $query = "SELECT resr.ResourceID, "
                 . "resr.FiscalYear, "
@@ -49,6 +58,7 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[Priority] AS prio ON resr.ResourceID = prio.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[Creator] AS crtr ON crtr.CreatorID = resr.CreatorID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateAll] AS rall ON rall.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceRP] AS rsrp ON rsrp.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateAPTC] AS rapt ON rapt.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateBDRPC] AS rbdr ON rbdr.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateCHPLDTF] AS rchp ON rchp.ResourceID = resr.ResourceID "
@@ -56,7 +66,7 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateSPAC] AS rspa ON rspa.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateSSAMMO] AS rssa ON rssa.ResourceID = resr.ResourceID "
                 . "WHERE resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 "
-                . "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 AND resr.FiscalYear = '".$FiscalYear."'";
+                . "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 AND resr.FiscalYear = '".$FiscalYear."'".$sql_review_period;
 
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 
