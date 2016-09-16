@@ -42,12 +42,17 @@
                     <ul class="nav pull-right">
                         <li><a href=# id="nav_change_approver"><i class="icon-user icon-white"></i> Change Approver</a></li>
                     </ul>
+                    <ul class="nav pull-right" style="display: none;" id="nav_bar_review_period">
+                        <li><a href=# id="nav_review_period"><i class="icon-calendar icon-white"></i> Review Period</a></li>
+                    </ul>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span2" style="padding-top: 5px;"><b>Submission Year:</b></div>
                 <div class="span2 form-horizontal"><select class="selectpicker form-control" data-container="body" id="all_fiscal_yrs"></select></div>
+                <div class="span2" style="padding-top: 5px;"><b>Review Period:</b></div>
+                <div class="span2 form-horizontal"><select class="selectpicker form-control" data-container="body" id="all_review_period"></select></div>
             </div>
             <div class="row-fluid">
                 <div class="span2 text-center" style="padding-top: 5px;">Status</div>
@@ -305,8 +310,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-warning" data-dismiss="modal" id="mod_back_to_draft_yes">Yes</button>
-                    <button class="btn btn-inverse" data-dismiss="modal" id="mod_back_to_draft_no">No</button>
+                    <div class="row-fluid">
+                        <button class="span2 offset8 btn btn-success" data-dismiss="modal" id="mod_back_to_draft_yes">Save</button>
+                        <button class="span2 btn btn-inverse" data-dismiss="modal" id="mod_back_to_draft_no">Cancel</button>
+                    </div>
                 </div>
             </div>
             <!-- end of Modal back to draft -->
@@ -366,11 +373,50 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-warning" data-dismiss="modal" id="mod_approver_yes">Yes</button>
-                    <button class="btn btn-inverse" data-dismiss="modal" id="mod_approver_no">No</button>
+                    <div class="row-fluid">
+                        <button class="span2 offset8 btn btn-success" data-dismiss="modal" id="mod_approver_yes">Save</button>
+                        <button class="span2 btn btn-inverse" data-dismiss="modal" id="mod_approver_no">Cancel</button>
+                    </div>
                 </div>
             </div>
             <!-- end of Modal change approver -->
+            
+            <!-- Modal change review period -->
+            <div class="modal hide fade" id="mod_review_period">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"> x </button>
+                    <h4 class="text-center" id="mod_header">Review Period</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid"><h5 id="mod_review_period_body_title"></h5></div>
+                    <div class="row-fluid" style="border-bottom: solid; font-weight: bold;">
+                        <div class="span3 offset3 text-left" style="padding-top: 5px;">Review</div>
+                        <div class="span3 text-left" style="padding-top: 5px;">Start Date</div>
+                        <div class="span3 text-left" style="padding-top: 5px;">End Date</div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span3 text-left" style="padding-top: 5px;">Current:</div>
+                        <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_name"></div>
+                        <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_start"></div>
+                        <div class="span3 text-left" style="padding-top: 5px;" id="mod_cur_rp_end"></div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span3 text-left" style="padding-top: 5px;">New:</div>
+                        <div class="span3">
+                            <select class="selectpicker span12" data-container="body" id="mod_new_rp_name"></select>
+                        </div>
+                        <div class="span3 text-left" style="padding-top: 5px;" id="mod_new_rp_start"></div>
+                        <div class="span3 text-left" style="padding-top: 5px;" id="mod_new_rp_end"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row-fluid">
+                        <button class="span2 offset8 btn btn-success" data-dismiss="modal" id="mod_btn_review_period_save">Save</button>
+                        <button class="span2 btn btn-inverse" data-dismiss="modal" id="mod_btn_review_period_cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of Modal change review period -->
         </div>
         
         <!-- include javascript -->

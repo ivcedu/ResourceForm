@@ -104,7 +104,8 @@ function getAllRFList() {
 
 function setAllRFListHTML(resource_id, proposal_title, resource_link, resource_type, resource_status, str_amount) {   
     var tbl_html = "<tr>";
-    tbl_html += "<td class='span4'><a href=# id='resource_id_" + resource_id +  "'>" + proposal_title + "</a></td>";
+    tbl_html += "<td class='span1'>" + resource_id + "</td>";
+    tbl_html += "<td class='span3'><a href=# id='resource_id_" + resource_id +  "'>" + proposal_title + "</a></td>";
     tbl_html += "<td class='span1'>" + resource_link + "</td>";
     tbl_html += "<td class='span2'>" + resource_type + "</td>";
     tbl_html += "<td class='span2' id='" + resource_id + "_status'>" + resource_status + "</td>";

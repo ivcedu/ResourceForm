@@ -5,6 +5,7 @@ var total_amount = 0.00;
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         rpt_getAllResourceFiscalYear();
+//        rpt_getAllReviewPeriodList();
         rpt_getRFDashboard();
     }
     else {
@@ -132,6 +133,11 @@ $(document).ready(function() {
         rpt_getRFDashboard();
     });
     
+    $('#all_review_period').change(function() {
+        rpt_resetRFDashboard();
+        rpt_getRFDashboard();
+    });
+    
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +227,7 @@ function rpt_getAllResourceFiscalYear() {
 
 function rpt_getRFDashboard() {
     var result = new Array();
-    result = db_rpt_getRFDashboard($('#all_fiscal_yrs').val());
+    result = db_rpt_getRFDashboard($('#all_fiscal_yrs').val(), 0);
     
     for(var i = 0; i < result.length; i++) {         
         if (result[i]['RType'] === "Facilities") {
@@ -332,4 +338,25 @@ function rpt_resetRFDashboard() {
     $('#rf_total_count').html("");
     $('#rf_total_amount').html("");
     $('#cur_date').html("");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function rpt_getAllReviewPeriodList() {
+    var result = new Array(); 
+    result = db_rpt_getReviewPeriodList();
+    
+    $('#all_review_period').empty();
+    var str_option = "<option value='0'>All</option>>";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    str_option += "<option value='-1'>Blank</option>>";
+    $("#all_review_period").append(str_option);
+    
+    var cur_rp_id = rpt_getCurrentDateReviewPeriod();
+    if (cur_rp_id !== "") {
+        $('#all_review_period').val(result[0]['ReviewPeriodID']);
+        $('#all_review_period').selectpicker('refresh');
+    }
 }

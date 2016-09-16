@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // db report get ///////////////////////////////////////////////////////////////
-function db_rpt_getRFDashboard(FiscalYear) {
+function db_rpt_getRFDashboard(FiscalYear, ReviewPeriodID) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_rpt_getRFDashboard.php",
-        data:{FiscalYear:FiscalYear},
+        data:{FiscalYear:FiscalYear, ReviewPeriodID:ReviewPeriodID},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
@@ -69,6 +69,34 @@ function db_rpt_getAllResourceFiscalYear() {
     return result;
 }
 
+// review period ///////////////////////////////////////////////////////////////
+function db_rpt_getReviewPeriodList() {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_rpt_getReviewPeriodList.php",
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_rpt_getReviewPeriodID(SubmitDate) {
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_rpt_getReviewPeriodID.php",
+        data:{SubmitDate:SubmitDate},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 function formatDollar(num) {
@@ -102,5 +130,20 @@ function rpt_getFiscalYear() {
     }
     else {
         return (yr - 1) + "-" + yr;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function rpt_getCurrentDateReviewPeriod() {
+    var cur_date = new Date();
+    var cur_mon = cur_date.getMonth() + 1;
+    var cur_day = cur_date.getDate();
+    var result = db_rpt_getReviewPeriodID("1900-" + cur_mon + "-" + cur_day);
+    
+    if (result.length !== 0) {
+        return result[0]['ReviewPeriodID'];
+    }
+    else {
+        return "";
     }
 }
