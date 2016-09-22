@@ -110,7 +110,7 @@ $(document).ready(function() {
     
     $('#m6_submit').click(function() {
         $("#m6_submit").prop("disabled", true);
-        
+
         // only current submission year are allow to submit
         if ($('#m6_fiscal').html() !== getFiscalYear()) {
             $('#mod_dialog_box_header').html("Submission Year Not Allowed");
@@ -1392,6 +1392,16 @@ function submitToDB(resubmit) {
     db_insertrateIEC(ResourceID);
     db_insertrateSPAC(ResourceID);
     db_insertrateSSAMMO(ResourceID);
+    
+    // insert resource review period
+    var cur_date = new Date();
+    var cur_mon = cur_date.getMonth() + 1;
+    var cur_day = cur_date.getDate();
+    var result = db_getReviewPeriodID("1900-" + cur_mon + "-" + cur_day);
+    if (result.length !== 0) {
+        var rp_id = result[0]['ReviewPeriodID'];
+        db_insertResourceRP(ResourceID, rp_id);
+    }
 
     var note = LoginName + " submitted";
     db_insertTransactions(ResourceID, LoginName, note);

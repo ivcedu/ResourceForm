@@ -109,6 +109,7 @@ window.onload = function() {
         spinner = new Spinner();
         
         getAllResourceFiscalYear();
+        getAllReviewPeriodList();
         setHideAllModal();
         setSPACFundingSrcList();
         
@@ -2428,7 +2429,7 @@ function setMasterSQLScript(sel_committee) {
     sql_where = sql_where.substring(0, sql_where.length-1);
     sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 ";
     sql_where += "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 ";
-    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
+    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'" + sql_strReviewPeriod();
 }
 
 function setSQLScript(sel_committee) {
@@ -2543,7 +2544,7 @@ function setSQLScript(sel_committee) {
     sql_where = sql_where.substring(0, sql_where.length-1);
     sql_where = "(" + sql_where + ") AND resr.RSID <> 18 AND resr.RSID <> 20 AND resr.RSID <> 21 AND resr.RSID <> 22 ";
     sql_where += "AND resr.RSID <> 7 AND resr.RSID <> 8 AND resr.RSID <> 9 AND resr.RSID <> 10 AND resr.RSID <> 11 ";
-    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'";
+    sql_where += "AND resr.FiscalYear = '" + $('#all_fiscal_yrs').val() + "'" + sql_strReviewPeriod();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -6030,4 +6031,37 @@ function sendEmailBSIFundingInstructionToCreator() {
     Message += "x5326";
     
     proc_sendEmailWithCC(email, creator, fs_admin_email, fs_admin_name, Subject, Message);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getAllReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#all_review_period').empty();
+    var str_option = "<option value='0'>All</option>>";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    str_option += "<option value='-1'>Blank</option>>";
+    $("#all_review_period").append(str_option);
+    
+    var cur_rp_id = getCurrentDateReviewPeriod();
+    if (cur_rp_id !== "") {
+        $('#all_review_period').val(result[0]['ReviewPeriodID']);
+        $('#all_review_period').selectpicker('refresh');
+    }
+}
+
+function sql_strReviewPeriod() {
+    if ($('#all_review_period').val() === "-1") {
+        return " AND rsrp.ReviewPeriodID IS NULL";
+    }
+    else if ($('#all_review_period').val() !== "0") {
+        return " AND rsrp.ReviewPeriodID = '" + $('#all_review_period').val() + "'";
+    }
+    else {
+        return "";
+    }
 }

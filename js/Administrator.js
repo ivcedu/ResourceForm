@@ -80,6 +80,7 @@ window.onload = function() {
         setAdminOption();
 
         getAllResourceFiscalYear();
+        getAllReviewPeriodList();
         setAssignToLoginName();
         getFundingSrcTypeList();
         getAdminRFList("Active", "Me", m_login_email, "All Resource", "All Program", 0, "All Request");
@@ -182,6 +183,9 @@ $(document).ready(function() {
                 db_deleterateIEC(sel_res_id);
                 db_deleterateSPAC(sel_res_id);
                 db_deleterateSSAMMO(sel_res_id);
+                
+                // delete resource review period
+                db_deleteResourceRP(sel_res_id);
                 
                 setBackToDraft(sel_res_id);
                 db_deleteResourceFSBSI(sel_res_id);
@@ -720,6 +724,47 @@ $(document).ready(function() {
         reloadRFList();
     });
     
+    // modal change review period //////////////////////////////////////////////
+    $('#nav_review_period').click(function(e) {
+        e.preventDefault();
+        if (sel_res_id === "") {
+            return false;
+        }
+        
+        $('#mod_review_period_body_title').html(sel_res_title);
+        getSelectResourceRP();
+        getNewReviewPeriodList();
+        $('#mod_review_period').modal('show');
+    });
+    
+    // modal update review period event ////////////////////////////////////////
+    $('#mod_new_rp_name').change(function() {
+        var rp_id = $(this).val();
+        udpateModalNewReviewPeriod(rp_id);
+    });
+    
+    // modal review period save button click ///////////////////////////////////
+    $('#mod_btn_review_period_save').click(function() { 
+        if (sel_res_id !== "") {
+            var rp_id = $('#mod_new_rp_name').val();
+            var rp_name = $('#mod_new_rp_name option:selected').text();
+                
+            var result = new Array();
+            result = db_getResourceRP(sel_res_id);
+            if(result.length === 0) {
+                db_insertResourceRP(sel_res_id, rp_id);
+            }
+            else {
+                db_updateResourceRPByResourceID(sel_res_id, rp_id);
+            }
+            
+            var note = m_login_name + " changed review period to " + rp_name;
+            db_insertTransactions(sel_res_id, m_login_name, note);
+            
+            reloadRFList();
+        }
+    });
+    
     // bootstrap filestyle
     $(":file").filestyle({classButton: "btn btn-primary"});
     
@@ -762,6 +807,9 @@ $(document).ready(function() {
     $("#mod_approver").draggable({
         handle: ".modal-header"
     });
+    $("#mod_review_period").draggable({
+        handle: ".modal-header"
+    });
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -769,6 +817,7 @@ function setHideAllModal() {
     $('#mod_add_note').modal('hide');
     $('#mod_back_to_draft').modal('hide');
     $('#mod_approver').modal('hide');
+    $('#mod_review_period').modal('hide');
     
     // hide comments body
     $('#mod_add_body_rating').hide();
@@ -791,6 +840,7 @@ function setAdminOption() {
 //        $('#nav_back_to_draft').show();
         $('#nav_change_approver').show();
         $('#nav_committee_rating').show();
+        $('#nav_bar_review_period').show();
         m_master = true;
     }
 }
@@ -880,7 +930,7 @@ function expoftToExcelURLParameters() {
 ////////////////////////////////////////////////////////////////////////////////
 function getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime) { 
     var admin_rf_list = new Array(); 
-    admin_rf_list = db_getAdminRFList($('#all_fiscal_yrs').val(), Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime);
+    admin_rf_list = db_getAdminRFList($('#all_fiscal_yrs').val(), $('#all_review_period').val(), Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime);
     
     $('#body_tr').empty();
     if (admin_rf_list.length !== 0) {
@@ -2455,4 +2505,67 @@ function updateAllMedianMean() {
     var all_mean = calculateMean(ar_all_mean);
     
     db_updaterateAllMedianMean(sel_res_id, all_median, all_mean);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function udpateModalNewReviewPeriod(review_period_id) {
+    var result = new Array();
+    result = db_getReviewPeriodByID(review_period_id);
+    $('#mod_new_rp_start').html(result[0]['RPStartDate'].replace("1900-", ""));
+    $('#mod_new_rp_end').html(result[0]['RPEndDate'].replace("1900-", ""));
+}
+
+function getSelectResourceRP() {
+    var result = new Array();
+    result = db_getResourceRP(sel_res_id);
+    
+    if (result.length === 1) {
+        var result2 = new Array();
+        result2 = db_getReviewPeriodByID(result[0]['ReviewPeriodID']);
+        
+        $('#mod_cur_rp_name').html(result2[0]['ReviewPeriod']);
+        $('#mod_cur_rp_start').html(result2[0]['RPStartDate'].replace("1900-", ""));
+        $('#mod_cur_rp_end').html(result2[0]['RPEndDate'].replace("1900-", ""));
+    }
+    else {
+        $('#mod_cur_rp_name').html("");
+        $('#mod_cur_rp_start').html("");
+        $('#mod_cur_rp_end').html("");
+    }
+}
+
+function getNewReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#mod_new_rp_name').empty();
+    var str_option = "";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    $("#mod_new_rp_name").append(str_option);
+    
+    $('#mod_new_rp_name').val(result[0]['ReviewPeriodID']);
+    $('#mod_new_rp_name').selectpicker('refresh');
+    udpateModalNewReviewPeriod(result[0]['ReviewPeriodID']);
+}
+
+function getAllReviewPeriodList() {
+    var result = new Array(); 
+    result = db_getReviewPeriodList();
+    
+    $('#all_review_period').empty();
+    var str_option = "<option value='0'>All</option>>";
+    for(var i = 0; i < result.length; i++) {
+       str_option += "<option value='" + result[i]['ReviewPeriodID'] + "'>" + result[i]['ReviewPeriod'] + "</option>";
+    }
+    str_option += "<option value='-1'>Blank</option>>";
+    $("#all_review_period").append(str_option);
+    
+    var cur_rp_id = getCurrentDateReviewPeriod();
+    if (cur_rp_id !== "") {
+        $('#all_review_period').val(result[0]['ReviewPeriodID']);
+        $('#all_review_period').selectpicker('refresh');
+    }
 }
