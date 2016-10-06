@@ -1,5 +1,4 @@
 <?php
-//    $server = "idc1.ivc.edu idc2.ivc.edu idc3.ivc.edu";
     $server = "ivc.edu";
     $baseDN = "dc=ivc,dc=edu";
     
