@@ -5609,3 +5609,19 @@ function convertStringDateToDBDateFormat(str_date) {
     var ar_date = str_date.split("/");
     return ar_date[2] + "-" + ar_date[0] + "-" + ar_date[1];
 }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function ireportDBgetUserAccess($Username) {   
+    var Result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/ireport_db_getUserAccess.php",
+        data:{$Username:$Username},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}

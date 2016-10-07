@@ -43,6 +43,19 @@ $(document).ready(function() {
     });
     
     $('#btn_login').click(function() {
+        if(location.href.indexOf("ireport.ivc.edu") >= 0 && !ireportValidation()) {
+            swal({  title: "Access Denied",
+                    text: "This is a Development site. It will redirect to IVC Application site",
+                    type: "error",
+                    confirmButtonText: "OK" },
+                    function() {
+                        sessionStorage.clear();
+                        window.open('https://services.ivc.edu/', '_self');
+                        return false;
+                    }
+            );
+        }
+        
         var url_param = sessionStorage.getItem('ss_rf_url_param');  
         if(loginInfo()) {
             if (url_param === null) {
@@ -106,4 +119,15 @@ function getLoginUserInfo(php_file, user, pass) {
         }
     });
     return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function ireportValidation() {
+    var username = $('#username').val().toLowerCase().replace("@ivc.edu", "");
+    if (ireportDBgetUserAccess(username) !== null) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
