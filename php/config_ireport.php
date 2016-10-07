@@ -1,5 +1,5 @@
 <?php
-    $dbHost = "ivcintdb1";
+    $dbHost = "IEXDBLISTNR";
     $dbDatabase = "IREPORT";
     $dbUser = "ireport";
     $dbPass = "~7QM#pd?X*";
