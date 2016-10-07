@@ -5612,12 +5612,12 @@ function convertStringDateToDBDateFormat(str_date) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-function ireportDBgetUserAccess($Username) {   
+function ireportDBgetUserAccess(Username) {   
     var Result = "";
     $.ajax({
         type:"POST",
         url:"php/ireport_db_getUserAccess.php",
-        data:{$Username:$Username},
+        data:{Username:Username},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);
