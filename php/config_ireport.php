@@ -1,7 +1,7 @@
 <?php
     $dbHost = "ivcintdb1";
-    $dbDatabase = "IVCRESOURCES";
-    $dbUser = "ivcresources";
+    $dbDatabase = "IREPORT";
+    $dbUser = "ireport";
     $dbPass = "~7QM#pd?X*";
 
     // MSSQL database connection
