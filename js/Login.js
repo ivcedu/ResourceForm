@@ -43,6 +43,7 @@ $(document).ready(function() {
     });
     
     $('#btn_login').click(function() {
+        // ireport.ivc.edu validation //////////////////////////////////////////
         if(location.href.indexOf("ireport.ivc.edu") >= 0 && !ireportValidation()) {
             swal({  title: "Access Denied",
                     text: "This is a Development site. It will redirect to IVC Application site",
@@ -55,19 +56,21 @@ $(document).ready(function() {
                     }
             );
         }
-        
-        var url_param = sessionStorage.getItem('ss_rf_url_param');  
-        if(loginInfo()) {
-            if (url_param === null) {
-                window.open('home.html', '_self');
-            }
-            else {  
-                window.open(url_param, '_self');
-            }
-        }
+        ////////////////////////////////////////////////////////////////////////
         else {
-            $('#login_error').show();
-            this.blur();
+            var url_param = sessionStorage.getItem('ss_rf_url_param');  
+            if(loginInfo()) {
+                if (url_param === null) {
+                    window.open('home.html', '_self');
+                }
+                else {  
+                    window.open(url_param, '_self');
+                }
+            }
+            else {
+                $('#login_error').show();
+                this.blur();
+            }
         }
     });
 });
@@ -123,7 +126,7 @@ function getLoginUserInfo(php_file, user, pass) {
 
 ////////////////////////////////////////////////////////////////////////////////
 function ireportValidation() {
-    var username = $('#username').val().toLowerCase().replace("@ivc.edu", "");
+    var username = $('#username').val().toLowerCase().replace("@ivc.edu", "").replace("@saddleback.edu", "");
     if (ireportDBgetUserAccess(username) !== null) {
         return true;
     }
