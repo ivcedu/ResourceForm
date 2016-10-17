@@ -292,7 +292,7 @@ function selObjective(Id, value) {
         $("#" + goalID).selectpicker('show');
         $('#m5_impact_1').attr('placeholder', '');
         $('#m5_ref_link').prop('href', 'doc/District-wide_Objective.pdf');
-        $('#m5_ref_link').html(value);
+        $('#m5_ref_link').html("IVC Objective");
         $('#m5_ref_link').show();
     }
     else if (value === "District-wide Technology Objective") {
