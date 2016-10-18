@@ -147,10 +147,12 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
+        }
+        else {
+            window.open('RFMain5.html', '_self');
         }
         
-        window.open('RFMain5.html', '_self');
+        return false;
     });
     
     // checkbox dialog button event ////////////////////////////////////////////    
