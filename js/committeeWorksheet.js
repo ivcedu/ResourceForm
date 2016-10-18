@@ -536,22 +536,6 @@ $(document).ready(function() {
         $('#mod_review_period').modal('show');
     });
     
-    // mod start month click event /////////////////////////////////////////////
-    $('#mod_review_period_list').on('click', '[id^="mod_rp_start_mon_id_"]', function() {
-        var mod_id = $(this).attr('id').replace("mod_rp_start_mon_id_", "");
-        var mod_rp_start_mon = Number($(this).val());
-        $('#mod_rp_start_day_id_' + mod_id).empty();
-        $('#mod_rp_start_day_id_' + mod_id).append(getRPDays(mod_rp_start_mon));
-    });
-    
-    // mod end month click event ///////////////////////////////////////////////
-    $('#mod_review_period_list').on('click', '[id^="mod_rp_end_mon_id_"]', function() {
-        var mod_id = $(this).attr('id').replace("mod_rp_end_mon_id_", "");
-        var mod_rp_end_mon = Number($(this).val());
-        $('#mod_rp_end_day_id_' + mod_id).empty();
-        $('#mod_rp_end_day_id_' + mod_id).append(getRPDays(mod_rp_end_mon));
-    });
-    
     // mod review period new button click //////////////////////////////////////
     $('#mod_review_period_btn_new').click(function() {
         db_insertReviewPeriod(1, "", "", "");
@@ -563,12 +547,8 @@ $(document).ready(function() {
         $('#mod_review_period_body_tr').children().each(function () {
             var rp_id = $(this).attr('id').replace("mod_tr_review_period_id_", "");
             var review_period = $('#mod_review_period_id_' + rp_id).val();
-            var rp_start_mon = $('#mod_rp_start_mon_id_' + rp_id).val();
-            var rp_start_day = $('#mod_rp_start_day_id_' + rp_id).val();
-            var rp_end_mon = $('#mod_rp_end_mon_id_' + rp_id).val();
-            var rp_end_day = $('#mod_rp_end_day_id_' + rp_id).val();
-            var rp_start_date = "1900-" + rp_start_mon + "-" + rp_start_day;
-            var rp_end_date = "1900-" + rp_end_mon + "-" + rp_end_day;
+            var rp_start_date = $('#mod_rp_start_id_' + rp_id).val();
+            var rp_end_date = $('#mod_rp_end_id_' + rp_id).val();
             db_updateReviewPeriod(rp_id, 1, review_period, rp_start_date, rp_end_date);
         });
         
@@ -1692,30 +1672,15 @@ function getReviewPeriodList() {
     
     $('#mod_review_period_body_tr').empty();
     for(var i = 0; i < result.length; i++) {
-        var tbl_html = "<tr id='mod_tr_review_period_id_" + result[i]['ReviewPeriodID'] + "'>";
-        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_review_period_id_" + result[i]['ReviewPeriodID'] + "'></td>";
-        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_start_mon_id_" + result[i]['ReviewPeriodID']  + "'>" + getRPMonth() + "</select></td>";
-        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_start_day_id_" + result[i]['ReviewPeriodID']  + "'></select></td>";
-        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_end_mon_id_" + result[i]['ReviewPeriodID']  + "'>" + getRPMonth() + "</select></td>";
-        tbl_html += "<td class='span2 form-horizontal'><select class='selectpicker form-control span12' data-container='body' id='mod_rp_end_day_id_" + result[i]['ReviewPeriodID']  + "'></select></td>";
+        var tbl_html = "<tr id='mod_tr_review_period_id_" + result[i]['ReviewPeriodID'] + "'>";       
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_review_period_id_" + result[i]['ReviewPeriodID'] + "' value='" + result[i]['ReviewPeriod'] + "'></td>";
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_start_id_" + result[i]['ReviewPeriodID']  + "' value ='" + convertDBDateToStringFormat(result[i]['RPStartDate']) + "'></td>";
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_end_id_" + result[i]['ReviewPeriodID']  + "' value ='" + convertDBDateToStringFormat(result[i]['RPEndDate']) + "'></td>";
         tbl_html += "</tr>";
+
         $("#mod_review_period_body_tr").append(tbl_html);
-        
-        $('#mod_review_period_id_' + result[i]['ReviewPeriodID']).val(result[i]['ReviewPeriod']);
-        
-        var ar_start = result[i]['RPStartDate'].replace("1900-", "").split("-");
-        var mon_start = Number(ar_start[0]);
-        var day_start = Number(ar_start[1]);
-        $('#mod_rp_start_mon_id_' + result[i]['ReviewPeriodID']).val(mon_start);
-        $('#mod_rp_start_day_id_' + result[i]['ReviewPeriodID']).append(getRPDays(mon_start));
-        $('#mod_rp_start_day_id_' + result[i]['ReviewPeriodID']).val(day_start);
-        
-        var ar_end = result[i]['RPEndDate'].replace("1900-", "").split("-");
-        var mon_end = Number(ar_end[0]);
-        var day_end = Number(ar_end[1]);
-        $('#mod_rp_end_mon_id_' + result[i]['ReviewPeriodID']).val(mon_end);
-        $('#mod_rp_end_day_id_' + result[i]['ReviewPeriodID']).append(getRPDays(mon_end));
-        $('#mod_rp_end_day_id_' + result[i]['ReviewPeriodID']).val(day_end); 
+        $('#mod_rp_start_id_' + result[i]['ReviewPeriodID']).datepicker();
+        $('#mod_rp_end_id_' + result[i]['ReviewPeriodID']).datepicker();
     }
 }
 
