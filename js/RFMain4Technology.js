@@ -54,10 +54,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("General Info");
+        else {
+            moveSelectedStepPage("General Info");
+        }
+        return false;
     });
     
     $('#pbar_resource_type').click(function() {
@@ -67,10 +68,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Resource Type");
+        else {
+            moveSelectedStepPage("Resource Type");
+        }
+        return false;
     });
     
     $('#pbar_funding_src').click(function() {
@@ -86,10 +88,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Funding Src");
+        else {
+            moveSelectedStepPage("Funding Src");
+        }
+        return false;
     });
     
     $('#pbar_planning').click(function() {
@@ -105,10 +108,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Planning");
+        else {
+            moveSelectedStepPage("Planning");
+        }
+        return false;
     });
     
     $('#pbar_review').click(function() {
@@ -124,10 +128,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Review");
+        else {
+            moveSelectedStepPage("Review");
+        }
+        return false;
     });
     
     ////////////////////////////////////////////////////////////////////////////
@@ -276,10 +281,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        window.open('RFMain3.html', '_self');
+        else {
+            window.open('RFMain3.html', '_self');
+        }
+        return false;
     });
     
     $('#m4_next').click(function() {
@@ -305,11 +311,11 @@ $(document).ready(function() {
         var step3_save = btnSaveDraft();
         if (!step3_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        //window.open('RFMain5.html', '_self');
-        window.open('fundingSrc.html', '_self');
+        else {
+            window.open('fundingSrc.html', '_self');
+        }
+        return false;
     });
     
     // bootstrap filestyle
@@ -324,35 +330,6 @@ $(document).ready(function() {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-//function formValidation() {
-//    if ($('#m4_te_Item_Req').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Location').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Descrip_1').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Qty_1').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Cost_1').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Total_1').val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    
-//    $('#m4_next').show();
-//}
-
 function formValidation2() {
     var err = "";
     
@@ -374,27 +351,6 @@ function formValidation2() {
     
     return err;
 }
-
-//function wsValidation(ID) {
-//    if ($('#m4_te_Item_Descrip_' + ID).val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Qty_' + ID).val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Cost_' + ID).val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    if ($('#m4_te_Item_Total_' + ID).val().replace(/\s+/g, '') === "") {
-//        $('#m4_next').hide();
-//        return;
-//    }
-//    
-//    $('#m4_next').show();
-//}
 
 function wsValidation2(ID) {
     var err = "";

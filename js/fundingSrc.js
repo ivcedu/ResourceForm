@@ -54,10 +54,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("General Info");
+        else {
+            moveSelectedStepPage("General Info");
+        }
+        return false;
     });
     
     $('#pbar_resource_type').click(function() {
@@ -66,10 +67,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Resource Type");
+        else {
+            moveSelectedStepPage("Resource Type");
+        }
+        return false;
     });
     
     $('#pbar_worksheet').click(function() {
@@ -78,10 +80,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Worksheet");
+        else {
+            moveSelectedStepPage("Worksheet");
+        }
+        return false;
     });
     
     $('#pbar_planning').click(function() {
@@ -96,10 +99,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Planning");
+        else {
+            moveSelectedStepPage("Planning");
+        }
+        return false;
     });
     
     $('#pbar_review').click(function() {
@@ -114,10 +118,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Review");
+        else {
+            moveSelectedStepPage("Review");
+        }
+        return false;
     });
     
     // navigation button event /////////////////////////////////////////////////
@@ -128,10 +133,11 @@ $(document).ready(function() {
         var stepFS_save = btnSaveDraft();
         if (!stepFS_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        BackToWorksheetPage();
+        else {
+            BackToWorksheetPage();
+        }
+        return false;
     });
     
     $('#btn_next').click(function() {
@@ -151,14 +157,8 @@ $(document).ready(function() {
         else {
             window.open('RFMain5.html', '_self');
         }
-        
         return false;
     });
-    
-    // checkbox dialog button event ////////////////////////////////////////////    
-//    $('#mod_btn_confirm').click(function() {
-//        $("#" + selected_fs).prop('checked', true);
-//    });
     
     // mouse event /////////////////////////////////////////////////////////////
     $(document).on('mouseover', '[id^="lable_fs_"]', function() {
@@ -173,237 +173,6 @@ $(document).ready(function() {
     $(document).on('mouseleave', '[id^="lable_fs_"]', function() {
         $(this).popover('hide');
     });
-    
-    // checkbox event //////////////////////////////////////////////////////////
-//    $('#fs_1').change(function() {
-//        if ($('#fs_1').is(':checked') ) {
-//            selected_fs = "fs_1";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_2').change(function() {
-//        if ($('#fs_2').is(':checked')) {
-//            selected_fs = "fs_2";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_3').change(function() {
-//        if ($('#fs_3').is(':checked')) {
-//            selected_fs = "fs_3";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_4').change(function() {
-//        if ($('#fs_4').is(':checked')) {
-//            selected_fs = "fs_4";            
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_5').change(function() {
-//        if ($('#fs_5').is(':checked')) {
-//            selected_fs = "fs_5";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_6').change(function() {
-//        if ($('#fs_6').is(':checked')) {
-//            selected_fs = "fs_6";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_7').change(function() {
-//        if ($('#fs_7').is(':checked')) {
-//            selected_fs = "fs_7";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_8').change(function() {
-//        if ($('#fs_8').is(':checked')) {
-//            selected_fs = "fs_8";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_9').change(function() {
-//        if ($('#fs_9').is(':checked')) {
-//            selected_fs = "fs_9";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_10').change(function() {
-//        if ($('#fs_10').is(':checked')) {
-//            selected_fs = "fs_10";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_11').change(function() {
-//        if ($('#fs_11').is(':checked')) {
-//            selected_fs = "fs_11";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_12').change(function() {
-//        if ($('#fs_12').is(':checked')) {
-//            selected_fs = "fs_12";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_13').change(function() {
-//        if ($('#fs_13').is(':checked')) {
-//            selected_fs = "fs_13";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_14').change(function() {
-//        if ($('#fs_14').is(':checked')) {
-//            selected_fs = "fs_14";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_15').change(function() {
-//        if ($('#fs_15').is(':checked')) {
-//            selected_fs = "fs_15";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_16').change(function() {
-//        if ($('#fs_16').is(':checked')) {
-//            selected_fs = "fs_16";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_17').change(function() {
-//        if ($('#fs_17').is(':checked')) {
-//            selected_fs = "fs_17";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_18').change(function() {
-//        if ($('#fs_18').is(':checked')) {
-//            selected_fs = "fs_18";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_19').change(function() {
-//        if ($('#fs_19').is(':checked')) {
-//            selected_fs = "fs_19";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_20').change(function() {
-//        if ($('#fs_20').is(':checked')) {
-//            selected_fs = "fs_20";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_21').change(function() {
-//        if ($('#fs_21').is(':checked')) {
-//            selected_fs = "fs_21";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_22').change(function() {
-//        if ($('#fs_22').is(':checked')) {
-//            selected_fs = "fs_22";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
-    
-//    $('#fs_23').change(function() {
-//        if ($('#fs_23').is(':checked')) {
-//            selected_fs = "fs_23";
-//            var descrip = getFundSrcDescrip(selected_fs);
-//            $('#mod_dialog_body').html(descrip.replace(/\n/g, "<br>"));
-//            $('#mod_dialog').modal('show');
-//            $("#" + selected_fs).prop('checked', false);
-//        }
-//    });
     
     // auto size
     $('#fund_source_comments').autosize();

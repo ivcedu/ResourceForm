@@ -49,10 +49,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("General Info");
+        else {
+            moveSelectedStepPage("General Info");
+        }
+        return false;
     });
     
     $('#pbar_worksheet').click(function() {
@@ -67,10 +68,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Worksheet");
+        else {
+            moveSelectedStepPage("Worksheet");
+        }
+        return false;
     });
     
     $('#pbar_funding_src').click(function() {
@@ -85,10 +87,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Funding Src");
+        else {
+            moveSelectedStepPage("Funding Src");
+        }
+        return false;
     });
     
     $('#pbar_planning').click(function() {
@@ -103,10 +106,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Planning");
+        else {
+            moveSelectedStepPage("Planning");
+        }
+        return false;
     });
     
     $('#pbar_review').click(function() {
@@ -121,10 +125,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        moveSelectedStepPage("Review");
+        else {
+            moveSelectedStepPage("Review"); 
+        }
+        return false;
     });
     
     ////////////////////////////////////////////////////////////////////////////
@@ -135,10 +140,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        window.open('RFMain.html', '_self');
+        else {
+            window.open('RFMain.html', '_self');
+        }
+        return false;
     });
     
     $('#m3_next').click(function() {
@@ -154,10 +160,11 @@ $(document).ready(function() {
         var step2_save = btnSaveDraft();
         if (!step2_save) {
             alert("System error, please call x5596 for help\n" + err_msg);
-            return false;
         }
-        
-        btnNext();
+        else {
+            btnNext();
+        }
+        return false;
     });
     
     // popover
