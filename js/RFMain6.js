@@ -123,24 +123,25 @@ $(document).ready(function() {
         var login_name = sessionStorage.getItem('m1_loginName');
         var ResourceID = sessionStorage.getItem('m1_ResourceID');
         var resubmit = db_getBacktodraft(ResourceID);
-        var current_date = new Date();
-        var db_date = db_getEnableSubmitBtn();
-        var a = db_date.split(" ");
-        var d = a[0].split("-");
-        var t = a[1].split(":");
-        var enable_date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
         
-        if (current_date > enable_date && resubmit === null //disable all sent back to draft stage
-                && login_name !== "Rich Kim" 
-                && login_name !== "Bruce Hagan" 
-                && login_name !== "stafftest") {
-            
-            $('#mod_dialog_box_header').html("Submitting Resource Request Expired");
-            $('#mod_dialog_box_body').html("The current resource submission process has passed. Your request has been saved as draft.<br><br>Thank you");
-            $('#mod_dialog_box').modal('show');
-            $("#m6_submit").prop("disabled", false);
-            return false;
-        }
+//        var current_date = new Date();
+//        var db_date = db_getEnableSubmitBtn();
+//        var a = db_date.split(" ");
+//        var d = a[0].split("-");
+//        var t = a[1].split(":");
+//        var enable_date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
+//        
+//        if (current_date > enable_date && resubmit === null //disable all sent back to draft stage
+//                && login_name !== "Rich Kim" 
+//                && login_name !== "Bruce Hagan" 
+//                && login_name !== "stafftest") {
+//            
+//            $('#mod_dialog_box_header').html("Submitting Resource Request Expired");
+//            $('#mod_dialog_box_body').html("The current resource submission process has passed. Your request has been saved as draft.<br><br>Thank you");
+//            $('#mod_dialog_box').modal('show');
+//            $("#m6_submit").prop("disabled", false);
+//            return false;
+//        }
   
         var m6_RType = sessionStorage.getItem('m3_radioRType');
         var mFS_fs_3 = sessionStorage.getItem('mFS_fs_3');  // funding src: Basic Aid
@@ -1397,7 +1398,12 @@ function submitToDB(resubmit) {
     var cur_date = new Date();
     var cur_mon = cur_date.getMonth() + 1;
     var cur_day = cur_date.getDate();
-    var result = db_getReviewPeriodID("1900-" + cur_mon + "-" + cur_day);
+    var rp_yr = "1900-";
+    if (cur_mon < 7) {
+        rp_yr = "1901-";
+    }
+    
+    var result = db_getReviewPeriodID(rp_yr + cur_mon + "-" + cur_day);
     if (result.length !== 0) {
         var rp_id = result[0]['ReviewPeriodID'];
         db_insertResourceRP(ResourceID, rp_id);

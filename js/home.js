@@ -36,7 +36,7 @@ window.onload = function() {
 $(document).ready(function() { 
     $('#new_request').click(function() {
         resetDraftLocalData();
-        deadlinePastNotification();
+//        deadlinePastNotification();
         window.open('RFMain.html', '_self');
     });
 
