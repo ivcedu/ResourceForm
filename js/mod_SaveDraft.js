@@ -111,6 +111,9 @@ function updateStep2() {
         var prev_rtype = sessionStorage.getItem('m3_prev_RType');
         if (rtype !== prev_rtype) {
             switch(prev_rtype) {
+                case "Personnel":
+                    mod_deletePersonnel();
+                    break;
                 case "Facilities":
                     mod_deleteFacilities();
                     break;
@@ -2957,8 +2960,9 @@ function stepRF_ResourceFundSrc(ResourceID, insert) {
     var fs_22 = (sessionStorage.getItem('mFS_fs_22') === "true" ? true : false);
     var fs_23 = (sessionStorage.getItem('mFS_fs_23') === "true" ? true : false);
     var fs_comments = sessionStorage.getItem('mFS_fs_comments');
-
-    if (insert) {
+    
+    var result = db_getResourceFundSrc(ResourceID);
+    if (insert && result.length === 0) {
         return db_insertResourceFundSrc(ResourceID, fs_1, fs_2, fs_3, fs_4, fs_5, fs_6, fs_7, fs_8, fs_9, fs_10, fs_11, fs_12, fs_13, fs_14, fs_15, fs_16, fs_17, fs_18, fs_19, fs_20, fs_21, fs_22, fs_23, fs_comments);
     }
     else {
@@ -5495,6 +5499,36 @@ function deleteAttachFileByResourceID() {
         }
     }
 } 
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function db_getPriorityRatingCkb(ResourceID) {
+    var result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/db_getPriorityRatingCkb.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_updatePriorityRatingCkb(ResourceID, RatingCkb) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updatePriorityRatingCkb.php",
+        data:{ResourceID:ResourceID, RatingCkb:RatingCkb},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 function ad_SearchCreators(searchCreator) {
