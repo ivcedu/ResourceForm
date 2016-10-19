@@ -512,8 +512,12 @@ function getCurrentDateReviewPeriod() {
     var cur_date = new Date();
     var cur_mon = cur_date.getMonth() + 1;
     var cur_day = cur_date.getDate();
-    var result = db_getReviewPeriodID("1900-" + cur_mon + "-" + cur_day);
+    var rp_year = "1900-";
+    if(cur_mon < 7) {
+        rp_year = "1901-";
+    }
     
+    var result = db_getReviewPeriodID(rp_year + cur_mon + "-" + cur_day);
     if (result.length !== 0) {
         return result[0]['ReviewPeriodID'];
     }
