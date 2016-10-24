@@ -1490,7 +1490,7 @@ function sendEmailToApprover(m6_RType, mFS_fs_3) {
     
     var Subject = RFTitle + " has been assigned to you";
     var Message = "Dear " + appName + ",<br/><br/>";
-    Message += "The resource request form, titled <strong>" + RFTitle + "</strong> has been submitted.<br/><br/>";
+    Message += "The resource request form, titled <strong>" + RFTitle + "</strong> has been submitted.<br/>";
     Message += "You can review the resource request now by clicking the link below and instructions on the rating process are available at ";
     Message += "<a href='http://inside.ivc.edu/committees/SPOBDC/General%20Documents/Resource%20Request%20Rating%20Process.pdf'>Rating Process Instruction</a><br><br>";
     if (m6_RType === "Facilities" || m6_RType === "Technology") {
