@@ -23,7 +23,6 @@
                     $email = $data[$i]["mail"][0];
                     $title = $data[$i]["title"][0];
                     $division = $data[$i]["division"][0];
-
                     $result[$i] = array($name, $email, $title, $division);
                 }
             }

@@ -25,8 +25,7 @@
                     $division = $data[$i]["division"][0];
                     $manager = $data[$i]["manager"][0];
 
-                    if (!empty($manager))
-                    {
+                    if (!empty($manager)) {
                         $filter2 = "(CN=".setApproverUserName($manager).")";
                         $ladp_result2 = ldap_search($ldapconn, $baseDN, $filter2);
                         $data2 = ldap_get_entries($ldapconn, $ladp_result2);
@@ -43,8 +42,7 @@
     }
     echo json_encode($result);
     
-    function setApproverUserName($manager)
-    {
+    function setApproverUserName($manager) {
         $pos = strpos($manager, ',');
         return substr($manager, 3, $pos - 3);
     }

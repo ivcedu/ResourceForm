@@ -45,7 +45,6 @@
                     if (array_key_exists('division', $data2[0])) {
                         $division2 = $data2[0]["division"][0];
                     }
-                    
                     $result = array($name, $email, $title, $division, $name2, $email2, $title2, $division2);
                 }
             }
