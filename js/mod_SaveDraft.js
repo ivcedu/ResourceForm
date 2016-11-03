@@ -2368,6 +2368,34 @@ function db_getrateMgr(ResourceID) {
     return result;
 }
 
+function db_getrateMgrCkb(ResourceID) {
+    var result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/db_getrateMgrCkb.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getrateVPPCkb(ResourceID) {
+    var result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/db_getrateVPPCkb.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 // review period ///////////////////////////////////////////////////////////////
 function db_getReviewPeriodList() {
     var result = new Array();
@@ -4219,12 +4247,40 @@ function db_updaterateMgrRating(ResourceID, ApproverID, rating) {
     return Result;
 }
 
+function db_updaterateMgrCkb(ResourceID, mgr_Ckb) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updaterateMgrCkb.php",
+        data:{ResourceID:ResourceID, mgr_Ckb:mgr_Ckb},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
 function db_updaterateVPPRating(ResourceID, ApproverID, rating) {
     var Result = false;
     $.ajax({
         type:"POST",
         url:"php/db_updaterateVPPRating.php",
         data:{ResourceID:ResourceID, ApproverID:ApproverID, rating:rating},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_updaterateVPPCkb(ResourceID, vpp_Ckb) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_updaterateVPPCkb.php",
+        data:{ResourceID:ResourceID, vpp_Ckb:vpp_Ckb},
         async: false,  
         success:function(data) {
             Result = JSON.parse(data);
@@ -5397,6 +5453,34 @@ function db_deleteResourceRP(ResourceID) {
     $.ajax({
         type:"POST",
         url:"php/db_deleteResourceRP.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_deleteCommentsMgr(ResourceID) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_deleteCommentsMgr.php",
+        data:{ResourceID:ResourceID},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
+function db_deleteCommentsVPP(ResourceID) {
+    var Result = false;
+    $.ajax({
+        type:"POST",
+        url:"php/db_deleteCommentsVPP.php",
         data:{ResourceID:ResourceID},
         async: false,  
         success:function(data) {

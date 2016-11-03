@@ -684,14 +684,14 @@ function updateResourceStatus(status) {
     switch (status) {
         case "Back to Draft":
             db_updateRFStatus(resource_id, 1, 0);
-            
             db_deleteResourceStage(resource_id);
             db_deletePriority(resource_id);
-
-            // delete mgr level rating
+            // delete mgr/vpp lrating
             db_deleterateMgr(resource_id);
             db_deleterateVPP(resource_id);
-
+            // delete mgr/vpp comments
+            db_deleteCommentsMgr(resource_id);
+            db_deleteCommentsVPP(resource_id);
             // delete committee rating
             db_deleterateAll(resource_id);
             db_deleterateAPTC(resource_id);
@@ -703,11 +703,13 @@ function updateResourceStatus(status) {
             
             deleteAllResourceFundAmt();
             db_deleteResourceFSBSI(resource_id);
-            db_insertBacktodraft(resource_id, 1);
             db_updateResourcePage(resource_id, "Page1");
+            setBackToDraft(resource_id);
+            // delete resource review period
+            db_deleteResourceRP(resource_id);
             
 //            emailBackToDraft(resource_id, login_email, "sent " + status, comments);
-            note = login_email + " sent back to Draft stage\n" + comments;
+            note = login_name + " sent back to Draft stage\n" + comments;
             break;
         case "Closed":
             var RSID = db_getResourceStatusID(status);
@@ -1674,8 +1676,8 @@ function getReviewPeriodList() {
     for(var i = 0; i < result.length; i++) {
         var tbl_html = "<tr id='mod_tr_review_period_id_" + result[i]['ReviewPeriodID'] + "'>";       
         tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_review_period_id_" + result[i]['ReviewPeriodID'] + "' value='" + result[i]['ReviewPeriod'] + "'></td>";
-        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_start_id_" + result[i]['ReviewPeriodID']  + "' value ='" + convertDBDateToStringFormat(result[i]['RPStartDate']) + "'></td>";
-        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_end_id_" + result[i]['ReviewPeriodID']  + "' value ='" + convertDBDateToStringFormat(result[i]['RPEndDate']) + "'></td>";
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_start_id_" + result[i]['ReviewPeriodID']  + "' value ='" + result[i]['RPStartDate'] + "'></td>";
+        tbl_html += "<td class='span4'><input type='text' class='span12' id='mod_rp_end_id_" + result[i]['ReviewPeriodID']  + "' value ='" + result[i]['RPEndDate'] + "'></td>";
         tbl_html += "</tr>";
 
         $("#mod_review_period_body_tr").append(tbl_html);
@@ -2000,8 +2002,8 @@ function getAllReviewPeriodList() {
 function udpateModalNewReviewPeriod(review_period_id) {
     var result = new Array();
     result = db_getReviewPeriodByID(review_period_id);
-    $('#mod_new_rp_start').html(result[0]['RPStartDate'].replace("1900-", ""));
-    $('#mod_new_rp_end').html(result[0]['RPEndDate'].replace("1900-", ""));
+    $('#mod_new_rp_start').html(result[0]['RPStartDate']);
+    $('#mod_new_rp_end').html(result[0]['RPEndDate']);
 }
 
 function getSelectResourceRP() {
@@ -2013,8 +2015,8 @@ function getSelectResourceRP() {
         result2 = db_getReviewPeriodByID(result[0]['ReviewPeriodID']);
         
         $('#mod_cur_rp_name').html(result2[0]['ReviewPeriod']);
-        $('#mod_cur_rp_start').html(result2[0]['RPStartDate'].replace("1900-", ""));
-        $('#mod_cur_rp_end').html(result2[0]['RPEndDate'].replace("1900-", ""));
+        $('#mod_cur_rp_start').html(result2[0]['RPStartDate']);
+        $('#mod_cur_rp_end').html(result2[0]['RPEndDate']);
     }
     else {
         $('#mod_cur_rp_name').html("");
@@ -2037,4 +2039,12 @@ function getNewReviewPeriodList() {
     $('#mod_new_rp_name').val(result[0]['ReviewPeriodID']);
     $('#mod_new_rp_name').selectpicker('refresh');
     udpateModalNewReviewPeriod(result[0]['ReviewPeriodID']);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function setBackToDraft(ResourceID) {
+    var back_draft = db_getBacktodraft(ResourceID);
+    if (back_draft === null) {
+        db_insertBacktodraft(ResourceID, 1);
+    }
 }

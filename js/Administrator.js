@@ -72,6 +72,7 @@ var ar_db_bdrpc_column = [];
 var ar_db_iec_column = [];
 var ar_db_spac_column = [];
 
+var mgr_start_date = false;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {        
@@ -82,7 +83,8 @@ window.onload = function() {
         getAllResourceFiscalYear();
         getAllReviewPeriodList();
         setAssignToLoginName();
-        getFundingSrcTypeList();
+        getFundingSrcTypeList();     
+        setMgrRatingWorksheet();
         getAdminRFList("Active", "Me", m_login_email, "All Resource", "All Program", 0, "All Request");
         initializeTable();
 
@@ -141,15 +143,13 @@ $(document).ready(function() {
     // back to draft ///////////////////////////////////////////////////////////
     $('#nav_back_to_draft').click(function(e) {
         e.preventDefault();
-        if (sel_res_id === "") {
-            return false;
+        if (sel_res_id !== "") {
+            $('#mod_back_to_draft_body_title').html(sel_res_title);
+            $('#mod_back_to_draft_status').val("Select...");
+            $('#mod_back_to_draft_status').selectpicker('refresh');
+            $('#mod_back_to_draft_reason').val("");
+            $('#mod_back_to_draft').modal('show');
         }
-        
-        $('#mod_back_to_draft_body_title').html(sel_res_title);
-        $('#mod_back_to_draft_status').val("Select...");
-        $('#mod_back_to_draft_status').selectpicker('refresh');
-        $('#mod_back_to_draft_reason').val("");
-        $('#mod_back_to_draft').modal('show');
     });
     
     $('#mod_back_to_draft_yes').click(function() { 
@@ -168,13 +168,13 @@ $(document).ready(function() {
             if (new_status === "Back to Draft") {
                 updateRFStatus(sel_res_id, 1, 0);
                 db_deleteResourceStage(sel_res_id);
-                
                 db_deletePriority(sel_res_id);
-                
-                // delete mgr level rating
+                // delete mgr/vpp rating
                 db_deleterateMgr(sel_res_id);
                 db_deleterateVPP(sel_res_id);
-                
+                // delete mgr/vpp comments
+                db_deleteCommentsMgr(sel_res_id);
+                db_deleteCommentsVPP(sel_res_id);
                 // delete committee rating
                 db_deleterateAll(sel_res_id);
                 db_deleterateAPTC(sel_res_id);
@@ -184,12 +184,11 @@ $(document).ready(function() {
                 db_deleterateSPAC(sel_res_id);
                 db_deleterateSSAMMO(sel_res_id);
                 
-                // delete resource review period
-                db_deleteResourceRP(sel_res_id);
-                
-                setBackToDraft(sel_res_id);
                 db_deleteResourceFSBSI(sel_res_id);
                 db_updateResourcePage(sel_res_id, "Page1");
+                setBackToDraft(sel_res_id);
+                // delete resource review period
+                db_deleteResourceRP(sel_res_id);
                 
                 status_change = "sent back to Draft stage";
                 note = m_login_name + " sent back to Draft stage";
@@ -240,16 +239,11 @@ $(document).ready(function() {
         
         resetAdminInfo();
         sel_res_id = $(this).attr('id').replace("res_tr_", "");
-        var res_title = $('#resource_ptitle_full_' + sel_res_id).html();
-        sel_res_title = res_title;
-        var stage = $('#resource_stage_' + sel_res_id).html();
-        sel_res_stage = stage;
-        var approver_id = $('#approver_ID_' + sel_res_id).html();
-        sel_approver_id = approver_id;
-        var approver_email = $('#approver_email_' + sel_res_id).html();
-        sel_approver_email = approver_email;
-        var t_amount = $('#resource_amount_' + sel_res_id).html();
-        sel_t_amount = t_amount;
+        sel_res_title = $('#resource_ptitle_full_' + sel_res_id).html();
+        sel_res_stage = $('#resource_stage_' + sel_res_id).html();
+        sel_approver_id = $('#approver_ID_' + sel_res_id).html();
+        sel_approver_email = $('#approver_email_' + sel_res_id).html();
+        sel_t_amount = $('#resource_amount_' + sel_res_id).html();
         
         $("[id^='res_tr_']").css('background-color', '');
         $("#res_tr_" + sel_res_id).css('background-color', '#CCCCFF');
@@ -267,21 +261,8 @@ $(document).ready(function() {
         $(this).popover('toggle');
     });
     
-    $('table').on('mouseover', '[id^="resource_description_brief_"]', function() {
-        var currentId = $(this).attr('id');
-        var ID = currentId.replace("resource_description_brief_", "");
-        var description_full = $('#resource_description_full_' + ID).html();
-        
-        $(this).popover({trigger:"manual", content:description_full, placement:"bottom"});
-        $(this).popover('toggle');
-    });
-    
     // table mouseleave popup //////////////////////////////////////////////////
     $('table').on('mouseleave', 'a[id^="resource_ptitle_brief_"]', function() {
-        $(this).popover('hide');
-    });
-    
-    $('table').on('mouseleave', '[id^="resource_description_brief_"]', function() {
         $(this).popover('hide');
     });
     
@@ -299,16 +280,11 @@ $(document).ready(function() {
     // add comments event //////////////////////////////////////////////////////////
     $('table').on('click', '[id^="comments_"]', function(e) {
         e.preventDefault();
-        var currentId = $(this).attr('id');
-        sel_res_id = currentId.replace("comments_", "");
-        var stage = $('#resource_stage_' + sel_res_id).html();
-        sel_res_stage = stage;
-        var approver_id = $('#approver_ID_' + sel_res_id).html();
-        sel_approver_id = approver_id;
-        var approver_email = $('#approver_email_' + sel_res_id).html();
-        sel_approver_email = approver_email;
-        var t_amount = $('#resource_amount_' + sel_res_id).html();
-        sel_t_amount = t_amount;
+        sel_res_id = $(this).attr('id').replace("comments_", "");
+        sel_res_stage = $('#resource_stage_' + sel_res_id).html();
+        sel_approver_id = $('#approver_ID_' + sel_res_id).html();
+        sel_approver_email = $('#approver_email_' + sel_res_id).html();
+        sel_t_amount = $('#resource_amount_' + sel_res_id).html();
         
         var title = $('#resource_ptitle_full_' + sel_res_id).html();
         $('#mod_add_header_title').html(title);
@@ -321,45 +297,46 @@ $(document).ready(function() {
                 $('#fac_section_1').show();
                 $('#fac_section_2').show();
                 $('#mod_add_btn_rating').hide();
-                
                 $('#mod_add_move_forward').show();
                 $('#mod_add_note_save').hide();
-                
                 disableResourceFundSrc();
             }
             else if (sel_res_stage === "IT Review") {
                 $('#fac_section_1').hide();
                 $('#fac_section_2').hide();
                 $('#mod_add_btn_rating').hide();
-                
                 $('#mod_add_move_forward').show();
                 $('#mod_add_note_save').hide();
-                
                 disableResourceFundSrc();
             }
-            else if (sel_res_stage === "Dean/Director" || sel_res_stage === "VP" || sel_res_stage === "President") {
-                if (sel_res_stage === "Dean/Director") {
-                    getMgrComments();
-                }
-                else {
-                    getVPPComments();
-                }
+            else if (sel_res_stage === "Dean/Director") {
+                getMgrRatingCkb();
+                getMgrComments();
                 
                 $('#fac_section_1').hide();
                 $('#fac_section_2').hide();
                 $('#mod_add_btn_rating').show();
-                
                 $('#mod_add_move_forward').show();
                 $('#mod_add_note_save').show();
-                
-                enableResourceFundSrc();
                 getAdminPriorityValue(sel_res_id, sel_res_stage);
+                enableResourceFundSrc();
+            }
+            else if (sel_res_stage === "VP" || sel_res_stage === "President") {
+                getVPPRatingCkb();
+                getVPPComments();
+                
+                $('#fac_section_1').hide();
+                $('#fac_section_2').hide();
+                $('#mod_add_btn_rating').show();
+                $('#mod_add_move_forward').show();
+                $('#mod_add_note_save').show();
+                getAdminPriorityValue(sel_res_id, sel_res_stage);
+                enableResourceFundSrc();
             }
             else {
                 $('#fac_section_1').hide();
                 $('#fac_section_2').hide();
                 $('#mod_add_btn_rating').hide();
-                
                 $('#mod_add_move_forward').hide();
                 $('#mod_add_note_save').show();
             }
@@ -395,7 +372,7 @@ $(document).ready(function() {
         $(this).popover('hide');
     });
     
-    // modal comments add comments button event ////////////////////////////////
+    // modal comments add rating button event ///////////////////////////////////
     $('#mod_add_btn_rating').click(function() {
         var icon = $('#mod_add_icon_rating').attr('class');
         var index = icon.indexOf("icon-chevron-right");
@@ -409,6 +386,7 @@ $(document).ready(function() {
         }
     });
     
+    // modal comments add comments button event /////////////////////////////////
     $('#mod_add_btn_comments').click(function() {
         var icon = $('#mod_add_icon_comments').attr('class');
         var index = icon.indexOf("icon-chevron-right");
@@ -447,6 +425,26 @@ $(document).ready(function() {
         else {
             $('#mod_add_icon_history').attr('class', 'icon-chevron-right icon-black');
             $('#mod_add_body_history').hide();
+        }
+    });
+    
+    // modal rating value change event /////////////////////////////////////////
+    $('input[type=radio][name=mod_add_rdo_rating]').change(function() {
+        var mod_rating = $(this).val();
+        if (mod_rating === "4" || mod_rating === "5") {
+            $("#mod_add_btn_text").html(' Add Comments (Required: Explains the impact on the college)');
+            $("#mod_add_btn_text").css('color', 'red');
+        }
+        else {
+            $("#mod_add_btn_text").html(' Add Comments');
+            $("#mod_add_btn_text").css('color', 'black');
+        }
+    });
+    
+    // modal rating check box change event /////////////////////////////////////
+    $('#mod_rating_check_box').change(function() {
+        if($(this).is(":checked")) {
+            swal("Please explain the impact to the college in the comments section below", "", "warning");
         }
     });
     
@@ -504,7 +502,7 @@ $(document).ready(function() {
                 if (!rdo_rating || err_comments !== "") {
                     var err = err_comments;
                     if (!rdo_rating) {
-                        err += "\n" + "Rating value (0 - 5) is a required";
+                        err += "\n" + "Rating value (1 - 5) is a required";
                     }
                     alert(err);
                     return false;
@@ -530,6 +528,14 @@ $(document).ready(function() {
                     
                 db_updatePriorityMgr(sel_res_id, rating_value);   
                 db_updaterateMgrRating(sel_res_id, sel_approver_id, rating_value);
+                // update rating check box
+                var bRatingCkb = $('#mod_rating_check_box').is(':checked');
+                db_updaterateMgrCkb(sel_res_id, bRatingCkb);
+                db_updatePriorityRatingCkb(sel_res_id, bRatingCkb);
+                db_updaterateVPPCkb(sel_res_id, bRatingCkb);
+                if (bRatingCkb === true) {
+                    commt_update += m_login_name + " Checked delay of provision for this resource request will have the impact on the program/services\n";
+                }
                 
                 var new_approver_id = searchNewApproverID(sel_approver_email);
                 moveToVP(sel_res_id, new_approver_id);
@@ -543,7 +549,7 @@ $(document).ready(function() {
                 if (!rdo_rating || err_comments !== "") {
                     var err = err_comments;
                     if (!rdo_rating) {
-                        err += "\n" + "Rating value (0 - 5) is a required";
+                        err += "\n" + "Rating value (1 - 5) is a required";
                     }
                     alert(err);
                     return false;
@@ -569,6 +575,17 @@ $(document).ready(function() {
                 
                 db_updatePriorityVPP(sel_res_id, rating_value);  
                 db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
+                // update rating check box
+                var bRatingCkb = $('#mod_rating_check_box').is(':checked');
+                db_updaterateVPPCkb(sel_res_id, bRatingCkb);
+                db_updatePriorityRatingCkb(sel_res_id, bRatingCkb);
+                var bMgrCkb = db_getrateMgrCkb(sel_res_id) === "1" ? true : false;
+                if (bMgrCkb === false && bRatingCkb === true) {
+                    commt_update += m_login_name + " Checked delay of provision for this resource request will have the impact on the program/services\n";
+                }
+                else if (bMgrCkb === true && bRatingCkb === false) {
+                    commt_update += m_login_name + " Unchecked delay of provision for this resource request will have the impact on the program/services\n";
+                }
                 
                 moveToSPAC(sel_res_id, sel_approver_id);
                 db_updaterateSPACActive(sel_res_id, true);
@@ -593,7 +610,7 @@ $(document).ready(function() {
     });
     
     // comments save button event //////////////////////////////////////////////
-    $('#mod_add_note_save').click(function() {       
+    $('#mod_add_note_save').click(function() {
         if (sel_res_id !== "") {
             var rating_value = "-1";
             
@@ -609,17 +626,22 @@ $(document).ready(function() {
                 return false;
             }
             
-            // update mgr worksheet rating and comments
+            // update mgr worksheet rating, check box and comments
+            var bRatingCkb = $('#mod_rating_check_box').is(':checked');
             if (sel_res_stage === "Dean/Director") {
                 if (rating_value !== "-1") {
+                    db_updaterateMgrRating(sel_res_id, sel_approver_id, rating_value);
                     db_updatePriorityMgr(sel_res_id, rating_value);
                 }
+                db_updaterateMgrCkb(sel_res_id, bRatingCkb);
                 db_updateCommentsMgr(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
             else if (sel_res_stage === "VP" || sel_res_stage === "President") {
                 if (rating_value !== "-1") {
+                    db_updaterateVPPRating(sel_res_id, sel_approver_id, rating_value);
                     db_updatePriorityVPP(sel_res_id, rating_value);
                 }
+                db_updaterateVPPCkb(sel_res_id, bRatingCkb);
                 db_updateCommentsVPP(sel_res_id, sel_approver_id, textReplaceApostrophe($('#mod_add_note_body').val()));
             }
 
@@ -671,24 +693,22 @@ $(document).ready(function() {
     // change approver /////////////////////////////////////////////////////////
     $('#nav_change_approver').click(function(e) {
         e.preventDefault();
-        if (sel_res_id === "") {
-            return false;
+        if (sel_res_id !== "") {
+            $('#mod_approver_body_title').html(sel_res_title);
+        
+            getApproverList();
+            getResourceStatusList();
+            getStageLevelList();
+
+            getSelectedApproverResourceForm(sel_res_id);
+            getSelectedApproverStageLevel(sel_res_id);
+
+            pre_approver_id = $('#mod_rf_approver_list').val();
+            pre_rsid = $('#mod_rf_approver_rs_status').val();
+
+            $('#mod_rs_approver_comments').val("");
+            $('#mod_approver').modal('show');
         }
-        
-        $('#mod_approver_body_title').html(sel_res_title);
-        
-        getApproverList();
-        getResourceStatusList();
-        getStageLevelList();
-        
-        getSelectedApproverResourceForm(sel_res_id);
-        getSelectedApproverStageLevel(sel_res_id);
-        
-        pre_approver_id = $('#mod_rf_approver_list').val();
-        pre_rsid = $('#mod_rf_approver_rs_status').val();
-        
-        $('#mod_rs_approver_comments').val("");
-        $('#mod_approver').modal('show');
     });
     
     $('#mod_approver_yes').click(function() { 
@@ -707,6 +727,29 @@ $(document).ready(function() {
             var rs_approver_ID = $('#mod_rs_approver_list').val();
             var rs_resource_status_ID = $('#mod_rs_approver_rs_status').val();
             db_updateResourceStage(sel_res_id, rs_stage_level_ID, rs_approver_ID, rs_resource_status_ID);
+            
+            if (rf_RSID === "9") {  // dean/director
+                db_deleteCommentsMgr(sel_res_id);
+                db_deleteCommentsVPP(sel_res_id);
+                db_updaterateMgrRating(sel_res_id, rs_approver_ID, -1);
+                db_updaterateVPPRating(sel_res_id, rs_approver_ID, -1);
+                db_updaterateMgrCkb(sel_res_id, 0);
+                db_updaterateVPPCkb(sel_res_id, 0);
+                db_updatePriorityMgr(sel_res_id, -1);
+                db_updatePriorityVPP(sel_res_id, -1);
+                db_updatePriorityRatingCkb(sel_res_id, 0);
+            }
+            else if (rf_RSID === "10" || rf_RSID === "11") {    // vp or president
+                db_deleteCommentsVPP(sel_res_id);
+                db_updaterateVPPRating(sel_res_id, rs_approver_ID, -1);
+                if (db_getrateMgrCkb(sel_res_id) === "1") {
+                    db_updaterateVPPCkb(sel_res_id, 1);
+                }
+                else {
+                    db_updaterateVPPCkb(sel_res_id, 0);
+                }
+                db_updatePriorityVPP(sel_res_id, -1);
+            }            
             
             var pre_approver_name = getApproverName(pre_approver_id);
             var pre_resource_status = db_getResourceStatusName(pre_rsid);
@@ -727,14 +770,12 @@ $(document).ready(function() {
     // modal change review period //////////////////////////////////////////////
     $('#nav_review_period').click(function(e) {
         e.preventDefault();
-        if (sel_res_id === "") {
-            return false;
+        if (sel_res_id !== "") {
+            $('#mod_review_period_body_title').html(sel_res_title);
+            getSelectResourceRP();
+            getNewReviewPeriodList();
+            $('#mod_review_period').modal('show');
         }
-        
-        $('#mod_review_period_body_title').html(sel_res_title);
-        getSelectResourceRP();
-        getNewReviewPeriodList();
-        $('#mod_review_period').modal('show');
     });
     
     // modal update review period event ////////////////////////////////////////
@@ -765,25 +806,20 @@ $(document).ready(function() {
         }
     });
     
-    // bootstrap filestyle
-    $(":file").filestyle({classButton: "btn btn-primary"});
-    
     // popover
     $('#header_mgr').popover({content:"Dean or Director<br>\n\
-                                        0=Not needed at this time or in the near future<br>\n\
-                                        1=Needs to wait until next year or subsequent years; effect on the program is not clear<br>\n\
-                                        2=Can wait until next year or subsequent years; delay will not have an immediate adverse impact on the program<br>\n\
-                                        3=Highly desirable this year; doing without may diminish program effectiveness<br>\n\
-                                        4=Essential need for a program; doing without for more than a year may do serious harm<br>\n\
-                                        5=Absolutely essential; if funding is not provided it this year; the college will be at immediate risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
+                                        1=Impact on the program/service is minimal or none<br>\n\
+                                        2=No immediate adverse impact<br>\n\
+                                        3=Program/service effectiveness will diminish<br>\n\
+                                        4=Serious harm to the program/service/initiative will occur and it could eventually be reduced or ended<br>\n\
+                                        5=Program/service to current students or employees will be immediately jeopardized",
                               placement:"bottom"});
     $('#header_vpp').popover({content:"Vice President or President<br>\n\
-                                        0=Not needed at this time or in the near future<br>\n\
-                                        1=Needs to wait until next year or subsequent years; effect on the program is not clear<br>\n\
-                                        2=Can wait until next year or subsequent years; delay will not have an immediate adverse impact on the program<br>\n\
-                                        3=Highly desirable this year; doing without may diminish program effectiveness<br>\n\
-                                        4=Essential need for a program; doing without for more than a year may do serious harm<br>\n\
-                                        5=Absolutely essential; if funding is not provided it this year; the college will be at immediate risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students",
+                                        1=Impact on the program/service is minimal or none<br>\n\
+                                        2=No immediate adverse impact<br>\n\
+                                        3=Program/service effectiveness will diminish<br>\n\
+                                        4=Serious harm to the program/service/initiative will occur and it could eventually be reduced or ended<br>\n\
+                                        5=Program/service to current students or employees will be immediately jeopardized",
                               placement:"bottom"});
     
     // auto size
@@ -827,7 +863,6 @@ function setHideAllModal() {
 }
 
 function setHideAllNavigationButton() {
-//    $('#nav_back_to_draft').hide();
     $('#nav_change_approver').hide();
     $('#nav_committee_rating').hide();
 }
@@ -836,8 +871,7 @@ function setAdminOption() {
     m_login_email = sessionStorage.getItem('m1_loginEmail');
     m_login_name = sessionStorage.getItem('m1_loginName');
     
-    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "dkhachatryan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
-//        $('#nav_back_to_draft').show();
+    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "jcalderin@ivc.edu") {
         $('#nav_change_approver').show();
         $('#nav_committee_rating').show();
         $('#nav_bar_review_period').show();
@@ -932,27 +966,23 @@ function getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program
     var admin_rf_list = new Array(); 
     admin_rf_list = db_getAdminRFList($('#all_fiscal_yrs').val(), $('#all_review_period').val(), Status, StageLevel, StageAppEmail, ResourceType, Program, FundSrc, OneTime);
     
+    var html = "";
     $('#body_tr').empty();
-    if (admin_rf_list.length !== 0) {
-        for(var i = 0; i < admin_rf_list.length; i++) { 
-            var str_totalAmount = "";
-            var f_totalAmount = parseFloat(admin_rf_list[i]['TotalAmount']);
-            if (f_totalAmount > 0) {
-                str_totalAmount = formatDollar(f_totalAmount);
-            }
-            setResourceFormList(admin_rf_list[i]['ResourceID'], admin_rf_list[i]['ProposalTitle'], admin_rf_list[i]['NeedFor'], admin_rf_list[i]['ResourceLink'], admin_rf_list[i]['StageLevel'], 
-                                str_totalAmount, admin_rf_list[i]['ResourceType'], admin_rf_list[i]['ApproverEmail'], admin_rf_list[i]['ApprovalID'],
-                                admin_rf_list[i]['CreatorName'], admin_rf_list[i]['Funding'], admin_rf_list[i]['NeedBy']);
-            
-            setMgrPriorityFields(admin_rf_list[i]['ResourceID'], admin_rf_list[i]['DepartMgr']);
-            setVPPPriorityFields(admin_rf_list[i]['ResourceID'], admin_rf_list[i]['VPP']);
+    for(var i = 0; i < admin_rf_list.length; i++) { 
+        var str_totalAmount = "";
+        var f_totalAmount = parseFloat(admin_rf_list[i]['TotalAmount']);
+        if (f_totalAmount > 0) {
+            str_totalAmount = formatDollar(f_totalAmount);
         }
+        html += setResourceFormList(admin_rf_list[i]['ResourceID'], admin_rf_list[i]['ProposalTitle'], admin_rf_list[i]['NeedFor'], admin_rf_list[i]['ResourceLink'], admin_rf_list[i]['StageLevel'], 
+                                    str_totalAmount, admin_rf_list[i]['ResourceType'], admin_rf_list[i]['ApproverEmail'], admin_rf_list[i]['ApprovalID'],
+                                    admin_rf_list[i]['CreatorName'], admin_rf_list[i]['Funding'], admin_rf_list[i]['NeedBy'], admin_rf_list[i]['DepartMgr'], admin_rf_list[i]['VPP']);
     }
+    $("#body_tr").append(html);
 }
 
-function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalAmount, RType, approver_email, approver_ID, creator_name, funding, need_by) {    
+function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalAmount, RType, approver_email, approver_ID, creator_name, funding, need_by, mgr, vpp) {    
     var brief_ptitle = textTruncate(20, PTile);
-    //var brief_description = textTruncate(15, description);
         
     var tbl_html = "<tr class='row_tr' id='res_tr_" + ResourceID + "'>";
     tbl_html += "<td class='span1'>" + ResourceID + "</td>";
@@ -960,7 +990,6 @@ function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalA
     tbl_html += "<td class='span1'>" + Link + "</td>";
     tbl_html += "<td class='span2' id='resource_stage_" + ResourceID + "'>" + Stage + "</td>"; 
     tbl_html += "<td class='span2'>" + need_by + "</td>";
-    //tbl_html += "<td class='span3' id='resource_description_brief_" + ResourceID +  "'>" + brief_description + "</td>"; 
     tbl_html += "<td class='span3' id='resource_creator_" + ResourceID + "'>" + creator_name + "</td>";
     tbl_html += "<td class='span3' id='resource_type_" + ResourceID + "'>" + RType + "</td>";
     
@@ -972,34 +1001,40 @@ function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalA
     }
     
     tbl_html += "<td class='col_100' style='text-align: right;' id='resource_amount_" + ResourceID + "'>" + TotalAmount + "</td>";
-    
-    if ((m_login_email === approver_email || m_master) && (Stage === "IT Review" || Stage === "Facilities Review" || Stage === "Dean/Director" || Stage === "VP" || Stage === "President")) {
+    if (m_master) {
         tbl_html += "<td class='col_30 form-horizontal'><button class='btn btn-mini col_30' id='comments_" + ResourceID + "'><i class='icon-pencil icon-black'></i></button></td>";
     }
     else {
-        tbl_html += "<td class='col_30 form-horizontal'></td>";
+        if (m_login_email === approver_email) {
+            if (Stage === "IT Review" || Stage === "Facilities Review") {
+                tbl_html += "<td class='col_30 form-horizontal'><button class='btn btn-mini col_30' id='comments_" + ResourceID + "'><i class='icon-pencil icon-black'></i></button></td>";
+            }
+            else {
+                if (mgr_start_date) {
+                    tbl_html += "<td class='col_30 form-horizontal'><button class='btn btn-mini col_30' id='comments_" + ResourceID + "'><i class='icon-pencil icon-black'></i></button></td>";
+                }
+                else {
+                    if (m_login_email === "deantest@ivc.edu" || m_login_email === "vptest@ivc.edu" || m_login_email === "presidenttest@ivc.edu") {
+                        tbl_html += "<td class='col_30 form-horizontal'><button class='btn btn-mini col_30' id='comments_" + ResourceID + "'><i class='icon-pencil icon-black'></i></button></td>";
+                    }
+                    else {
+                        tbl_html += "<td class='col_30 form-horizontal'></td>";
+                    }
+                }
+            }
+        }
+        else {
+            tbl_html += "<td class='col_30 form-horizontal'></td>";
+        }
     }
     
-    tbl_html += "<td class='col_50' style='text-align: center;' id='mgr_" + ResourceID + "'></td>";
-    tbl_html += "<td class='col_50' style='text-align: center;' id='vpp_" + ResourceID + "'></td>";
+    tbl_html += "<td class='col_50' style='text-align: center;' id='mgr_" + ResourceID + "'>" + (mgr === "-1" ? "" : mgr) + "</td>";
+    tbl_html += "<td class='col_50' style='text-align: center;' id='vpp_" + ResourceID + "'>" + (vpp === "-1" ? "" : vpp) + "</td>";
     tbl_html += "<td class='span1' style='display: none;' id='resource_ptitle_full_" + ResourceID + "'>" + PTile + "</td>";
-    //tbl_html += "<td class='span1' style='display: none;' id='resource_description_full_" + ResourceID + "'>" + description + "</td>";
     tbl_html += "<td class='span1' style='display: none;' id='approver_email_" + ResourceID + "'>" + approver_email + "</td>";
     tbl_html += "<td class='span1' style='display: none;' id='approver_ID_" + ResourceID + "'>" + approver_ID + "</td>";
     
-    $("#body_tr").append(tbl_html);
-}
-
-function setMgrPriorityFields(ResourceID, mgr) {
-    if (mgr !== "-1") {
-        $('#mgr_' + ResourceID).html(mgr);
-    }
-}
-
-function setVPPPriorityFields(ResourceID, vpp) {
-    if (vpp !== "-1") {
-        $('#vpp_' + ResourceID).html(vpp);
-    }
+    return tbl_html;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1029,14 +1064,11 @@ function getSelectedTransactions(ResourceID) {
     note_list = db_getTransactions(ResourceID);
     
     var note_html = "";
-    if (note_list.length !== 0) {
-        for(var i = 0; i < note_list.length; i++) { 
-            var db_note = note_list[i][2];
-            var html_note = db_note.replace(/\n/g, "</br>");
-            note_html += note_list[i][0] + "</br>" + html_note + "</br></br>";
-        }
+    for(var i = 0; i < note_list.length; i++) { 
+        var db_note = note_list[i][2];
+        var html_note = db_note.replace(/\n/g, "</br>");
+        note_html += note_list[i][0] + "</br>" + html_note + "</br></br>";
     }
-    
     $('#mod_note_body').html(note_html);
 }
 
@@ -1076,6 +1108,9 @@ function resetAddNoteFields() {
     $('#mod_add_icon_comments').attr('class', 'icon-chevron-right icon-black');
     $('#mod_add_icon_fund_src').attr('class', 'icon-chevron-right icon-black');
     $('#mod_add_icon_history').attr('class', 'icon-chevron-right icon-black');
+    
+    $("#mod_add_btn_text").html(' Add Comments');
+    $("#mod_add_btn_text").css('color', 'black');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1172,6 +1207,7 @@ function updateFundSrcCommentsValidation() {
     return err;
 }
 
+////////////////////////////////////////////////////////////////////////////////
 function getUpdateFundSrcNote() {
     var fs_note = "";
     
@@ -1248,6 +1284,9 @@ function getUpdateFundSrcNote() {
     if (fs_note !== "") {
         fs_note = fs_note.slice(0,-2) + "\nTo: ";
     }
+    else {
+        fs_note = "None\nTo: ";
+    }
     
     if (new_fs_1) {
         fs_note += getFundSrcType("fs_1") + ", ";
@@ -1318,8 +1357,13 @@ function getUpdateFundSrcNote() {
     if (new_fs_23) {
         fs_note += getFundSrcType("fs_23") + ", ";
     }
-    
-    if (fs_note !== "") {
+
+    if (!new_fs_1 && !new_fs_2 && !new_fs_3 && !new_fs_4 && !new_fs_5 && !new_fs_6 && !new_fs_7 && !new_fs_8 && !new_fs_9 && !new_fs_10
+        && !new_fs_11 && !new_fs_12 && !new_fs_13 && !new_fs_14 && !new_fs_15 && !new_fs_16 && !new_fs_17 && !new_fs_18 && !new_fs_19 && !new_fs_20
+        && !new_fs_21 && !new_fs_22 && !new_fs_23) {
+        fs_note += "None";
+    }
+    else {
         fs_note = fs_note.slice(0,-2);
     }
     
@@ -1347,6 +1391,7 @@ function moveToVP(ResourceID, ApproverID) {
     var StageLevelID = db_getStageLevelID("VP");
     var ResourceStatusID = db_getResourceStatusID("VP");
     
+    db_updaterateVPPRating(ResourceID, ApproverID, -1);
     db_updateRFStatus(ResourceID, ResourceStatusID, ApproverID);
     db_updateResourceStage(ResourceID, StageLevelID, ApproverID, ResourceStatusID);
 }
@@ -1399,18 +1444,6 @@ function getUserManagerInfo(searchUserEmail) {
     });
     return result;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-//function updateStageAllTableRows(cur_resource, new_appid, slid, rsid) {
-//    var rowCount = $('#admin_rf_list tr').length;
-//    for (var i = 1; i < rowCount; i++) {
-//        var stage = $('#admin_rf_list tr').eq(i).find('td[id^="resource_stage_"]').html();
-//        if (stage === cur_resource) {
-//            var curentId = $('#admin_rf_list tr').eq(i).find('td[id^="resource_stage_"]').attr('id');
-//            var ResourceID = curentId.replace("resource_stage_", "");
-//        }
-//    }
-//}
 
 ////////////////////////////////////////////////////////////////////////////////
 function setListTotalAmount() {
@@ -1559,6 +1592,26 @@ function getAdminPriorityValue(ResourceID, Stage) {
     }
     
     $('input:radio[name=mod_add_rdo_rating][value="' + value + '"]').prop('checked', true);
+}
+
+function getMgrRatingCkb() {
+    var bMgrCkb = db_getrateMgrCkb(sel_res_id);
+    if (bMgrCkb === "1") {
+        $("#mod_rating_check_box").prop('checked', true);
+    }
+    else {
+        $("#mod_rating_check_box").prop('checked', false);
+    }
+}
+
+function getVPPRatingCkb() {
+    var bVPPCkb = db_getrateVPPCkb(sel_res_id);
+    if (bVPPCkb === "1") {
+        $("#mod_rating_check_box").prop('checked', true);
+    }
+    else {
+        $("#mod_rating_check_box").prop('checked', false);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2512,8 +2565,8 @@ function updateAllMedianMean() {
 function udpateModalNewReviewPeriod(review_period_id) {
     var result = new Array();
     result = db_getReviewPeriodByID(review_period_id);
-    $('#mod_new_rp_start').html(result[0]['RPStartDate'].replace("1900-", ""));
-    $('#mod_new_rp_end').html(result[0]['RPEndDate'].replace("1900-", ""));
+    $('#mod_new_rp_start').html(result[0]['RPStartDate']);
+    $('#mod_new_rp_end').html(result[0]['RPEndDate']);
 }
 
 function getSelectResourceRP() {
@@ -2525,8 +2578,8 @@ function getSelectResourceRP() {
         result2 = db_getReviewPeriodByID(result[0]['ReviewPeriodID']);
         
         $('#mod_cur_rp_name').html(result2[0]['ReviewPeriod']);
-        $('#mod_cur_rp_start').html(result2[0]['RPStartDate'].replace("1900-", ""));
-        $('#mod_cur_rp_end').html(result2[0]['RPEndDate'].replace("1900-", ""));
+        $('#mod_cur_rp_start').html(result2[0]['RPStartDate']);
+        $('#mod_cur_rp_end').html(result2[0]['RPEndDate']);
     }
     else {
         $('#mod_cur_rp_name').html("");
@@ -2567,5 +2620,15 @@ function getAllReviewPeriodList() {
     if (cur_rp_id !== "") {
         $('#all_review_period').val(result[0]['ReviewPeriodID']);
         $('#all_review_period').selectpicker('refresh');
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function setMgrRatingWorksheet() {    
+    var dt_mgr_start_date = new Date(db_getEnableMgrWorksheet());
+    var cur_date = new Date();
+    if (cur_date > dt_mgr_start_date) {
+        mgr_start_date = true;
     }
 }

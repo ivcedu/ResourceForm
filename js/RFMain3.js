@@ -323,7 +323,7 @@ function setLocalDataPersonnel(ResourceID) {
                 break;
             case 3:
                 sessionStorage.setItem('m3_radioPType', "Short-Term Hourly");
-                localData_setPg4_rtp_ST("Personnel", "Short-Term Hourly", title, range, month, hrswk, annsalary, annbenefits, anntotal, impact, hr_rate);
+                localData_setPg4_rtp_ST("Personnel", "Short-Term Hourly", titleName, range, month, hrswk, annsalary, annbenefits, anntotal, impact, hr_rate);
                 sessionStorage.setItem('m1_PersonnelID', PID);
                 break;
             default:

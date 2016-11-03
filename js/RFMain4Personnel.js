@@ -691,9 +691,9 @@ function getFromST() {
     selectedShortTerm();
     $('#m4_personnel_type').val('Short-Term Hourly');
     $('#m4_personnel_type').selectpicker('refresh');
-
     $('#m4_New_Position').val(sessionStorage.getItem('m4_rtp_ST_title'));
     $('#m4_Salary_Range option:selected').html(sessionStorage.getItem('m4_rtp_ST_range'));
+    $('#m4_Salary_Range').selectpicker('refresh');
     $('#m4_Month').val(sessionStorage.getItem('m4_rtp_ST_month'));
     $('#m4_hrs').val(sessionStorage.getItem('m4_rtp_ST_hrs'));
     $('#m4_annual_cost').val(sessionStorage.getItem('m4_rtp_ST_annual_cost'));

@@ -8,6 +8,7 @@
         <!-- include css -->
         <link rel="stylesheet" href="../include/bootstrap/css/bootstrap.2.3.2.min.css"/>
         <link rel="stylesheet" href="../include/bootstrap-select/css/bootstrap-select.1.5.4.min.css"/>
+        <link rel="stylesheet" href="../include/sweetalert/css/sweetalert.css"/>
         <!-- application css -->
         <link rel="stylesheet" href="css/Administrator.css"/>
     </head>
@@ -175,33 +176,60 @@
                         <button class="btn span12" style="text-align: left;" id="mod_add_btn_rating"><i class="icon-chevron-right icon-black" id="mod_add_icon_rating"></i> Add Rating</button>
                         <div id="mod_add_body_rating">
                             <div class="row-fluid">
-                                <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="0">0</label></div>
-                                <div class="span11" style="padding-top: 5px;">Not needed at this time or in the near future</div>
+                                <div class="span12">
+                                    <b>Please rate the resource request based on the impact on the program/service if the provision of the requested resource is delayed: Please explain in comment box below.</b>
+                                </div>
                             </div>
                             <div class="row-fluid">
                                 <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="1">1</label></div>
-                                <div class="span11" style="padding-top: 5px;">Needs to wait until next year or subsequent years; effect on the program is not clear</div>
+                                <div class="span11" style="padding-top: 5px;">Impact on the program/service is minimal or none</div>
                             </div>
                             <div class="row-fluid">
                                 <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="2">2</label></div>
-                                <div class="span11" style="padding-top: 5px;">Can wait until next year or subsequent years; delay will not have an immediate adverse impact on the program</div>
+                                <div class="span11" style="padding-top: 5px;">No immediate adverse impact</div>
                             </div>
                             <div class="row-fluid">
                                 <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="3">3</label></div>
-                                <div class="span11" style="padding-top: 5px;">Highly desirable this year; doing without may diminish program effectiveness</div>
+                                <div class="span11" style="padding-top: 5px;">Program/service effectiveness will diminish</div>
                             </div>
                             <div class="row-fluid">
                                 <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="4">4</label></div>
-                                <div class="span11" style="padding-top: 5px;">Essential need for a program; doing without for more than a year may do serious harm</div>
+                                <div class="span11" style="padding-top: 5px;">Serious harm to the program/service/initiative will occur and it could eventually be reduced or ended</div>
                             </div>
                             <div class="row-fluid">
                                 <div class="span1" style="padding-top: 5px"><label class="radio"><input type="radio" name="mod_add_rdo_rating" value="5">5</label></div>
-                                <div class="span11" style="padding-top: 5px;">Absolutely essential; if funding is not provided it this year; the college will be at immediate risk for health/safety/liability reasons or loss of a program's ability to serve enrolled students</div>
+                                <div class="span11" style="padding-top: 5px;">Program/service to current students or employees will be immediately jeopardized</div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12"><hr style="border-color: grey;"></div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12" style="padding-top: 5px;">
+                                    <label class="checkbox span12"><input type="checkbox" id="mod_rating_check_box">
+                                        Delay of provision for this resource request will have the following impact on the program/services:
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <b>For life/health/safety issues</b> - Describe the specific risk or hazard that exist including the potential risks and impact on student, staff and/or the public. 
+                                    Important: For immediate life/health/safety issues always contact IVC Campus Police.
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <b>For Liability issues</b> - Describe the specific risk that exists including the potential liability and impact on the college and/or district.
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <b>For Compliance issues</b> - Include the specific code section, legal analysis or best practices/case law that exist.
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row-fluid" style="padding-bottom: 10px;">
-                        <button class="btn span12" style="text-align: left;" id="mod_add_btn_comments"><i class="icon-chevron-right icon-black" id="mod_add_icon_comments"></i> Add Comments</button>
+                        <button class="btn span12" style="text-align: left;" id="mod_add_btn_comments"><i class="icon-chevron-right icon-black" id="mod_add_icon_comments"></i> <span id="mod_add_btn_text">Add Comments</span></button>
                         <div id="mod_add_body_comments">
                             <div class="span12"><textarea class="span12" style="resize: vertical;" rows="1" id="mod_add_note_body"></textarea></div>
                         </div>
@@ -430,6 +458,7 @@
         <script src="../include/bootstrap-filestyle/js/bootstrap-filestyle.1.0.3.min.js"></script>
         <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
         <script src="../include/bowser/bowser.min.js"></script>
+        <script src="../include/sweetalert/js/sweetalert.min.js"></script>
         <!-- application javascript -->
         <script src="js/Administrator.js"></script>
         <script src="js/localData.js"></script>
