@@ -143,7 +143,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // chpldtf member setting click ////////////////////////////////////////////
     $('#nav_mbr_chpldtf').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getCHPLDTFMemberList();
         }
         else {
@@ -219,7 +219,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // ssammo member setting click /////////////////////////////////////////////
     $('#nav_mbr_ssammo').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getSSAMMOMemberList();
         }
         else {
@@ -295,7 +295,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // aptc member setting click ///////////////////////////////////////////////
     $('#nav_mbr_aptc').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getAPTCMemberList();
         }
         else {
@@ -371,7 +371,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // bdrpc member setting click //////////////////////////////////////////////
     $('#nav_mbr_bdrpc').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getBDRPCMemberList();
         }
         else {
@@ -447,7 +447,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // iec member setting click ////////////////////////////////////////////////
     $('#nav_mbr_iec').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getIECMemberList();
         }
         else {
@@ -523,7 +523,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     // spac member setting click ///////////////////////////////////////////////
     $('#nav_mbr_spac').click(function() {
-        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+        if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
             getSPACMemberList();
         }
         else {
@@ -1285,10 +1285,10 @@ function getFundingSrcTypeList() {
 
 ////////////////////////////////////////////////////////////////////////////////
 function setAdminOption() {    
-    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || login_email === "bhagan@ivc.edu" || login_email === "dkhachatryan@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
         $('#nav_committee_admin').show();
     }
-    if (login_email === "ykim160@ivc.edu" || login_email === "jcalderin@ivc.edu") {
+    if (login_email === "ykim160@ivc.edu" || login_email === "jcalderin@ivc.edu" || login_email === "mfeoktistova@ivc.edu") {
         master_admin = true;
     }
 }
