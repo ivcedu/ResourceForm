@@ -85,6 +85,7 @@ window.onload = function() {
         setAssignToLoginName();
         getFundingSrcTypeList();     
         setMgrRatingWorksheet();
+        
         getAdminRFList("Active", "Me", m_login_email, "All Resource", "All Program", 0, "All Request");
         initializeTable();
 
