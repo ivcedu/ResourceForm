@@ -229,6 +229,7 @@
                 ."rsty.ResourceType, "
                 ."CASE WHEN rslk.ResourceLinkNum IS NULL THEN '' ELSE rslk.ResourceLinkNum END ResourceLink, "
                 ."appr.ApproverEmail, "
+                ."appr.ApproverName, "
                 ."prio.DepartMgr, "
                 ."prio.VPP, "
                 ."(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
@@ -258,11 +259,11 @@
     $out = fopen("php://output", 'w+');
 
     // Write the spreadsheet column titles / labels
-    fputcsv($out, array('ResourceID', 'ProposalTitle', 'Link', 'Stage', 'Need By Date', 'Creator', 'Resource', 'Funding', 'T. Amount', 'Mgr', 'VPP'));
+    fputcsv($out, array('ResourceID', 'ProposalTitle', 'Link', 'Stage', 'Need By Date', 'Creator', 'Approver', 'Resource', 'Funding', 'T. Amount', 'Mgr', 'VPP'));
     // Write all the user records to the spreadsheet
     foreach($data as $row) {
         fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['ResourceLink'], $row['StageLevel'], $row['NeedBy'], 
-                            $row['CreatorName'], $row['ResourceType'], 
+                            $row['CreatorName'], $row['ApproverName'], $row['ResourceType'], 
                             ($row['Funding'] === null ? "Multiple" : $row['Funding']), 
                             $row['TotalAmount'], 
                             ($row['DepartMgr'] === "-1" ? "" : $row['DepartMgr']) , 

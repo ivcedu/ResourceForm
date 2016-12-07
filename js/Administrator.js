@@ -976,13 +976,13 @@ function getAdminRFList(Status, StageLevel, StageAppEmail, ResourceType, Program
             str_totalAmount = formatDollar(f_totalAmount);
         }
         html += setResourceFormList(admin_rf_list[i]['ResourceID'], admin_rf_list[i]['ProposalTitle'], admin_rf_list[i]['NeedFor'], admin_rf_list[i]['ResourceLink'], admin_rf_list[i]['StageLevel'], 
-                                    str_totalAmount, admin_rf_list[i]['ResourceType'], admin_rf_list[i]['ApproverEmail'], admin_rf_list[i]['ApprovalID'],
+                                    str_totalAmount, admin_rf_list[i]['ResourceType'], admin_rf_list[i]['ApproverEmail'], admin_rf_list[i]['ApproverName'], admin_rf_list[i]['ApprovalID'],
                                     admin_rf_list[i]['CreatorName'], admin_rf_list[i]['Funding'], admin_rf_list[i]['NeedBy'], admin_rf_list[i]['DepartMgr'], admin_rf_list[i]['VPP']);
     }
     $("#body_tr").append(html);
 }
 
-function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalAmount, RType, approver_email, approver_ID, creator_name, funding, need_by, mgr, vpp) {    
+function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalAmount, RType, approver_email, approver_name, approver_ID, creator_name, funding, need_by, mgr, vpp) {    
     var brief_ptitle = textTruncate(20, PTile);
         
     var tbl_html = "<tr class='row_tr' id='res_tr_" + ResourceID + "'>";
@@ -992,6 +992,7 @@ function setResourceFormList(ResourceID, PTile, description, Link, Stage, TotalA
     tbl_html += "<td class='span2' id='resource_stage_" + ResourceID + "'>" + Stage + "</td>"; 
     tbl_html += "<td class='span2'>" + need_by + "</td>";
     tbl_html += "<td class='span3' id='resource_creator_" + ResourceID + "'>" + creator_name + "</td>";
+    tbl_html += "<td class='span3' id='resource_approver_" + ResourceID + "'>" + approver_name + "</td>";
     tbl_html += "<td class='span3' id='resource_type_" + ResourceID + "'>" + RType + "</td>";
     
     if (funding === null) {

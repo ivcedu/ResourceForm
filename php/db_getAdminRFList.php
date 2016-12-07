@@ -241,6 +241,7 @@
             . "rsty.ResourceType, "
             . "CASE WHEN rslk.ResourceLinkNum IS NULL THEN '' ELSE rslk.ResourceLinkNum END ResourceLink, "
             . "appr.ApproverEmail, "
+            . "appr.ApproverName, "
             . "prio.DepartMgr, "
             . "prio.VPP, "
             . "(SELECT FundSrcType FROM [IVCRESOURCES].[dbo].[FundSrcType] WHERE FundSrcCol = '".$sql_fund_src_col."') AS Funding, "
