@@ -192,6 +192,7 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceProg] AS rspr ON resr.ResourceID = rspr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateALL] AS rall ON rall.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceRP] AS rsrp ON rsrp.ResourceID = resr.ResourceID "
                 . $SqlFrom
                 . $sql_where;
 
