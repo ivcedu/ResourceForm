@@ -21,8 +21,8 @@
     
     if ($RatedByID !== "0") {
         switch ($RatedByID) {
-            case "3":   // Craig Justice (VPI)
-                $sql_reated_by_id = "resr.ApprovalID = 3";
+            case "65":   // Craig Justice (VPI)
+                $sql_reated_by_id = "resr.ApprovalID = 65";
                 break;
             case "6":   // Davit Khachatryan (VPA)
                 $sql_reated_by_id = "resr.ApprovalID = 6";
