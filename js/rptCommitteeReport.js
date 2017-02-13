@@ -7,7 +7,7 @@ window.onload = function() {
         getAllResourceFiscalYear();
         getFundingSrcTypeList();   
         setTableHeader();
-        getCommitteeRatingList("All", "0", "All Resource", "All Program", 0, "All Request");
+        getCommitteeRatingList("All", "0", "All Resource", "All Program", 0, "fund_included", "All Request");
         initializeTable();
         setListTotalCountAmount();
     }
@@ -41,6 +41,14 @@ $(document).ready(function() {
         $('#user_rf_list').trigger("updateAll");
         $('#user_rf_list').trigger("appendCache");
         setListTotalCountAmount();
+    });
+    
+    // funding option click event //////////////////////////////////////////////
+    $('#adm_fund_src').change(function() {
+        if ($('#adm_fund_src').val() === "0") {
+            $('#adm_fund_option').val("fund_included");
+            $("#adm_fund_option").selectpicker('refresh');
+        }
     });
     
     // filter refresh //////////////////////////////////////////////////////////
@@ -134,10 +142,11 @@ function refreshCommitteeRatingList() {
     var resource_type = $('#adm_resource_type').val();
     var program = $('#adm_program').val();
     var funding = $('#adm_fund_src').val();
+    var fund_option = $('#adm_fund_option').val();
     var one_time = $('#adm_one_time').val();
     
     setTableHeader(committee);
-    getCommitteeRatingList(committee, rated_by, resource_type, program, funding, one_time);
+    getCommitteeRatingList(committee, rated_by, resource_type, program, funding, fund_option, one_time);
     initializeTable();
 }
 
@@ -233,11 +242,11 @@ function setTableHeader() {
     $("#head_tr").append(tbl_html);
 }
 
-function getCommitteeRatingList(committee, rated_by_id, resource_type, program, fund_src, one_time) {
+function getCommitteeRatingList(committee, rated_by_id, resource_type, program, fund_src, fund_option, one_time) {
     setSQLScript(committee);
     
     var result = new Array(); 
-    result = db_getCommitteeRatingList(sql_select, sql_from, sql_where, rated_by_id, resource_type, program, fund_src, one_time);
+    result = db_getCommitteeRatingList(sql_select, sql_from, sql_where, rated_by_id, resource_type, program, fund_src, fund_option, one_time);
     
     $('#body_tr').empty();
     if (result.length !== 0) {

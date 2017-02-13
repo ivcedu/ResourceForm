@@ -9,6 +9,7 @@
     $ResourceType = filter_input(INPUT_POST, 'ResourceType');
     $Program = filter_input(INPUT_POST, 'Program');
     $FundingSrc = filter_input(INPUT_POST, 'FundingSrc');
+    $FundOption = filter_input(INPUT_POST, 'FundOption');
     $OneTime = filter_input(INPUT_POST, 'OneTime');
     
     $sql_where = "WHERE ".$SqlWhere;
@@ -17,11 +18,12 @@
     $sql_program = "";
     $sql_fund_src = "";
     $sql_fund_src_col = "";
+    $str_funding_option = "";
     $sql_one_time = "";
     
     if ($RatedByID !== "0") {
         switch ($RatedByID) {
-            case "65":   // Craig Justice (VPI)
+            case "65":   // Christopher McDonald (VPI)
                 $sql_reated_by_id = "resr.ApprovalID = 65";
                 break;
             case "6":   // Davit Khachatryan (VPA)
@@ -75,80 +77,202 @@
     
     switch ($FundingSrc) {
         case "0":
-            $sql_fund_src_col = "fs_0";
             break;
         case "1":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 1 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_1";
             break;
         case "2":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 1 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_2";
             break;
         case "3":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 1 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_3";
             break;
         case "4":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 1 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_4";
             break;
         case "5":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 1 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_5";
             break;
         case "6":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 1 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_6";
             break;
         case "7":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 1 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_7";
             break;
         case "8":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 1 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_8";
             break;
         case "9":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 1 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_9";
             break;
         case "10":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 1 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_10";
             break;
         case "11":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 1 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_11";
             break;
         case "12":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 1 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_12";
             break;
         case "13":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 1 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_13";
             break;
         case "14":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 1 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_14";
             break;
         case "15":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 1 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_15";
             break;
         case "16":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 1 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_16";
             break;
         case "17":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 1 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_17";
             break;
         case "18":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 1 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_18";
             break;
         case "19":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 1 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_19";
             break;
         case "20":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 1 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_20";
             break;
         case "21":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 1 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_21";
             break;
         case "22":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 1 AND rsfs.fs_23 = 0";
+            }
             $sql_fund_src_col = "fs_22";
             break;
         case "23":
+            if ($FundOption === "fund_only") {
+                $str_funding_option = "rsfs.fs_1 = 0 AND rsfs.fs_2 = 0 AND rsfs.fs_3 = 0 AND rsfs.fs_4 = 0 AND rsfs.fs_5 = 0 AND rsfs.fs_6 = 0 AND rsfs.fs_7 = 0 AND rsfs.fs_8 = 0 AND rsfs.fs_9 = 0 AND rsfs.fs_10 = 0 "
+                        . "AND rsfs.fs_11 = 0 AND rsfs.fs_12 = 0 AND rsfs.fs_13 = 0 AND rsfs.fs_14 = 0 AND rsfs.fs_15 = 0 AND rsfs.fs_16 = 0 AND rsfs.fs_17 = 0 AND rsfs.fs_18 = 0 AND rsfs.fs_19 = 0 AND rsfs.fs_20 = 0 "
+                        . "AND rsfs.fs_21 = 0 AND rsfs.fs_22 = 0 AND rsfs.fs_23 = 1";
+            }
             $sql_fund_src_col = "fs_23";
             break;
+        default:
+            break;
     }
+    
     if ($FundingSrc !== "0") {
-        $sql_fund_src = "rsfs.".$sql_fund_src_col." = '1'";
+        if ($FundOption === "fund_only") {
+            $sql_fund_src = $str_funding_option;
+        }
+        else {
+            $sql_fund_src = "rsfs.".$sql_fund_src_col." = '1'";
+        }
     }
     
     if ($OneTime !== "All Request") {

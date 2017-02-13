@@ -947,12 +947,12 @@ function db_getCommitteeWorksheetList(FiscalYear, ReviewPeriodID) {
     return result;
 }
 
-function db_getCommitteeRatingList(SqlSelect, SqlFrom, SqlWhere, RatedByID, ResourceType, Program, FundingSrc, OneTime) {
+function db_getCommitteeRatingList(SqlSelect, SqlFrom, SqlWhere, RatedByID, ResourceType, Program, FundingSrc, FundOption, OneTime) {
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getCommitteeRatingList.php",
-        data:{SqlSelect:SqlSelect, SqlFrom:SqlFrom, SqlWhere:SqlWhere, RatedByID:RatedByID, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, OneTime:OneTime},
+        data:{SqlSelect:SqlSelect, SqlFrom:SqlFrom, SqlWhere:SqlWhere, RatedByID:RatedByID, ResourceType:ResourceType, Program:Program, FundingSrc:FundingSrc, FundOption:FundOption, OneTime:OneTime},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

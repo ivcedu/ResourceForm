@@ -119,7 +119,7 @@ window.onload = function() {
         setAdminOption();
         
         setTableHeader("All");
-        getCommitteeRatingList("All", "All Resource", "All Program", 0, "All Request");
+        getCommitteeRatingList("All", "All Resource", "All Program", 0, "fund_included", "All Request");
         initializeTable();
         setListTotalCountAmount();
     }
@@ -660,11 +660,19 @@ $(document).ready(function() {
             }
         }
     });
-    
+
     // fiscal year refresh button click ////////////////////////////////////////
     $('#all_fiscal_yrs').change(function() {
         refreshCommitteeRatingList();
         setListTotalCountAmount();
+    });
+    
+    // funding option click event //////////////////////////////////////////////
+    $('#adm_fund_src').change(function() {
+        if ($('#adm_fund_src').val() === "0") {
+            $('#adm_fund_option').val("fund_included");
+            $("#adm_fund_option").selectpicker('refresh');
+        }
     });
     
     // filter refresh button click /////////////////////////////////////////////
@@ -1350,10 +1358,11 @@ function refreshCommitteeRatingList() {
     var resource_type = $('#adm_resource_type').val();
     var program = $('#adm_program').val();
     var funding = $('#adm_fund_src').val();
+    var fund_option = $('#adm_fund_option').val();
     var one_time = $('#adm_one_time').val();
 
     setTableHeader(committee);
-    getCommitteeRatingList(committee, resource_type, program, funding, one_time);
+    getCommitteeRatingList(committee, resource_type, program, funding, fund_option, one_time);
     $('#user_rf_list').trigger("updateAll");
 }
 
@@ -1362,6 +1371,7 @@ function exportExcelCommitteeRatingList() {
     var resource_type = $('#adm_resource_type').val();
     var program = $('#adm_program').val();
     var funding = $('#adm_fund_src').val();
+    var fund_option = $('#adm_fund_option').val();
     var one_time = $('#adm_one_time').val();
     
     if (master_admin) {
@@ -1372,7 +1382,7 @@ function exportExcelCommitteeRatingList() {
     }
 
     var str_html = "SqlSelect=" + sql_select + "&SqlFrom=" + sql_from + "&SqlWhere=" + sql_where;
-    str_html += "&Committee=" + committee + "&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&OneTime=" + one_time;;
+    str_html += "&Committee=" + committee + "&ResourceType=" + resource_type + "&Program=" + program + "&FundingSrc=" + funding + "&FundOption=" + fund_option + "&OneTime=" + one_time;;
     return str_html;
 }
 
@@ -2588,7 +2598,7 @@ function setTableHeader(committee) {
     $("#head_tr").append(tbl_html);
 }
 
-function getCommitteeRatingList(committee, resource_type, program, fund_src, one_time) {    
+function getCommitteeRatingList(committee, resource_type, program, fund_src, fund_option, one_time) {    
     if (master_admin) {
         setMasterSQLScript(committee);
     }
@@ -2597,7 +2607,7 @@ function getCommitteeRatingList(committee, resource_type, program, fund_src, one
     }
     
     var result = new Array(); 
-    result = db_getCommitteeRatingList(sql_select, sql_from, sql_where, "0", resource_type, program, fund_src, one_time);
+    result = db_getCommitteeRatingList(sql_select, sql_from, sql_where, "0", resource_type, program, fund_src, fund_option, one_time);
     
     $('#body_tr').empty();
     if (result.length !== 0) {
