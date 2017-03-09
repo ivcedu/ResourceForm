@@ -1480,7 +1480,7 @@ function setSPACFinalColumn() {
             css_add += 4190;
         }
         else {
-            css_add += 1570;
+            css_add += 2000;
         }
     }
     else {
@@ -1488,7 +1488,7 @@ function setSPACFinalColumn() {
             css_add += 4160;
         }
         else {
-            css_add += 1540;
+            css_add += 2000;
         }
     }
     
@@ -1694,7 +1694,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_23'>" + fs_budget_23 + "</th>";
         
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
         
@@ -1738,7 +1740,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_23'>" + fs_balance_23 + "</th>";
         
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
         
@@ -1786,7 +1790,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_23'>" + formatDollar(Number(result2[0]['fs_23_amt_total'])) + "</th>";
             
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
     }
@@ -1813,7 +1819,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_budget_" + fund_src_num + "'>" + formatDollar(Number(result[0]['BudgetAmt'])) + "</th>";
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
         
@@ -1834,7 +1842,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100' style='background-color: #CCCCFF;'></th>";
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_balance_" + fund_src_num  + "'>" + formatDollar(Number(result[0]['BalanceAmt'])) + "</th>";
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
         
@@ -1859,7 +1869,9 @@ function setSPACHeaderRow() {
         header_html += "<th class='col_100 sorter-inputs' style='text-align: right; background-color: #CCCCFF; color: black;' id='fs_funded_" + fund_src_num + "'>" + formatDollar(Number(fund_src_sum)) + "</th>";
         
         header_html += "<th class='col_100'></th>";
-        header_html += "<th class='col_150'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
+        header_html += "<th class='col_200'></th>";
         header_html += "<th class='col_150'></th>";
         header_html += "</tr>";
     }
@@ -1936,7 +1948,7 @@ function setCommitteeFinalColumn(sel_committee) {
             break;
     }
     
-    var width = (1450 + css_add) + 'px';
+    var width = (2000 + css_add) + 'px';
     $('.container').css('width', width);
     
     return header_html;
@@ -2560,7 +2572,7 @@ function setSQLScript(sel_committee) {
 ////////////////////////////////////////////////////////////////////////////////
 function setTableHeader(committee) {
     // fixed container width
-    $('.container').css('width', '1450px');
+    $('.container').css('width', '2000px');
 
     $('#head_tr').empty();
     var tbl_html = "";    
@@ -2572,7 +2584,9 @@ function setTableHeader(committee) {
         tbl_html += "<th class='col_100' style='text-align: right; background-color: #CCCCFF'><a href='#' style='color: black;'>Requested</a></th>";
         tbl_html += setFundingSrcColumn();
         tbl_html += "<th class='col_100' style='text-align: left;'><a href='#' style='color: white;'>Need By</a></th>";
-        tbl_html += "<th class='col_150' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Manager</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>VP/P</a></th>";
         tbl_html += "<th class='col_150' style='text-align: left;'><a href='#' style='color: white;'>Resource Type</a></th>";
         tbl_html += "</tr>";
         tbl_html += setSPACHeaderRow();
@@ -2582,7 +2596,9 @@ function setTableHeader(committee) {
         tbl_html += "<th class='col_50' style='text-align: left;'><a href='#' style='color: white;'>ID</a></th>";
         tbl_html += "<th class='col_250' style='text-align: left;'><a href='#' style='color: white;'>Proposal Title</a></th>";
         tbl_html += "<th class='col_100' style='text-align: left;'><a href='#' style='color: white;'>Need By</a></th>";
-        tbl_html += "<th class='col_150' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Manager</a></th>";
+        tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>VP/P</a></th>";
         tbl_html += "<th class='col_100' style='text-align: right;'><a href='#' style='color: white;'>Req. Amount</a></th>";
         tbl_html += "<th class='col_30'></th>";
         tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>Your Rating</a></th>";
@@ -2613,7 +2629,7 @@ function getCommitteeRatingList(committee, resource_type, program, fund_src, fun
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) {
             var str_totalAmount = formatDollar(Number(result[i]['TotalAmount']));
-            setCommitteeRatingListHTML(committee, result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['NeedBy'], result[i]['CreatorName'], 
+            setCommitteeRatingListHTML(committee, result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['NeedBy'], result[i]['CreatorName'], result[i]['ManagerName'], result[i]['VPPName'], 
                                         result[i]['ResourceType'], result[i]['Funding'], str_totalAmount, i, result, result[i]['FiscalYear']);
             
             if (!master_admin) {
@@ -2634,7 +2650,7 @@ function getCommitteeRatingList(committee, resource_type, program, fund_src, fun
     }
 }
 
-function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, resource_type, fund_src, total_amount, i, result, fiscal_year) {
+function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, manager_name, vpp_name, resource_type, fund_src, total_amount, i, result, fiscal_year) {
     var brief_ptitle = textTruncate(25, proposal_title);
     
     var tbl_html = "";
@@ -2647,6 +2663,8 @@ function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need
         tbl_html += setFundAmtHTML(resource_id, i, result);
         tbl_html += "<td class='col_100'>" + need_by + "</td>";
         tbl_html += "<td class='col_150'>" + creator + "</td>";
+        tbl_html += "<td class='col_150'>" + manager_name + "</td>";
+        tbl_html += "<td class='col_150'>" + vpp_name + "</td>";
         tbl_html += "<td class='col_150'>" + resource_type + "</td>";
         tbl_html += "<td class='col_50' style='display: none;' id='resource_fiscal_year_" + resource_id + "'>" + fiscal_year + "</td>";
     }
@@ -2656,6 +2674,8 @@ function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need
         tbl_html += "<td class='col_250'><a href=# id='resource_title_brief_" + resource_id +  "'>" + brief_ptitle + "</a></td>";
         tbl_html += "<td class='col_100'>" + need_by + "</td>";
         tbl_html += "<td class='col_150'>" + creator + "</td>";
+        tbl_html += "<td class='col_150'>" + manager_name + "</td>";
+        tbl_html += "<td class='col_150'>" + vpp_name + "</td>";
         tbl_html += "<td class='col_100' style='text-align: right;' id='resource_amount_" + resource_id + "'>" + total_amount + "</td>";
         tbl_html += "<td class='col_30' style='text-align: center;'><button class='btn btn-mini form-horizontal' id='new_rating_" + resource_id + "'><i class='icon-pencil icon-black'></i></button></td>";    
         tbl_html += "<td class='col_50' style='text-align: center;' id='usr_rating_" + resource_id + "'></td>";

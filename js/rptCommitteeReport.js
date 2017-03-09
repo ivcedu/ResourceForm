@@ -204,14 +204,15 @@ function setSQLScript(sel_committee) {
 
 ////////////////////////////////////////////////////////////////////////////////
 function setTableHeader() { 
-    $('.container').css('width', '2330px');
+    $('.container').css('width', '2530px');
     
     $('#head_tr').empty();
     var tbl_html = "<tr>";    
     tbl_html += "<th class='col_50' style='text-align: left;'><a href='#' style='color: white;'>ID</a></th>";
     tbl_html += "<th class='col_250' style='text-align: left;'><a href='#' style='color: white;'>Proposal Title</a></th>";
     tbl_html += "<th class='col_100' style='text-align: left;'><a href='#' style='color: white;'>Need By</a></th>";
-    tbl_html += "<th class='col_150' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+    tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Creator</a></th>";
+    tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>Manager</a></th>";
     tbl_html += "<th class='col_100' style='text-align: right;'><a href='#' style='color: white;'>T. Amount</a></th>";
     tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>Mgr Rating</a></th>";
     tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>VP/P Rating</a></th>";
@@ -252,7 +253,7 @@ function getCommitteeRatingList(committee, rated_by_id, resource_type, program, 
     if (result.length !== 0) {
         for(var i = 0; i < result.length; i++) { 
             var str_totalAmount = formatDollar(Number(result[i]['TotalAmount']));
-            setCommitteeRatingListHTML(committee, result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['NeedBy'], result[i]['CreatorName'],
+            setCommitteeRatingListHTML(committee, result[i]['ResourceID'], result[i]['ProposalTitle'], result[i]['NeedBy'], result[i]['CreatorName'], result[i]['ManagerName'],
                                         result[i]['ResourceType'], result[i]['Funding'], str_totalAmount, result[i]['ApproverName']);
             
             setMgrValue(result[i]['ResourceID'], result[i]['DepartMgr']);
@@ -263,14 +264,15 @@ function getCommitteeRatingList(committee, rated_by_id, resource_type, program, 
     }
 }
 
-function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, resource_type, fund_src, total_amount, approver_name) {
+function setCommitteeRatingListHTML(committee, resource_id, proposal_title, need_by, creator, manager_name, resource_type, fund_src, total_amount, approver_name) {
     var brief_ptitle = textTruncate(25, proposal_title);
     
     var tbl_html = "<tr>";
     tbl_html += "<td class='col_50'>" + resource_id + "</td>";
     tbl_html += "<td class='col_250'><a href=# id='resource_title_brief_" + resource_id +  "'>" + brief_ptitle + "</a></td>";
     tbl_html += "<td class='col_100'>" + need_by + "</td>";
-    tbl_html += "<td class='col_150'>" + creator + "</td>";
+    tbl_html += "<td class='col_200'>" + creator + "</td>";
+    tbl_html += "<td class='col_200'>" + manager_name + "</td>";
     tbl_html += "<td class='col_100' style='text-align: right;' id='resource_amount_" + resource_id + "'>" + total_amount + "</td>";
     tbl_html += "<td class='col_50' style='text-align: center;' id='mgr_rating_" + resource_id + "'></td>";
     tbl_html += "<td class='col_50' style='text-align: center;' id='vpp_rating_" + resource_id + "'></td>";

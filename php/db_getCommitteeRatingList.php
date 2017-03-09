@@ -324,7 +324,9 @@
                 . "rall.Mean AS ALL_Mean, "
                 . $SqlSelect
                 . "resr.NeedBy, "
-                . "crtr.CreatorName "
+                . "crtr.CreatorName, "
+                . "(SELECT ApproverName FROM [IVCRESOURCES].[dbo].[Approver] WHERE ApproverID = rmgr.ApproverID) AS ManagerName, "
+                . "(SELECT ApproverName FROM [IVCRESOURCES].[dbo].[Approver] WHERE ApproverID = rvpp.ApproverID) AS VPPName "
                 . "FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
@@ -337,6 +339,8 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateALL] AS rall ON rall.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceRP] AS rsrp ON rsrp.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[rateMgr] AS rmgr ON rmgr.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[rateVPP] AS rvpp ON rvpp.ResourceID = resr.ResourceID "
                 . $SqlFrom
                 . $sql_where;
 

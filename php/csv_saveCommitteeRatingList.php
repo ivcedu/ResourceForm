@@ -304,7 +304,9 @@
                 . "rall.Mean AS ALL_Mean, "
                 . $SqlSelect
                 . "resr.NeedBy, "
-                . "crtr.CreatorName "
+                . "crtr.CreatorName, "
+                . "(SELECT ApproverName FROM [IVCRESOURCES].[dbo].[Approver] WHERE ApproverID = rmgr.ApproverID) AS ManagerName, "
+                . "(SELECT ApproverName FROM [IVCRESOURCES].[dbo].[Approver] WHERE ApproverID = rvpp.ApproverID) AS VPPName "
                 . "FROM [IVCRESOURCES].[dbo].[ResourceStage] AS rcst LEFT JOIN [IVCRESOURCES].[dbo].[StageLevel] AS stlv ON rcst.StageLevelID = stlv.StageLevelID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[Resource] AS resr ON rcst.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceStatus] AS rsst ON resr.RSID = rsst.RSID "
@@ -317,6 +319,8 @@
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceFundSrc] AS rsfs ON rsfs.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[rateALL] AS rall ON rall.ResourceID = resr.ResourceID "
                 . "LEFT JOIN [IVCRESOURCES].[dbo].[ResourceRP] AS rsrp ON rsrp.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[rateMgr] AS rmgr ON rmgr.ResourceID = resr.ResourceID "
+                . "LEFT JOIN [IVCRESOURCES].[dbo].[rateVPP] AS rvpp ON rvpp.ResourceID = resr.ResourceID "
                 . $SqlFrom
                 . $sql_where;
 
@@ -331,7 +335,7 @@
     $out = fopen("php://output", 'w+');
     
     if ($Committee === "All") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating', 'ResourceType', 'Committee', 'Funding Src'));
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
             $your_rating = "";
@@ -368,12 +372,12 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'],
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'],
                                 $your_rating, $mgr_rating, $vp_rating, $row['ResourceType'], $Committee, $funding_src));
         }
     }
     else if ($Committee === "CHPLDTF") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
                             'CHPLDTF Median', 'CHPLDTF Mean', 'CHPLDTF Final', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
@@ -394,12 +398,12 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
                                 $row['CHPLDTF_Median'], $row['CHPLDTF_Mean'], $row['CHPLDTF_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
         }
     }
     else if ($Committee === "SSAMMO") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
                             'SSAMMO Median', 'SSAMMO Mean', 'SSAMMO Final', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
@@ -420,12 +424,12 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
                                 $row['SSAMMO_Median'], $row['SSAMMO_Mean'], $row['SSAMMO_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
         }
     }
     else if ($Committee === "APTC") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
                             'APTC Median', 'APTC Mean', 'APTC Final', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
@@ -446,12 +450,12 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
                                 $row['APTC_Median'], $row['APTC_Mean'], $row['APTC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
         }
     }
     else if ($Committee === "BDRPC") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
                             'BDRPC Median', 'BDRPC Mean', 'BDRPC Final', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
@@ -472,12 +476,12 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
                                 $row['BDRPC_Median'], $row['BDRPC_Mean'], $row['BDRPC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
         }
     }
     else if ($Committee === "IEC") {
-        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
+        fputcsv($out, array('ID', 'ProposalTitle', 'NeedBy', 'Creator', 'Manager', 'VPP', 'TotalAmount', 'YourRating', 'MgrRating', 'VPPRating',
                             'IEC Median', 'IEC Mean', 'IEC Final', 'ResourceType', 'Committee', 'Funding Src'));
 
         foreach($data as $row) {
@@ -498,7 +502,7 @@
                 $funding_src = $row['Funding'];
             }
             
-            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
+            fputcsv($out, array($row['ResourceID'], $row['ProposalTitle'], $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['TotalAmount'], $your_rating, $mgr_rating, $vp_rating, 
                                 $row['IEC_Median'], $row['IEC_Mean'], $row['IEC_FinalRating'], $row['ResourceType'], $Committee, $funding_src));
         }
     }
@@ -507,7 +511,7 @@
         fputcsv($out, array('ID', 'ProposalTitle', 'CHPLDTFFinal', 'SSAMMOFinal', 'APTCFinal', 'BDRPCFinal', 'IECFinal', 'SPACFinal',
                             'Requested', 'Recommend', 'Balance', 'General', 'ASIVC', 'BasicAid', 'BasicSkillsInitiative', 'BEAP', 'CalWORKs/TANF', 'CapitalOutlay', 'CDC', 'CollegeWorkStudy', 'CommunityEducation',
                             'DSPS', 'EOPS/CARE', 'EWD', 'Foundation', 'Grants', 'Health', 'Lottery', 'Parking', 'Perkins', 'PPIS', 'SSSP', 'StudentEquity', 'StudentMaterial', 
-                            'MgrRating', 'VPPRating', 'NeedBy', 'Creator', 'ResourceType'));
+                            'MgrRating', 'VPPRating', 'NeedBy', 'Creator', 'Manager', 'VPP', 'ResourceType'));
         // Write all the user records to the spreadsheet
         foreach($data as $row) {
             $mgr_rating = "";
@@ -525,7 +529,7 @@
                                 $row['fs_1_amt'], $row['fs_2_amt'], $row['fs_3_amt'], $row['fs_4_amt'], $row['fs_5_amt'], $row['fs_6_amt'], $row['fs_7_amt'], $row['fs_8_amt'], $row['fs_9_amt'], $row['fs_10_amt'],
                                 $row['fs_11_amt'], $row['fs_12_amt'], $row['fs_13_amt'], $row['fs_14_amt'], $row['fs_15_amt'], $row['fs_16_amt'], $row['fs_17_amt'], $row['fs_18_amt'], $row['fs_19_amt'], $row['fs_20_amt'],
                                 $row['fs_21_amt'], $row['fs_22_amt'], $row['fs_23_amt'],
-                                $mgr_rating, $vp_rating, $row['NeedBy'], $row['CreatorName'], $row['ResourceType']));
+                                $mgr_rating, $vp_rating, $row['NeedBy'], $row['CreatorName'], $row['ManagerName'], $row['VPPName'], $row['ResourceType']));
         }
     }
     
