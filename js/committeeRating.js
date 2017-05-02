@@ -688,18 +688,32 @@ $(document).ready(function() {
     });
     
 ////////////////////////////////////////////////////////////////////////////////
+    // table header mouseover popup ////////////////////////////////////////////
+    $('#user_rf_list').on('mouseover', '.header_popup', function() {
+        $(this).popover({content:"Ratings Rubric<br>\n\
+                                1=Impact on the program/service is minimal or none<br>\n\
+                                2=No immediate adverse impact<br>\n\
+                                3=Program/service effectiveness will diminish<br>\n\
+                                4=Serious harm to the program/service/initiative will occur and it could eventually be reduced or ended<br>\n\
+                                5=Program/service to current students or employees will be immediately jeopardized",
+                        placement:"bottom"});
+        $(this).popover('show');
+        return false;
+    });
+    
     // table mouseover popup ///////////////////////////////////////////////////
     $('#user_rf_list').on('mouseover', 'a[id^="resource_title_brief_"]', function() {
         var res_id = $(this).attr('id').replace("resource_title_brief_", "");
         var title_full = $('#resource_title_full_' + res_id).html();
-        
         $(this).popover({trigger:"manual", content:title_full, placement:"top"});
-        $(this).popover('toggle');
+        $(this).popover('show');
+        return false;
     });
     
     // table mouseleave popup //////////////////////////////////////////////////
     $('#user_rf_list').on('mouseleave', 'a[id^="resource_title_brief_"]', function() {
         $(this).popover('hide');
+        return false;
     });
     
     // table selection /////////////////////////////////////////////////////////
@@ -1180,8 +1194,7 @@ $(document).ready(function() {
         }, 1000);
     });
     
-////////////////////////////////////////////////////////////////////////////////
-    // auto size
+    // auto size ///////////////////////////////////////////////////////////////
     $('#mod_final_body_add_comments').autosize();
     $('#mgr_fs_comments').autosize();
 
@@ -2601,9 +2614,9 @@ function setTableHeader(committee) {
         tbl_html += "<th class='col_200' style='text-align: left;'><a href='#' style='color: white;'>VP/P</a></th>";
         tbl_html += "<th class='col_100' style='text-align: right;'><a href='#' style='color: white;'>Req. Amount</a></th>";
         tbl_html += "<th class='col_30'></th>";
-        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>Your Rating</a></th>";
-        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>Mgr Rating</a></th>";
-        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' style='color: white;'>VP/P Rating</a></th>";
+        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' class='header_popup' style='color: white;'>Your Rating</a></th>";
+        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' class='header_popup' style='color: white;'>Mgr Rating</a></th>";
+        tbl_html += "<th class='col_50' style='text-align: center;'><a href='#' class='header_popup' style='color: white;'>VP/P Rating</a></th>";
         tbl_html += setCommitteeFinalColumn(committee);
         tbl_html += "<th class='col_150' style='text-align: left;'><a href='#' style='color: white;'>Resource Type</a></th>";
         tbl_html += "<th class='col_100' style='text-align: left;'><a href='#' style='color: white;'>Committee</a></th>";
