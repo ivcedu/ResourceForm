@@ -125,15 +125,15 @@ $(document).ready(function() {
         var resubmit = db_getBacktodraft(ResourceID);
         
         // prevent duplicating submission from user 
-        var result = new Array();
-        result = db_getResourceFormSelected(ResourceID);
-        if (result[0]['FSID'] !== "1") {
-            $('#mod_dialog_box_header').html("Submission Error");
-            $('#mod_dialog_box_body').html("This request already submitted. please click Home icon and refresh your browser to latest status update");
-            $('#mod_dialog_box').modal('show');
-            $("#m6_submit").prop("disabled", false);
-            return false;
-        }
+//        var result = new Array();
+//        result = db_getResourceFormSelected(ResourceID);
+//        if (result[0]['FSID'] !== "1") {
+//            $('#mod_dialog_box_header').html("Submission Error");
+//            $('#mod_dialog_box_body').html("This request already submitted. please click Home icon and refresh your browser to latest status update");
+//            $('#mod_dialog_box').modal('show');
+//            $("#m6_submit").prop("disabled", false);
+//            return false;
+//        }
         
 //        var current_date = new Date();
 //        var db_date = db_getEnableSubmitBtn();
