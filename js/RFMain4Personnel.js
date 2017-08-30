@@ -1086,7 +1086,12 @@ function calculate_benefit_cost(salary, short_term) {
     benefitCost = month * 4.2 * hrs * salary * 0.2;
 
     if (hrs >= 30 && short_term !== true) {
-        benefitCost += 20000;
+        if ($("#m4_personnel_type").val() === "Classified Bargaining") {
+            benefitCost += 25402;
+        }
+        else if ($("#m4_personnel_type").val() === "Classified Management") {
+            benefitCost += 25787;
+        }
     }
 
     return benefitCost;
