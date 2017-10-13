@@ -75,7 +75,7 @@ var ar_db_spac_column = [];
 var mgr_start_date = false;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    if (sessionStorage.key(0) !== null) {        
+    if (sessionStorage.key(0) !== null) {      
         setHideAllModal();
         setHideAllNavigationButton();
         setAdminOption();
