@@ -3,7 +3,7 @@
     
     $ResourceID = filter_input(INPUT_POST, 'ResourceID');
        
-    $query = "SELECT * FROM [IVCRESOURCES].[dbo].[ResourceRP] WHERE ResourceID = '" .$ResourceID. "'";
+    $query = "SELECT TOP(1) * FROM [IVCRESOURCES].[dbo].[ResourceRP] WHERE ResourceID = '" .$ResourceID. "'";
     
     $cmd = $dbConn->prepare($query);
     $cmd->execute(); 

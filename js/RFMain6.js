@@ -1417,7 +1417,15 @@ function submitToDB(resubmit) {
     var result = db_getReviewPeriodID(rp_yr + cur_mon + "-" + cur_day);
     if (result.length !== 0) {
         var rp_id = result[0]['ReviewPeriodID'];
-        db_insertResourceRP(ResourceID, rp_id);
+        
+        var result2 = new Array();
+        result2 = db_getResourceRP(ResourceID);
+        if (result2.length === 0) {
+            db_insertResourceRP(ResourceID, rp_id);
+        }
+        else {
+            db_updateResourceRPByResourceID(ResourceID, rp_id);
+        }
     }
 
     var note = LoginName + " submitted";
