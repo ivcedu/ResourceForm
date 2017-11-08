@@ -471,6 +471,7 @@ function setLocalData(index, objID, goalID, impactID) {
         tbody += "<option value='District-wide Objective'>District-wide Objective</option>";
         tbody += "<option value='District-wide Technology Objective'>District-wide Technology Objective</option>";
         tbody += "<option value='College Technology Plan'>College Technology Plan</option>";
+        tbody += "<option value='ASG Goals'>ASG Goals</option>";
         tbody += "</select>";
         tbody += "</div>";
         tbody += "<div class='row-fluid'>";
@@ -518,6 +519,17 @@ function setLocalData(index, objID, goalID, impactID) {
     }
     else if (objective === "College Technology Plan") {
         $("#" + goalID).append(setCollegeTechnologyPlan());
+        $('#' + goalID).val(sessionStorage.getItem(goalID));
+        $('#' + goalID).selectpicker('refresh');
+        $('#' + goalID).selectpicker('show');
+        if (index === index_obj) {
+            $('#m5_ref_link').prop('href', 'doc/IVC_Technology_Plan_2016-2021.pdf');
+            $('#m5_ref_link').html(objective);
+            $('#m5_ref_link').show();
+        }
+    }
+    else if (objective === "ASG Goals") {
+        $("#" + goalID).append(setASGGoals());
         $('#' + goalID).val(sessionStorage.getItem(goalID));
         $('#' + goalID).selectpicker('refresh');
         $('#' + goalID).selectpicker('show');
