@@ -2618,11 +2618,15 @@ function getAllReviewPeriodList() {
     str_option += "<option value='-1'>Blank</option>>";
     $("#all_review_period").append(str_option);
     
-    var cur_rp_id = getCurrentDateReviewPeriod();
-    if (cur_rp_id !== "") {
-        $('#all_review_period').val(result[0]['ReviewPeriodID']);
-        $('#all_review_period').selectpicker('refresh');
-    }
+    // review period default set to All
+    $('#all_review_period').val('0');
+    $('#all_review_period').selectpicker('refresh');
+    
+//    var cur_rp_id = getCurrentDateReviewPeriod();
+//    if (cur_rp_id !== "") {
+//        $('#all_review_period').val(result[0]['ReviewPeriodID']);
+//        $('#all_review_period').selectpicker('refresh');
+//    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
