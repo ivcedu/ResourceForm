@@ -175,7 +175,7 @@ $(document).ready(function() {
         sessionStorage.setItem('m6_submitted', 'yes');
         
         $('#mod_dialog_box_header').html("Complete");
-        $('#mod_dialog_box_body').html("Your request has been submitted successfully.<br><br>Thank you");
+        $('#mod_dialog_box_body').html("Your request was submitted after the deadline for Fall submissions. Therefore it will be considered in the next budget allocation sycle. Please discuss the request with your Dean/Director if the request is intended for the current cycle.<br><br>Thank you");
         $('#mod_dialog_box').modal('show');
     });
 });
