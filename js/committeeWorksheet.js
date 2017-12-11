@@ -1780,9 +1780,8 @@ function sendEmailBSIFundingInstructionToCreator() {
     
     var Subject = "BSI Request Form";
     var Message = "Dear " + creator + ",<br/><br/>";
-    Message += "Your resource request titled <b>" + res_title + "</b> was selected for " + fs_type + " as a possible funding source by committee: <b>" + login_name + "</b>.<br>";
-    Message += "Please complete the PDF form <a href='" + str_url + "'>BSI Funding Request Form Fall 2015</a> send back to " + fs_admin_name + " at " + fs_admin_email + ".<br>";
-    Message += "If you have any questions about completing the form, the funding source can help to answer your question.<br><br>";
+    Message += "Your resource request titled <b>" + res_title + "</b> has " + fs_type + " as a possible funding source. You will be sent the BSI, SSSP, SE integrated funding ";
+    Message += " supplemental form shortly after the resource request submission deadline. If you have any questions, please contact " + fs_admin_name + ", Basic Skills Coordinator at " + fs_admin_email + ".<br/><br/>";
     
     Message += "Thank you.<br><br>";
     Message += "IVC Fiscal Services<br>";
