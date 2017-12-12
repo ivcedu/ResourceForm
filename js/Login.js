@@ -103,8 +103,8 @@ function loginInfo() {
 //        email = "dkhachatryan@ivc.edu";
         
         localData_login(name, email, title, division, appName, appEmail, appTitle, appDivision);
-        db_updateLogin(email, name, title, division);
-        db_updateCreator(email, name, title, division);
+        db_insertLogin(email, name, title, division);
+        db_insertCreator(email, name, title, division);
         return true;
     }
 }
