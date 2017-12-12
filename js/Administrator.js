@@ -872,7 +872,7 @@ function setAdminOption() {
     m_login_email = sessionStorage.getItem('m1_loginEmail');
     m_login_name = sessionStorage.getItem('m1_loginName');
     
-    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "aturner@ivc.edu") {
+    if (m_login_email === "ykim160@ivc.edu" || m_login_email === "bhagan@ivc.edu" || m_login_email === "aturner@ivc.edu" || m_login_email === "dkhachatryan@ivc.edu") {
         $('#nav_change_approver').show();
         $('#nav_committee_rating').show();
         $('#nav_bar_review_period').show();
