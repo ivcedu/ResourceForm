@@ -5,6 +5,9 @@
     $CreatorEmail = filter_input(INPUT_POST, 'CreatorEmail');
     $CreatorTitle = filter_input(INPUT_POST, 'CreatorTitle');
     $CreatorDepart = filter_input(INPUT_POST, 'CreatorDepart');
+    
+    $CreatorName = str_replace("'", "''", $CreatorName);
+    $CreatorEmail = str_replace("'", "", $CreatorEmail);
 
     $CreatorID = searchCreator($dbConn, $CreatorEmail);
     if ($CreatorID === null) {

@@ -5,6 +5,9 @@
     $LoginEmail = filter_input(INPUT_POST, 'LoginEmail');
     $LoginTitle = filter_input(INPUT_POST, 'LoginTitle');
     $LoginDepart = filter_input(INPUT_POST, 'LoginDepart');
+    
+    $LoginName = str_replace("'", "''", $LoginName);
+    $LoginEmail = str_replace("'", "", $LoginEmail);
 
     $LoginID = searchLogin($dbConn, $LoginEmail);
     if ($LoginID === null) {
