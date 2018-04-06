@@ -19,7 +19,7 @@ window.onload = function() {
 function initializeTable() {
     $("#user_rf_list").tablesorter({ 
         headers: { 
-            4: {sorter:'currency'}
+            5: {sorter:'currency'}
         },
         widgets: ['stickyHeaders']
     });
